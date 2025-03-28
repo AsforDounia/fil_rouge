@@ -9,6 +9,9 @@ export default function Home() {
             <Head title="dashboardPatient" />
             <div>
                 <h1>Hello Patient</h1>
+                <a href="/api/login" className="text-wine hover:underline">
+                  Connectez
+                </a>
             </div>
         </>
     );

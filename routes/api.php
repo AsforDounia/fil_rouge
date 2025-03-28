@@ -39,21 +39,36 @@ Route::post('login', [AuthController::class, 'login']);
 // });
 
 
-Route::middleware(['auth:sanctum', 'role:donor'])->group(function () {
-    Route::get('donor/dashboard', function () {
-        return Inertia::render('donor/dashboard');
-    });
-    // Route::get('dashboardDonor', [AuthController::class, 'dashboardDonor']);
-});
 
-
-Route::middleware(['auth:sanctum', 'role:patient'])->group(function () {
-    Route::get('patient/dashboard', function () {
-        return Inertia::render('patient/dashboard');
-    });
-});
 
 // Route::get('/dashboardDonor', function () {
 //     return Inertia::render('dashboardDonor');
 // })->middleware('auth');
 
+
+
+Route::middleware('session')->group(function () {
+    Route::get('login', [AuthController::class, 'displayLoginPage'])->name('login');
+    Route::get('register', [AuthController::class, 'displayRegisterPage'])->name('register');
+    Route::post('register', [AuthController::class, 'register']);
+    Route::post('login', [AuthController::class, 'login']);
+
+    Route::middleware(['auth:sanctum', 'role:donor'])->group(function () {
+        Route::get('donor/dashboard', function () {
+            return Inertia::render('donor/dashboard');
+        });
+    });
+
+
+    Route::middleware(['auth:sanctum', 'role:patient'])->group(function () {
+        Route::get('patient/dashboard', function () {
+            return Inertia::render('patient/dashboard');
+        });
+    });
+
+
+    Route::middleware(['auth:sanctum'])->group(function () {
+        Route::post('logout', [AuthController::class , 'logout']);
+    });
+});
+Route::get('logout', [AuthController::class , 'logout']);

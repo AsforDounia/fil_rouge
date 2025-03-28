@@ -28,8 +28,8 @@ const onSubmit = async (data) => {
 
         if (res.ok) {
             localStorage.setItem('token', result.token);
-            console.log(result);
-            // fetchDashboard(result.userRole[0] + '/dashboard');
+            // console.log(result);
+            fetchDashboard(result.userRole[0] + '/dashboard');
             // if (result.userRole.includes('patient')) {
             //     // console.log(result.userRole[0] + '.dashboard');
             //     // fetchDashboard('dashboardPatient');

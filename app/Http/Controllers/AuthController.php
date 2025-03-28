@@ -11,7 +11,12 @@ use Inertia\Inertia;
 
 class AuthController extends Controller
 {
-    public function displayLoginPage(Request $request){
+    public function displayLoginPage(){
+        $userSession = session()->get('userSession');
+        $userRole = session()->get('userRole');
+        if($userSession && $userRole){
+            return Inertia::render($userRole.'/dashboard');
+        }
         return Inertia::render('Auth/Login');
     }
     public function displayRegisterPage(Request $request){
@@ -20,6 +25,7 @@ class AuthController extends Controller
 
     public function register(Request $request)
     {
+        session()->flush();
         $request->validate([
             'first_name' => 'required|string|max:255',
             'last_name' => 'required|string|max:255',
@@ -54,7 +60,8 @@ class AuthController extends Controller
     {
         $request->validate([
             'email' => 'required|email',
-            'password' => 'required|string'
+            'password' => 'required|string',
+            'remember' => 'boolean',
         ]);
 
         $user = User::where('email', $request->email)->first();
@@ -69,16 +76,29 @@ class AuthController extends Controller
         $token = $user->createToken($user->last_name . '_login_token')->plainTextToken;
         $role = $user->roles()->pluck('name');
 
+        if($request->remember) {
+            session(['userSession' => $user]);
+            session(['userRole' => $role[0]]);
+            session()->save();
+        }
+
+
+
         return response()->json([
             'user' => $user,
             'userRole' => $role,
             'token' => $token,
-            'message' => 'Connexion réussie'
+            'message' => 'Connexion réussie',
         ]);
     }
 
-
-    public function dashboardDonor(){
-        return Inertia::render('dashboardPatient');
+    public function logout(Request $request)
+    {
+        session()->flush();
+        $request->user()->tokens()->delete();
+        return response()->json([
+            'message' => 'Déconnexion réussie',
+        ]);
     }
+
 }
