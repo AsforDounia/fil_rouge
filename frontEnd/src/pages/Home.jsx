@@ -7,7 +7,7 @@ import FeaturesSection from '../Components/HomeComponents/FeaturesSection';
 import CTASection from '../Components/HomeComponents/CTASection';
 import ProcessSection from '../Components/HomeComponents/ProcessSection';
 import StatsSection from '../Components/HomeComponents/StatsSection';
-import TestimonialsSection from '../Components/HomeComponents/TestimonialsSection';
+import TestimonialsSection from '../Components/SharedComponents/TestimonialsSection';
 import EventsSection from '../Components/HomeComponents/EventsSection';
 // import NewsSection from '../Components/HomeComponents/NewsSection';
 

@@ -1,20 +1,37 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 // import { MapPin, Heart, Hospital, Droplet } from "lucide-react";
 import { FaMapMarkerAlt, FaHeart, FaHospital, FaTint } from "react-icons/fa";
 import { useStats } from "../../Context/StatsContext";
 
 const StatsSection = () => {
+
+  const [loading, setLoading] = useState(true);
   const { stats, getStats } = useStats();
 
+
   useEffect(() => {
-    getStats();
+    const fetchEvents = async () => {
+      setLoading(true);
+      try {
+        await getStats();
+      } catch (error) {
+        console.error("Error fetching events:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    
+    fetchEvents();
   }, []);
 
-  if (!stats) {
-    return <div>Loading...</div>;
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center min-h-[60vh]">
+        <div className="w-12 h-12 border-4 border-blue-500 border-dashed rounded-full animate-spin" />
+      </div>
+    );
   }
 
-  // console.log(stats.sats.countDonations);
 
   const statistics = [
     {
