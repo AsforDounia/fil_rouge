@@ -12,7 +12,11 @@ class EventController extends Controller
      */
     public function index()
     {
-        //
+
+        $events = Event::with('localisation.user')->paginate(3);
+        return response()->json([
+            'events' => $events
+        ]);
     }
 
     /**

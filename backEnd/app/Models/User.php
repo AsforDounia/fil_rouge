@@ -63,6 +63,11 @@ class User extends Authenticatable
             return $this->belongsToMany(Role::class);
         }
 
+        public function assignRoleToUser($roleId )
+        {
+            $this->roles()->attach($roleId);
+        }
+
         // Geolocation
         public function localisation()
         {
@@ -107,6 +112,11 @@ class User extends Authenticatable
         public function rapports()
         {
             return $this->hasMany(Rapport::class, 'admin_id');
+        }
+
+        public function temoignages()
+        {
+            return $this->hasOne(Temoignage::class);
         }
 }
 
