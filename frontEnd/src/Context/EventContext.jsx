@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useState } from 'react'
 import api from '../api/axios';
+import { toast } from "react-toastify";
 
 
 export const EventContext = createContext();
@@ -13,7 +14,7 @@ export const EventProvider = ({ children }) => {
           const response = await api.get(`events?page=${page}`);
           setEvents(response.data.events);
         } catch (error) {
-          console.error('Error fetching events:', error);
+            toast.error("Error fetching events :" + error);
         }
     };
 

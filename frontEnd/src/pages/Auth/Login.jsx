@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
+import { toast } from "react-toastify";
+
 import {
     FaHeartbeat,
     FaEnvelope,
@@ -19,10 +21,9 @@ const Login = () => {
     } = useForm();
 
     const onSubmit = async (data) => {
-        try {
-            await login(data);
-        } catch (error) {
-            console.error("Erreur:", error);
+        const result = await login(data);
+        if (!result.success) {
+            alert(result.message);
         }
     };
 

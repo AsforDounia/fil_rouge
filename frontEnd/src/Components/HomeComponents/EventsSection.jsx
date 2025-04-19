@@ -3,6 +3,9 @@ import React, { useEffect, useState } from 'react';
 import { useEvent } from '../../Context/EventContext';
 import { FaArrowCircleLeft, FaArrowCircleRight , FaArrowRight} from 'react-icons/fa';
 import { Link } from 'react-router-dom';
+import { toast } from "react-toastify";
+
+
 const EventsSection = () => {
 
     const [loading, setLoading] = useState(true);
@@ -17,7 +20,7 @@ const EventsSection = () => {
         try {
           await getEvents(currentPage);
         } catch (error) {
-          console.error("Error fetching events:", error);
+          toast.error("Error fetching events :" + error.message);
         } finally {
           setLoading(false);
         }

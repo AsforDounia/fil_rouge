@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 // import { MapPin, Heart, Hospital, Droplet } from "lucide-react";
 import { FaMapMarkerAlt, FaHeart, FaHospital, FaTint } from "react-icons/fa";
 import { useStats } from "../../Context/StatsContext";
-
+import { toast } from "react-toastify";
 const StatsSection = () => {
 
   const [loading, setLoading] = useState(true);
@@ -15,7 +15,7 @@ const StatsSection = () => {
       try {
         await getStats();
       } catch (error) {
-        console.error("Error fetching events:", error);
+        toast.error("Error fetching events :" + error.message);
       } finally {
         setLoading(false);
       }

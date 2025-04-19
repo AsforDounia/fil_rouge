@@ -3,6 +3,7 @@ import { useForm } from 'react-hook-form';
 import { FaUser, FaProcedures, FaEnvelope, FaLock, FaEye, FaEyeSlash, FaHeartbeat,FaCalendarAlt ,FaHistory   } from 'react-icons/fa';
 import { IoNotifications , IoLocationSharp } from "react-icons/io5";
 import { useAuth } from '../../Context/AuthContext';
+import { toast } from "react-toastify";
 
 const Register = () => {
   const { registerf } = useAuth();
@@ -34,7 +35,7 @@ const onSubmit = async (data) => {
     try {
       await registerf(submissionData);
     } catch (error) {
-      console.error('Erreur:', error);
+      toast.error("Registration failed: " + error);
     }
   };
 

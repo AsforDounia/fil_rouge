@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { useTestimonial } from '../../Context/TestimonialContexte';
 import { FaArrowCircleLeft , FaArrowCircleRight  } from "react-icons/fa";
+import { toast } from "react-toastify";
+
+
 const TestimonialsSection = () => {
   const { getTestimonials, testimonials } = useTestimonial();
   const [currentPage, setCurrentPage] = useState(1);
@@ -14,7 +17,7 @@ const TestimonialsSection = () => {
       try {
         await getTestimonials(currentPage);
       } catch (error) {
-        console.error("Error fetching events:", error);
+        toast.error("Error fetching testimonials :" + error);
       } finally {
         setLoading(false);
       }
