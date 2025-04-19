@@ -1,9 +1,11 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\CenterController;
 use App\Http\Controllers\EventController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\TemoignageController;
+use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -19,3 +21,5 @@ Route::post('login', [AuthController::class, 'login']);
 Route::get('stats',[HomeController::class,'index']);
 Route::get('testimonials',[TemoignageController::class,'index']);
 Route::get('events',[EventController::class,'index']);
+Route::get('centers',[CenterController::class,'index']);
+Route::get('centers/search', [CenterController::class, 'search']);

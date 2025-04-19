@@ -8,20 +8,9 @@ import About from "../pages/About";
 
 
 
-export const Router = createBrowserRouter([
-  // {
-  //   path: "/",
-  //   element: (
-  //     <StatsProvider>
-  //       <TestimonialProvider>
-  //         <EventProvider>
 
-  //         <Home />
-  //         </EventProvider>
-  //       </TestimonialProvider>
-  //     </StatsProvider>
-  //   ),
-  // },
+export const Router = createBrowserRouter([
+
   {
     path: "/",
     element: (
@@ -45,8 +34,6 @@ export const Router = createBrowserRouter([
     ],
   },
 
-
-
   {
     path: "/about",
     element: (
@@ -62,12 +49,8 @@ export const Router = createBrowserRouter([
         ),
          
       },
-      // other child routes can go here
     ],
   },
-  // {
-  //   path: "/event",
-  //   element: <Event />
-  // },
+
 
 ]);
