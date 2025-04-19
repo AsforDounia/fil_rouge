@@ -5,6 +5,8 @@ import { TestimonialProvider } from "../Context/TestimonialContexte";
 import { EventProvider } from "../Context/EventContext";
 import HomeLayout from "../Components/Layouts/HomeLayout";
 import About from "../pages/About";
+import { AuthProvider } from "../Context/AuthContext";
+import Login from "../pages/Login";
 
 
 
@@ -50,6 +52,14 @@ export const Router = createBrowserRouter([
          
       },
     ],
+  },
+  {
+    path: "/login",
+    element: (
+      <AuthProvider>
+      <Login />
+      </AuthProvider>
+    )
   },
 
 
