@@ -23,3 +23,4 @@ Route::get('testimonials',[TemoignageController::class,'index']);
 Route::get('events',[EventController::class,'index']);
 Route::get('centers',[CenterController::class,'index']);
 Route::get('centers/search', [CenterController::class, 'search']);
+
