@@ -7,18 +7,6 @@ export default {
       "./index.html",
       "./src/**/*.{js,jsx,ts,tsx}"
     ],
-    // theme: {
-    //   extend: {
-    //     colors: {
-    //       wine:    "#8B2326",
-    //       burgundy:"#4A1E1F",
-    //       cream:   "#D6C3A8",
-    //       teal:    "#40898A",
-    //       darkTeal:"#1A4B4C",
-    //       lightGray:"#FAFAFA",
-    //     }
-    //   }
-    // },
 
     theme: {
         extend: {

@@ -4,13 +4,31 @@ import { FaArrowCircleLeft , FaArrowCircleRight  } from "react-icons/fa";
 const TestimonialsSection = () => {
   const { getTestimonials, testimonials } = useTestimonial();
   const [currentPage, setCurrentPage] = useState(1);
+  const [loading, setLoading] = useState(true);
+
+
 
   useEffect(() => {
-    getTestimonials(currentPage);
+    const fetchEvents = async () => {
+      setLoading(true);
+      try {
+        await getTestimonials(currentPage);
+      } catch (error) {
+        console.error("Error fetching events:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    
+    fetchEvents();
   }, [currentPage]);
 
-  if (!testimonials) {
-    return <div>loading...</div>
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center min-h-[60vh]">
+        <div className="w-12 h-12 border-4 border-blue-500 border-dashed rounded-full animate-spin" />
+      </div>
+    );
   }
 
 
@@ -35,11 +53,13 @@ const TestimonialsSection = () => {
           {testimonials.data && testimonials.data.map((testimonial, index) => (
             <div
               key={index}
-              className="bg-white rounded-lg p-6 shadow-md hover:shadow-xl transition-shadow"
+              className="flex flex-col bg-white rounded-lg p-6 shadow-md hover:shadow-xl transition-shadow"
             >
               <p className="text-gray-600 italic mb-6">
                 {testimonial.contenu}
               </p>
+              <div className="flex-1">
+              </div>
               <div className="flex items-center">
                 <div className="w-12 h-12 bg-gray-200 rounded-full mr-4"></div>
                 <div>
@@ -64,7 +84,7 @@ const TestimonialsSection = () => {
               className={`px-4 py-2 mx-1 rounded-md ${
                 currentPageFromData <= 1 
                   ? 'bg-gray-200 text-gray-500 cursor-not-allowed' 
-                  : 'bg-burgundy text-white hover:bg-wine'
+                  : 'bg-burgundy text-white hover:bg-wine cursor-pointer'
               }`}
             >
               <FaArrowCircleLeft />
@@ -75,10 +95,10 @@ const TestimonialsSection = () => {
                 <button
                   key={page}
                   onClick={() => handlePageChange(page)}
-                  className={`w-10 h-10 mx-1 rounded-full flex items-center justify-center ${
+                  className={`w-10 h-10 mx-1 rounded-full flex items-center justify-center cursor-pointer ${
                     page === currentPageFromData
-                      ? 'bg-burgundy text-white'
-                      : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+                      ? 'bg-burgundy text-white '
+                      : 'bg-gray-200 text-gray-700 hover:bg-gray-300 '
                   }`}
                 >
                   {page}
@@ -92,7 +112,7 @@ const TestimonialsSection = () => {
               className={`px-4 py-2 mx-1 rounded-md ${
                 currentPageFromData >= lastPage
                   ? 'bg-gray-200 text-gray-500 cursor-not-allowed'
-                  : 'bg-burgundy text-white hover:bg-wine'
+                  : 'bg-burgundy text-white hover:bg-wine cursor-pointer'
               }`}
             >
               {/* Suivant */}

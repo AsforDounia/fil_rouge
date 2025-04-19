@@ -4,29 +4,17 @@ import { StatsProvider } from "../Context/StatsContext";
 import { TestimonialProvider } from "../Context/TestimonialContexte";
 import { EventProvider } from "../Context/EventContext";
 import HomeLayout from "../Components/Layouts/HomeLayout";
+import About from "../pages/About";
+
 
 
 
 export const Router = createBrowserRouter([
-  // {
-  //   path: "/",
-  //   element: (
-  //     <StatsProvider>
-  //       <TestimonialProvider>
-  //         <EventProvider>
 
-  //         <Home />
-  //         </EventProvider>
-  //       </TestimonialProvider>
-  //     </StatsProvider>
-  //   ),
-  // },
   {
     path: "/",
     element: (
-
           <HomeLayout />
-
     ),
     children: [
       {
@@ -46,13 +34,23 @@ export const Router = createBrowserRouter([
     ],
   },
 
-  // {
-  //   path: "/about",
-  //   element: <About />
-  // },
-  // {
-  //   path: "/event",
-  //   element: <Event />
-  // },
+  {
+    path: "/about",
+    element: (
+          <HomeLayout />
+    ),
+    children: [
+      {
+        index: true,
+        element:(
+          <TestimonialProvider>
+          <About />
+          </TestimonialProvider>
+        ),
+         
+      },
+    ],
+  },
+
 
 ]);

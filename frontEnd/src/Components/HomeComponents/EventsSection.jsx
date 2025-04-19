@@ -4,17 +4,36 @@ import { useEvent } from '../../Context/EventContext';
 import { FaArrowCircleLeft, FaArrowCircleRight , FaArrowRight} from 'react-icons/fa';
 import { Link } from 'react-router-dom';
 const EventsSection = () => {
+
+    const [loading, setLoading] = useState(true);
     const {events , getEvents} = useEvent();
     const [currentPage, setCurrentPage] = useState(1);
 
 
 
-      useEffect(() => {
-    getEvents(currentPage);
-  }, [currentPage]);
+    useEffect(() => {
+      const fetchEvents = async () => {
+        setLoading(true);
+        try {
+          await getEvents(currentPage);
+        } catch (error) {
+          console.error("Error fetching events:", error);
+        } finally {
+          setLoading(false);
+        }
+      };
+      
+      fetchEvents();
+    }, [currentPage]);
 
-  if (!events) {
-    return <div className="text-center py-20 text-gray-500">Chargement des actualités...</div>;
+
+
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center min-h-[60vh]">
+        <div className="w-12 h-12 border-4 border-blue-500 border-dashed rounded-full animate-spin" />
+      </div>
+    );
   }
 
   const lastPage = events.last_page || 1;
