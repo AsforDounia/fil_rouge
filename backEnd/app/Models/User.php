@@ -32,6 +32,7 @@ class User extends Authenticatable
         'country',
         'weight',
         'height',
+        'password',
     ];
 
     /**

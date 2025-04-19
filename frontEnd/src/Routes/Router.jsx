@@ -6,11 +6,12 @@ import { EventProvider } from "../Context/EventContext";
 import HomeLayout from "../Components/Layouts/HomeLayout";
 import About from "../pages/About";
 import { AuthProvider } from "../Context/AuthContext";
-import Login from "../pages/Login";
+import Login from "../pages/Auth/Login";
 import ProtectedRoute from "../Components/ProtectedRoute";
 
 import AuthRoute from "../Components/AuthRoute";
 import DonorDashboard from "../pages/Donor/DonorDashboard";
+import Register from "../pages/Auth/Register";
 
 
 
@@ -67,22 +68,19 @@ export const Router = createBrowserRouter([
       {
         path: "/login",
         element: <Login />
-      }
+      },
+      {
+        path: "/register",
+        element: <Register />
+      },
     ]
   },
-  {
-    path: "/login",
-    element: (
-      <AuthProvider>
-      <Login />
-      </AuthProvider>
-    )
-  },
+  
   {
     path: "/donneur",
     element: (
       <AuthProvider>
-        <ProtectedRoute roles={["centre_manager"]}>
+        <ProtectedRoute roles={["donor"]}>
             <div>hello</div>
             <DonorDashboard />
         </ProtectedRoute>

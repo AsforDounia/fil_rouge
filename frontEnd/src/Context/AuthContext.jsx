@@ -36,6 +36,7 @@ export const AuthProvider = ({ children }) => {
       localStorage.setItem('token', data.token);
       setToken(data.token);
       setUser(data.user);
+      console.log(data.user);
       setIsAuthenticated(true);
       return { success: true};
     } catch (error) {
@@ -50,6 +51,24 @@ export const AuthProvider = ({ children }) => {
     return requiredRoles.some(role => roles.includes(role));
  };
 
+
+ const registerf = async (identifiers) => {
+  try {
+    console.log(identifiers);
+    const { data } = await api.post('register', identifiers);
+    localStorage.setItem('token', data.token);
+    setToken(data.token);
+    setUser(data.user);
+    setIsAuthenticated(true);
+    console.log(roles);
+    return { success: true};
+  } catch (error) {
+    console.error('Register failed:', error);
+    return { success: false, message: error.response?.data?.message || 'Register failed' };
+  }
+};
+
+
   return (
     <AuthContext.Provider
     value={{
@@ -58,7 +77,8 @@ export const AuthProvider = ({ children }) => {
       isAuthenticated,
       login,
       hasRole,
-      roles
+      roles,
+      registerf,
     }}
   >
       {children}

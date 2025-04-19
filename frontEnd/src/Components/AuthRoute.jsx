@@ -8,12 +8,14 @@ const AuthRoute = () => {
   const { isAuthenticated, roles } = useAuth();
 
   if (isAuthenticated) {
-    console.log(roles);
-    if (roles.includes("centre_manager")) {
+    if (roles.includes("donor")) {
       return <Navigate to="/donneur" replace />;
     }
-    else if(roles.includes("test")) {
-      return <Navigate to="/test" replace />;
+    if(roles.includes("centre_manager")){
+      return <Navigate to="/centre" replace />;
+    }
+    else if(roles.includes("patient")) {
+      return <Navigate to="/patient" replace />;
     }
   }
   return <Outlet />;
