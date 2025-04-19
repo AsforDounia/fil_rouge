@@ -12,6 +12,9 @@ use Illuminate\Support\Facades\Route;
 Route::get('/user', function (Request $request) {
     return $request->user();
 })->middleware('auth:sanctum');
+Route::get('/user/roles', function (Request $request) {
+    return $request->user()->roles;
+})->middleware('auth:sanctum');
 
 
 Route::post('register', [AuthController::class, 'register']);
@@ -23,3 +26,4 @@ Route::get('testimonials',[TemoignageController::class,'index']);
 Route::get('events',[EventController::class,'index']);
 Route::get('centers',[CenterController::class,'index']);
 Route::get('centers/search', [CenterController::class, 'search']);
+
