@@ -9,8 +9,26 @@ export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [token, setToken] = useState(localStorage.getItem('token'));
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [roles, setRoles] = useState([]);
 
+  useEffect(() => {
+    const checkAuth = async () => {
+      try {
+        if (token) {
+          const { userData } = await api.get('user');
+          const response = await api.get('user/roles');
+          setRoles(response.data.map(role => role.name));
+          setUser(userData);
+          setIsAuthenticated(true);
+        }
+      } catch (err) {
+        console.error('Authentication check failed:', err);
+        logout();
+      }
+    };
 
+    checkAuth();
+  }, [token]);
 
   const login = async (identifiers) => {
     try {
@@ -26,7 +44,11 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-
+  const hasRole = (requiredRoles) => {
+    if (!requiredRoles || requiredRoles.length === 0) return false;
+    if (!roles) return false;
+    return requiredRoles.some(role => roles.includes(role));
+ };
 
   return (
     <AuthContext.Provider
@@ -35,6 +57,8 @@ export const AuthProvider = ({ children }) => {
       token,
       isAuthenticated,
       login,
+      hasRole,
+      roles
     }}
   >
       {children}

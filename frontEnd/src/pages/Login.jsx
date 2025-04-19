@@ -11,7 +11,7 @@ import { useAuth } from "../Context/AuthContext";
 
 const Login = () => {
     const [showPassword, setShowPassword] = useState(false);
-    const { login } = useAuth();
+    const { login ,hasRole } = useAuth();
     const {
         register,
         handleSubmit,
@@ -22,7 +22,8 @@ const Login = () => {
         try {
             const result = await login(data);
             if(result.success){
-                
+                const test = await hasRole(["centre_manager"]);
+                console.log(test);
             }
         } catch (error) {
             console.error("Erreur:", error);
