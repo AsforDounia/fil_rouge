@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CenterController;
+use App\Http\Controllers\DonRequestController;
 use App\Http\Controllers\EventController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\TemoignageController;
@@ -27,3 +28,11 @@ Route::get('events',[EventController::class,'index']);
 Route::get('centers',[CenterController::class,'index']);
 Route::get('centers/search', [CenterController::class, 'search']);
 
+
+Route::group(['middleware' => 'auth:sanctum'], function () {
+    Route::post('logout', [AuthController::class, 'logout']);
+    Route::apiResource('requests', DonRequestController::class);
+
+
+
+});

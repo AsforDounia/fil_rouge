@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { FaGlobe, FaHeart } from 'react-icons/fa';
-import TestimonialsSection from '../Components/SharedComponents/TestimonialsSection';
+import TestimonialsSection from '../Components/HomeSharedComponents/TestimonialsSection';
 
 
 

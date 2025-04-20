@@ -12,6 +12,8 @@ import ProtectedRoute from "../Components/ProtectedRoute";
 import AuthRoute from "../Components/AuthRoute";
 import DonorDashboard from "../pages/Donor/DonorDashboard";
 import Register from "../pages/Auth/Register";
+import { RequestProvider } from "../../../HelperFolder/RequestContext";
+import Logout from "../Components/Logout";
 
 
 
@@ -75,14 +77,24 @@ export const Router = createBrowserRouter([
       },
     ]
   },
+  {
+    path: "/logout",
+    
+    element: (
+      <AuthProvider>
+        <Logout />
+      </AuthProvider>
+    ),
+  },
   
   {
     path: "/donneur",
     element: (
       <AuthProvider>
         <ProtectedRoute roles={["donor"]}>
-            <div>hello</div>
+          <RequestProvider>
             <DonorDashboard />
+          </RequestProvider>
         </ProtectedRoute>
       </AuthProvider>
     )
@@ -92,7 +104,6 @@ export const Router = createBrowserRouter([
     element: (
       <div>unauthorized</div>
       )
-
   }
 
 
