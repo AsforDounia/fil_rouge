@@ -46,4 +46,17 @@ class DonRequestController extends Controller
     {
         //
     }
+
+
+
+    public function nbRstUrgM(){
+        $user = auth()->user();
+        $nbRstUrg = DonRequest::where('blood_group', $user->blood_type);
+        $nbRstUrg = $nbRstUrg->where('urgency', 'Urgent')->count();
+
+        return response()->json(['countUrgC' => $nbRstUrg]);
+    }
+
+
+
 }

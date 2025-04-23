@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Appointment;
 use Illuminate\Database\Seeder;
 use App\Models\User;
 use App\Models\Conversation;
@@ -67,6 +68,17 @@ class DatabaseSeeder extends Seeder
 
         // Testimonials
         Temoignage::factory(10)->create();
+
+
+        $donorRole = Role::where('name', 'donor')->first();
+        $centreRole = Role::where('name', 'centre_manager')->first();
+
+        User::factory()->count(5)->create()->each(function ($user) use ($donorRole , $centreRole) {
+            $user->roles()->attach($donorRole->id);
+            $user->roles()->attach($centreRole->id);
+            Appointment::factory()->count(10)->create(['donor_id' => $user->id , 'centre_id' => $centreRole->id]);
+        });
+
     }
 }
 

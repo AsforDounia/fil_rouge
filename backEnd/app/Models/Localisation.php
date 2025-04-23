@@ -14,4 +14,8 @@ class Localisation extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+    public function donation(){
+        return $this->hasMany(Don::class);
+    }
 }

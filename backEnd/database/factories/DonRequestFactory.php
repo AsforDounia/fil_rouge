@@ -24,7 +24,7 @@ class DonRequestFactory extends Factory
             'blood_group' => $this->faker->randomElement(['A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-']),  // Random blood group
             'component' => $this->faker->randomElement(['Plasma', 'Globules', 'Plaquettes']),  // Random component
             'quantity' => $this->faker->numberBetween(1, 5),  // Random quantity between 1 and 5
-            'urgency' => $this->faker->randomElement(['Urgent', 'Non Urgent']),  // Random urgency
+            'urgency' => $this->faker->randomElement(['Urgent', 'Normal']),  // Random urgency
             'description' => $this->faker->optional()->text(),  // Optional description
             'status' => $this->faker->randomElement(['en_attente', 'approuvée', 'rejetée', 'complétée']),  // Random status
         ];

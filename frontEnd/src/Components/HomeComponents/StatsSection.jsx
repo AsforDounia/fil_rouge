@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 // import { MapPin, Heart, Hospital, Droplet } from "lucide-react";
 import { FaMapMarkerAlt, FaHeart, FaHospital, FaTint } from "react-icons/fa";
 import { useStats } from "../../Context/StatsContext";
-
+import { toast } from "react-toastify";
 const StatsSection = () => {
 
   const [loading, setLoading] = useState(true);
@@ -11,11 +11,10 @@ const StatsSection = () => {
 
   useEffect(() => {
     const fetchEvents = async () => {
-      setLoading(true);
       try {
         await getStats();
       } catch (error) {
-        console.error("Error fetching events:", error);
+        toast.error("Error fetching events :" + error.message);
       } finally {
         setLoading(false);
       }
@@ -36,12 +35,12 @@ const StatsSection = () => {
   const statistics = [
     {
       icon: <FaHeart className="text-wine" size={48} />,
-      number: stats.countUserDonor,
+      number: stats.countDonors,
       title: "Donneurs Actifs",
     },
     {
       icon: <FaHospital className="text-wine" size={48} />,
-      number: stats.countUserPatient,
+      number: stats.countPatients,
       title: "Patients Accompagnés",
     },
     {

@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
+import { toast } from "react-toastify";
+
 import {
     FaHeartbeat,
     FaEnvelope,
@@ -7,11 +9,11 @@ import {
     FaEye,
     FaEyeSlash
 } from "react-icons/fa";
-import { useAuth } from "../Context/AuthContext";
+import { useAuth } from "../../Context/AuthContext";
 
 const Login = () => {
     const [showPassword, setShowPassword] = useState(false);
-    const { login ,hasRole } = useAuth();
+    const { login } = useAuth();
     const {
         register,
         handleSubmit,
@@ -19,14 +21,9 @@ const Login = () => {
     } = useForm();
 
     const onSubmit = async (data) => {
-        try {
-            const result = await login(data);
-            if(result.success){
-                const test = await hasRole(["centre_manager"]);
-                console.log(test);
-            }
-        } catch (error) {
-            console.error("Erreur:", error);
+        const result = await login(data);
+        if (!result.success) {
+            alert(result.message);
         }
     };
 
@@ -172,7 +169,7 @@ const Login = () => {
                             {/* Submit Button */}
                             <button
                                 type="submit"
-                                className="w-full bg-wine text-white py-3 rounded-lg hover:bg-burgundy transition-colors"
+                                className="w-full bg-wine text-white py-3 rounded-lg hover:bg-burgundy transition-colors  cursor-pointer"
                             >
                                 Se connecter
                             </button>

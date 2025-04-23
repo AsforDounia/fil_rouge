@@ -9,9 +9,7 @@ const ProtectedRoute = ({ roles , children }) => {
     return <Navigate to="/login" replace />;
   }
   if (roles) {
-    console.log(roles)
     const hasRequiredRoles = hasRole(roles);
-    console.log(hasRequiredRoles);
     if (!hasRequiredRoles) {
       return <Navigate to="/unauthorized" replace />;
     }

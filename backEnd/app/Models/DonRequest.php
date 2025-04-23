@@ -14,4 +14,20 @@ class DonRequest extends Model
     {
         return $this->belongsTo(User::class, 'patient_id');
     }
+
+    public function dons()
+    {
+        return $this->belongsToMany(Don::class, 'donation_requests');
+    }
+
+
+
+    public static function requestsMatchingUser()
+    {
+        $user = auth()->user();
+        return self::where('blood_group', $user->blood_type);
+    }
+
+
+
 }

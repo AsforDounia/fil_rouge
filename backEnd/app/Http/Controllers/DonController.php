@@ -46,4 +46,11 @@ class DonController extends Controller
     {
         //
     }
+
+
+    public function donationsCountUser(){
+        $userId = auth()->id();
+        $donationsCount = Don::where('donor_id', $userId)->count();
+        return response()->json(['count' => $donationsCount]);
+    }
 }

@@ -2,6 +2,9 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CenterController;
+use App\Http\Controllers\DonController;
+use App\Http\Controllers\DonorController;
+use App\Http\Controllers\DonRequestController;
 use App\Http\Controllers\EventController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\TemoignageController;
@@ -27,3 +30,25 @@ Route::get('events',[EventController::class,'index']);
 Route::get('centers',[CenterController::class,'index']);
 Route::get('centers/search', [CenterController::class, 'search']);
 
+
+Route::group(['middleware' => 'auth:sanctum'], function () {
+    Route::post('logout', [AuthController::class, 'logout']);
+    // Route::apiResource('requests', DonRequestController::class);
+    Route::get('requests', [DonRequestController::class, 'index']);
+    Route::get('requests/{id}', [DonRequestController::class, 'show']);
+    Route::post('requests', [DonRequestController::class, 'store']);
+    Route::put('requests/{id}', [DonRequestController::class, 'update']);
+    Route::delete('requests/{id}', [DonRequestController::class, 'destroy']);
+
+
+    Route::get('requests/match/count' , [DonorController::class, 'donorDashboard']);
+
+    Route::get('events/coming/count', [EventController::class, 'comingCount']);
+    Route::get('donations/user/count', [DonController::class, 'donationsCountUser' ]);
+
+
+    // donor
+
+    Route::get('statistics', [DonorController::class, 'donorDashboard' ]);
+
+});

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Role;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -38,13 +39,62 @@ class AuthController extends Controller
         }
 
 
-        Auth::login($user);
-
         return response()->json([
             'user' => $user,
             'userRole' => $role,
             'token' => $token,
             'message' => 'Connexion réussie',
         ]);
+    }
+
+
+    public function register(Request $request)
+    {
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|unique:users,email',
+            'password' => 'required|string|min:8|confirmed',
+            'accountType' => 'required|in:patient,donor,centre_manager,hospital_manager,bank_manager,admin'
+        ]);
+
+        $userCount = User::count();
+        if($userCount == 0){
+            $accountType = 'admin';
+        }
+        else{
+            $accountType = $request->accountType;
+        }
+
+
+        $passwordH = Hash::make($request->password);
+
+        $user = User::create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'password' => $passwordH,
+            'accountType' => $accountType,
+        ]);
+
+        $role = Role::where('name', $accountType)->first();
+        $user->roles()->attach($role);
+
+        $token = $user->createToken($user->name . '_register_token')->plainTextToken;
+
+        return response()->json([
+            'message' => 'Inscription réussie',
+            'user' => $user,
+            'userRole' => $role->name,
+            'token' => $token,
+        ], 201);
+    }
+
+
+    public function logout(Request $request)
+    {
+        $request->user()->tokens()->delete();
+        return [
+            'status' => 'success',
+            'message' => 'User logged out successfully'
+        ];
     }
 }

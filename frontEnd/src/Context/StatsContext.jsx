@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useState } from 'react'
 import api from '../api/axios';
+import { toast } from "react-toastify";
 
 
 export const StatsContext = createContext();
@@ -11,10 +12,9 @@ export const StatsProvider = ({ children }) => {
         try {
             const response = await api.get('stats');
             setStats(response.data.stats);
-            // console.log(response.data)
         }
         catch (error) {
-            console.error(error);
+            toast.error("Error fetching stats: " + error);
         }
     }
 

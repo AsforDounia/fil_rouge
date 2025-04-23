@@ -1,5 +1,6 @@
 import { createContext, useContext, useState, useEffect } from 'react';
 import api from '../api/axios';
+import { toast } from "react-toastify";
 
 
 
@@ -21,14 +22,19 @@ export const AuthProvider = ({ children }) => {
           setUser(userData);
           setIsAuthenticated(true);
         }
-      } catch (err) {
-        console.error('Authentication check failed:', err);
+      } catch (error) {
+        toast.error("Authentication check failed :" + error);
         logout();
       }
     };
 
     checkAuth();
   }, [token]);
+
+  const getUser = async () => {
+    const response = await api.get('user'); 
+    setUser(response.data);
+  }
 
   const login = async (identifiers) => {
     try {
@@ -37,10 +43,12 @@ export const AuthProvider = ({ children }) => {
       setToken(data.token);
       setUser(data.user);
       setIsAuthenticated(true);
-      return { success: true};
+      return { success: true };
     } catch (error) {
-      console.error('Login failed:', error);
-      return { success: false, message: error.response?.data?.message || 'Login failed' };
+      return {
+        success: false,
+        message: error.response?.data?.message
+      };
     }
   };
 
@@ -48,19 +56,49 @@ export const AuthProvider = ({ children }) => {
     if (!requiredRoles || requiredRoles.length === 0) return false;
     if (!roles) return false;
     return requiredRoles.some(role => roles.includes(role));
- };
+  };
 
+
+  const registerf = async (identifiers) => {
+    try {
+      const { data } = await api.post('register', identifiers);
+      localStorage.setItem('token', data.token);
+      setToken(data.token);
+      setUser(data.user);
+      setIsAuthenticated(true);
+      return { success: true };
+    } catch (error) {
+      return { success: false, message: error.response?.data?.message || 'Register failed' };
+    }
+  };
+
+  const logout = async () => {
+    try {
+      await api.post('logout');
+    } catch (error) {
+      toast.error('Logout failed:', error);
+    } finally {
+      localStorage.removeItem('token');
+      setToken(null);
+      setUser(null);
+      setIsAuthenticated(false);
+      delete api.defaults.headers.common['Authorization'];
+    }
+  };
   return (
     <AuthContext.Provider
-    value={{
-      user,
-      token,
-      isAuthenticated,
-      login,
-      hasRole,
-      roles
-    }}
-  >
+      value={{
+        user,
+        token,
+        isAuthenticated,
+        login,
+        hasRole,
+        roles,
+        registerf,
+        logout,
+        getUser
+      }}
+    >
       {children}
     </AuthContext.Provider>
   );

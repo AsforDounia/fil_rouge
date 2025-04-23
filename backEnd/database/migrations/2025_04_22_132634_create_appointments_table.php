@@ -11,17 +11,21 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('dons', function (Blueprint $table) {
+        Schema::create('appointments', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('donor_id')->constrained('users')->onDelete('cascade');
-            $table->foreignId('localisation_id')->constrained()->onDelete('cascade');
 
-            $table->foreignId('collecte_id')->constrained()->onDelete('cascade');
-            $table->date('donation_date');
-            $table->enum('blood_group', ['A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-']);
+            // Donor
+            $table->foreignId('donor_id')->constrained('users')->onDelete('cascade');
+
+            // Centre (manager of donation)
+            $table->foreignId('centre_id')->constrained('users')->onDelete('cascade');
+
+            // Date & status
+            $table->dateTime('appointment_date');
+            $table->enum('status', ['en_attente', 'confirmée', 'annulée'])->default('en_attente');
+
             $table->timestamps();
         });
-
     }
 
     /**
@@ -29,6 +33,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('dons');
+        Schema::dropIfExists('appointments');
     }
 };
