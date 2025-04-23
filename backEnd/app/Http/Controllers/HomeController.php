@@ -2,6 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\CentreManager;
+use App\Models\Don;
+use App\Models\Donor;
+use App\Models\Patient;
 use App\Models\User;
 use Illuminate\Http\Request;
 
@@ -12,28 +16,21 @@ class HomeController extends Controller
      */
     public function index()
     {
-        $countUserDonor = User::whereHas('roles', function ($query) {
-            $query->where('name', 'donor');
-        })->count();
-
-        $countUserPatient = User::whereHas('roles', function ($query) {
-            $query->where('name', 'patient');
-        })->count();
-
-        $countUserCentreManager = User::whereHas('roles', function ($query) {
-            $query->where('name', 'centre_manager');
-        })->count();
+        $countDonors = Donor::count();
+        $countPatients = Patient::count();
+        $countCenters = CentreManager::count();
+        $countDonations = Don::count();
 
         $statistics = [
-            'countUserDonor' =>$countUserDonor,
-            'countUserPatient' => $countUserPatient,
-            'countCenters' => $countUserCentreManager,
-            'countDonations' => 3,
+            'countDonors' =>$countDonors,
+            'countPatients' => $countPatients,
+            'countCenters' => $countCenters,
+            'countDonations' => $countDonations,
         ];
 
-       return response()->json([
-        "stats" => $statistics,
-       ]);
+        return response()->json([
+            "stats" => $statistics,
+        ]);
 
     }
 }

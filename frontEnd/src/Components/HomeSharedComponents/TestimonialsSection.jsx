@@ -5,6 +5,8 @@ import { toast } from "react-toastify";
 
 
 const TestimonialsSection = () => {
+
+
   const { getTestimonials, testimonials } = useTestimonial();
   const [currentPage, setCurrentPage] = useState(1);
   const [loading, setLoading] = useState(true);
@@ -26,6 +28,7 @@ const TestimonialsSection = () => {
     fetchEvents();
   }, [currentPage]);
 
+  console.log(testimonials);
   if (loading) {
     return (
       <div className="flex justify-center items-center min-h-[60vh]">

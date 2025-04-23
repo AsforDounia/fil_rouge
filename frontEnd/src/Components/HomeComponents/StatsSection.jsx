@@ -11,7 +11,6 @@ const StatsSection = () => {
 
   useEffect(() => {
     const fetchEvents = async () => {
-      setLoading(true);
       try {
         await getStats();
       } catch (error) {
@@ -36,12 +35,12 @@ const StatsSection = () => {
   const statistics = [
     {
       icon: <FaHeart className="text-wine" size={48} />,
-      number: stats.countUserDonor,
+      number: stats.countDonors,
       title: "Donneurs Actifs",
     },
     {
       icon: <FaHospital className="text-wine" size={48} />,
-      number: stats.countUserPatient,
+      number: stats.countPatients,
       title: "Patients Accompagnés",
     },
     {

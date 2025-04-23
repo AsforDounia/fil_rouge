@@ -2,21 +2,17 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Event;
+use App\Models\Appointment;
 use Illuminate\Http\Request;
 
-class EventController extends Controller
+class AppointmentController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-
-        $events = Event::with('localisation.user')->paginate(3);
-        return response()->json([
-            'events' => $events
-        ]);
+        //
     }
 
     /**
@@ -30,7 +26,7 @@ class EventController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Event $event)
+    public function show(Appointment $appointment)
     {
         //
     }
@@ -38,7 +34,7 @@ class EventController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Event $event)
+    public function update(Request $request, Appointment $appointment)
     {
         //
     }
@@ -46,17 +42,8 @@ class EventController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Event $event)
+    public function destroy(Appointment $appointment)
     {
         //
-    }
-
-
-
-    public function comingCount(Request $request){
-        $count = Event::where('date', '>', date('Y-m-d'))->count();
-        return response()->json([
-            'count' => $count
-            ]);
     }
 }

@@ -62,7 +62,8 @@ class User extends Authenticatable
         // Roles and permissions
         public function roles()
         {
-            return $this->belongsToMany(Role::class);
+            // return $this->belongsToMany(Role::class,"role_user");
+            return $this->belongsToMany(Role::class, 'role_user', 'user_id', 'role_id');
         }
 
         public function assignRoleToUser($roleId )
@@ -119,6 +120,13 @@ class User extends Authenticatable
         public function temoignages()
         {
             return $this->hasOne(Temoignage::class);
+        }
+
+
+
+        public function hasRole($roleName)
+        {
+            return $this->roles()->where('name', $roleName)->exists();
         }
 }
 

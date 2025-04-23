@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use App\Models\Collecte;
+use App\Models\Localisation;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -20,6 +21,7 @@ class DonFactory extends Factory
     {
         return [
             'donor_id' => User::factory(),
+            'localisation_id' => Localisation::factory(),
             'collecte_id' => Collecte::factory(),
             'donation_date' => $this->faker->date(),
             'blood_group' => $this->faker->randomElement(['A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-']),

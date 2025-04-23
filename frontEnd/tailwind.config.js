@@ -23,7 +23,8 @@ export default {
                     'Open Sans',
                     'Helvetica Neue',
                     'sans-serif'
-                ]
+                ],
+                roboto: ['Roboto', 'sans-serif']
             },
             colors: {
                 'wine' : '#8B2326',
@@ -32,6 +33,7 @@ export default {
                 'cream': '#D6C3A8',
                 'teal': '#40898A',
                 'lightGray': '#FAFAFA',
+                
             }
         },
     },

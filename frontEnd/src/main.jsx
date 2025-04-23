@@ -8,11 +8,13 @@ import 'leaflet/dist/leaflet.css';
 import { ToastContainer } from "react-toastify";
 
 import 'react-toastify/dist/ReactToastify.css';
+import { AuthProvider } from './Context/AuthContext.jsx'
 
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
+     <AuthProvider>
     <ToastContainer />
-    <RouterProvider router={Router} />
+    <RouterProvider router={Router} /></AuthProvider>
   </StrictMode>,
 )

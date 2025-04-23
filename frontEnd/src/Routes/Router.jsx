@@ -1,34 +1,33 @@
 import { createBrowserRouter } from "react-router-dom";
 import Home from "../pages/Home";
+import About from "../pages/About";
+import Login from "../pages/Auth/Login";
+import Register from "../pages/Auth/Register";
+import DonorDashboard from "../pages/Donor/DonorDashboard";
+import Logout from "../Components/Logout";
+
+import HomeLayout from "../Components/Layouts/HomeLayout";
+import DashboardLayout from "../Components/Layouts/DashboardLayout";
+
+import ProtectedRoute from "../Components/ProtectedRoute";
+import AuthRoute from "../Components/AuthRoute";
+
+import { AuthProvider } from "../Context/AuthContext";
 import { StatsProvider } from "../Context/StatsContext";
 import { TestimonialProvider } from "../Context/TestimonialContexte";
 import { EventProvider } from "../Context/EventContext";
-import HomeLayout from "../Components/Layouts/HomeLayout";
-import About from "../pages/About";
-import { AuthProvider } from "../Context/AuthContext";
-import Login from "../pages/Auth/Login";
-import ProtectedRoute from "../Components/ProtectedRoute";
-
-import AuthRoute from "../Components/AuthRoute";
-import DonorDashboard from "../pages/Donor/DonorDashboard";
-import Register from "../pages/Auth/Register";
-import { RequestProvider } from "../../../HelperFolder/RequestContext";
-import Logout from "../Components/Logout";
-
-
-
+import { RequestProvider } from "../Context/RequestContext";
+import { DonProvider } from "../Context/DonContext";
+import { DonorProvider } from "../Context/DonorContext";
 
 export const Router = createBrowserRouter([
-
   {
     path: "/",
-    element: (
-          <HomeLayout />
-    ),
+    element: <HomeLayout />,
     children: [
       {
         index: true,
-        element:(
+        element: (
           <StatsProvider>
             <TestimonialProvider>
               <EventProvider>
@@ -37,26 +36,20 @@ export const Router = createBrowserRouter([
             </TestimonialProvider>
           </StatsProvider>
         ),
-         
       },
-      // other child routes can go here
     ],
   },
-
   {
     path: "/about",
-    element: (
-          <HomeLayout />
-    ),
+    element: <HomeLayout />,
     children: [
       {
         index: true,
-        element:(
+        element: (
           <TestimonialProvider>
-          <About />
+            <About />
           </TestimonialProvider>
         ),
-         
       },
     ],
   },
@@ -69,42 +62,46 @@ export const Router = createBrowserRouter([
     children: [
       {
         path: "/login",
-        element: <Login />
+        element: <Login />,
       },
       {
         path: "/register",
-        element: <Register />
+        element: <Register />,
       },
-    ]
+    ],
   },
   {
     path: "/logout",
-    
     element: (
       <AuthProvider>
         <Logout />
       </AuthProvider>
     ),
   },
-  
   {
     path: "/donneur",
-    element: (
-      <AuthProvider>
-        <ProtectedRoute roles={["donor"]}>
-          <RequestProvider>
-            <DonorDashboard />
-          </RequestProvider>
-        </ProtectedRoute>
-      </AuthProvider>
-    )
+    element: 
+    <AuthProvider>
+      <ProtectedRoute roles={["donor"]}>
+        <DashboardLayout />
+      </ProtectedRoute>
+    </AuthProvider>,
+    children: [
+      {
+        index: true,
+        element: (
+          // <AuthProvider>
+            <DonorProvider>
+                <DonorDashboard />
+              </DonorProvider>
+          // </AuthProvider>
+        ),
+      },
+    ],
   },
+  
   {
     path: "/unauthorized",
-    element: (
-      <div>unauthorized</div>
-      )
-  }
-
-
+    element: <div>unauthorized</div>,
+  },
 ]);

@@ -17,7 +17,7 @@ return new class extends Migration
             $table->enum('blood_group', ['A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-']);
             $table->enum('component', ['Plasma', 'Globules', 'Plaquettes']);
             $table->integer('quantity')->min(1)->max(5);
-            $table->enum('urgency', ['Urgent', 'Normale']);
+            $table->enum('urgency', ['Urgent', 'Normal']);
             $table->text('description')->nullable();
             $table->enum('status', ['en_attente', 'approuvée', 'rejetée', 'complétée'])->default('en_attente');
             $table->timestamps();

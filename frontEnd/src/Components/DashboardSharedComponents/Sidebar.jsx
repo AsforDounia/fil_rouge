@@ -10,7 +10,7 @@ import { MdFestival } from "react-icons/md";
 const Sidebar = () => {
 
     const menuItems = [
-        { icon: <FaHome />, text: 'Tableau de bord', href: '/dashboard', badge: null },
+        { icon: <FaHome />, text: 'Tableau de bord', href: '', badge: null },
         { icon: <FaCalendarAlt />, text: 'Mes Rendez-vous', href: '/appointments', badge: null },
         { icon: <FaCalendarPlus />, text: 'Nouveau Rendez-vous', href: '/new-appointment', badge: null },
         { icon: <FaHistory />, text: 'Historique des Dons', href: '/donation-history', active: false, badge: null },
@@ -46,7 +46,7 @@ const Sidebar = () => {
                             to={item.href}
                             className={({ isActive }) => `
                                 flex items-center py-3 px-4 rounded-lg transition-all duration-300
-                                ${isActive ? 'bg-darkTeal text-white' : 'text-cream hover:bg-darkTeal/20 hover:text-white'}
+                                ${isActive ? 'bg-darkteal text-white' : 'text-cream hover:bg-darkteal/20 hover:text-white'}
                             `}
                         >
                             <span className="w-5 h-5 mr-3">{item.icon}</span>
@@ -69,7 +69,7 @@ const Sidebar = () => {
                                 to={item.href}
                                 className={({ isActive }) => `
                                     flex items-center py-3 px-4 rounded-lg transition-all duration-300
-                                    ${isActive ? 'bg-darkTeal text-white' : 'text-cream hover:bg-darkTeal/20 hover:text-white'}
+                                    ${isActive ? 'bg-darkteal text-white' : 'text-cream hover:bg-darkteal/20 hover:text-white'}
                                 `}
                             >
                                 <span className="w-5 h-5 mr-3">{item.icon}</span>

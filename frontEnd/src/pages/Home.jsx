@@ -15,19 +15,13 @@ import EventsSection from '../Components/HomeComponents/EventsSection';
 function Home() {
   return (
     <>
-      <div className='min-h-screen flex flex-col'>
-      {/* <Header /> */}
-      {/* <main className="flex-1"> */}
         <HeroSection />
         <StatsSection />
         <FeaturesSection />
-            <TestimonialsSection />
-            <CTASection />
-            <ProcessSection />
-            <EventsSection />
-      {/* </main> */}
-      {/* <Footer /> */}
-      </div>
+        <TestimonialsSection />
+        <CTASection />
+        <ProcessSection />
+        <EventsSection />
     </>
   )
 }

@@ -19,5 +19,22 @@ class Don extends Model
     {
         return $this->belongsTo(Collecte::class);
     }
+
+    public function requests()
+    {
+        return $this->belongsToMany(DonRequest::class, 'donation_requests');
+    }
+
+    public static function userDonations()
+    {
+        $user = auth()->user();
+        return self::where('donor_id', $user->id);
+    }
+
+    public function localisation()
+    {
+        return $this->belongsTo(Localisation::class);
+    }
+
 }
 

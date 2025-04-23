@@ -18,7 +18,7 @@ class RapportFactory extends Factory
     public function definition(): array
     {
         return [
-            'admin_id' => User::factory(), // make sure this user has an admin role when seeding
+            'admin_id' => User::factory(),
             'title' => $this->faker->sentence(4),
             'content' => $this->faker->paragraphs(3, true),
         ];
