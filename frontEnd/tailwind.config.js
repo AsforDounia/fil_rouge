@@ -32,7 +32,8 @@ export default {
                 'burgundy': '#4A1E1F',
                 'cream': '#D6C3A8',
                 'teal': '#40898A',
-                'lightGray': '#FAFAFA',
+                'lightgray': '#FAFAFA',
+                'lightcream' : "E5E7EB",
                 
             }
         },

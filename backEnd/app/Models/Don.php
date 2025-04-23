@@ -36,5 +36,8 @@ class Don extends Model
         return $this->belongsTo(Localisation::class);
     }
 
+    public function centre(){
+        return $this->belongsTo(User::class,"centre_id");
+    }
 }
 

@@ -1,125 +1,239 @@
-import React from "react";
+import {
+  FaPlus,
+  FaCalendar,
+  FaHistory,
+  FaClock,
+  FaTrophy,
+  FaArrowRight,
+  FaEdit,
+  FaTimes,
+  FaTrash
+  
+} from 'react-icons/fa';
+import { useDonor } from '../../Context/DonorContext';
+import { useEffect, useState } from 'react';
+import { toast } from 'react-toastify';
 
 
-const Appointment = () => {
+export default function Appointment() {
+
+  const {getAppointmentsStats , appointmentsStats} = useDonor();
+  const [loading , setLoading] = useState(true);
+
+  useEffect(()=>{
+    const fetchStats = async () => {
+      try{
+        await getAppointmentsStats();
+      }
+      catch (error) {
+        toast.error('Error fetching appointment stats:', error);
+      }finally{
+        setLoading(false);
+      }
+    }
+    fetchStats();
+  },[])
+
+
+  if(loading){
+    return (
+      <div className="flex justify-center items-center min-h-[60vh]">
+          <div className="w-12 h-12 border-4 border-blue-500 border-dashed rounded-full animate-spin" />
+      </div>
+  );
+  }
+
   return (
-    <div className="main-content">
-      {/* Top Bar */}
-      <div className="top-bar flex justify-between items-center mb-8">
+    <>
+      {/* Header */}
+      <div className="flex justify-between mb-8">
         <div>
-          <h2 className="page-title text-xl font-bold text-[#8B2326]">Mes Rendez-vous</h2>
-          <p className="page-subtitle text-[#1A4B4C] opacity-90">Gérez vos rendez-vous de don</p>
+          <h2 className="text-2xl font-bold text-wine">Mes Rendez-vous</h2>
+          <p className="text-teal opacity-90">Gérez vos rendez-vous de don</p>
         </div>
-        <button className="btn-primary bg-[#8B2326] text-white py-2 px-4 rounded-md border border-[#4A1E1F1A] hover:opacity-90">
-          <i className="fas fa-plus mr-2"></i> Nouveau Rendez-vous
+        <button className="flex items-center gap-1 bg-wine text-white py-2 px-4 rounded-lg border hover:opacity-90 cursor-pointer">
+          <FaPlus /> <span> Nouveau Rendez-vous</span>
         </button>
       </div>
 
-      {/* Quick Actions */}
-      <div className="quick-actions grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-        {/* Card 1 */}
-        <div className="action-card p-6 rounded-md shadow-md border border-[#4A1E1F1A]">
-          <div className="card-header flex justify-between items-start">
-            <div className="icon-container p-3 rounded-full bg-[#1A4B4C33]">
-              <i className="fas fa-calendar icon-teal text-[#40898A] text-xl"></i>
+      {/* Cartes de résumé */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+        <div className="bg-white border p-6 rounded-lg shadow">
+          <div className="flex justify-between">
+            <div className="p-3 rounded-full bg-[rgba(26,75,76,0.2)] text-teal">
+              <FaCalendar />
             </div>
-            <button className="arrow-right text-[#40898A] hover:text-[#4A1E1F]">
-              <i className="fas fa-arrow-right"></i>
+            <button className="text-teal hover:text-burgundy ">
+              <FaArrowRight />
             </button>
           </div>
-          <h3 className="card-title mt-4 font-semibold text-lg text-[#4A1E1F]">Prochain RDV</h3>
-          <p className="card-subtitle text-[#4A1E1FB3]">20 Mars 2024</p>
+          <h3 className="font-semibold text-lg mt-4 text-burgundy ">Prochain RDV</h3>
+          <p className="mt-1 text-[rgba(74,30,31,0.7)]">{appointmentsStats.next_appointment_date}</p>
         </div>
-
-        {/* Card 2 */}
-        <div className="action-card action-card-dark p-6 rounded-md shadow-md bg-[#4A1E1F] border border-[#D6C3A81A]">
-          <div className="card-header flex justify-between items-start">
-            <div className="icon-container p-3 rounded-full bg-[#D6C3A833]">
-              <i className="fas fa-history icon-beige text-[#D6C3A8] text-xl"></i>
+        <div className="bg-burgundy  border p-6 rounded-lg shadow">
+          <div className="flex justify-between">
+            <div className="p-3 rounded-full bg-[rgba(214,195,168,0.2)] text-cream">
+              <FaHistory />
             </div>
-            <button className="arrow-right arrow-right-light text-[#D6C3A8] hover:text-[#40898A]">
-              <i className="fas fa-arrow-right"></i>
+            <button className="text-cream hover:text-teal">
+              <FaArrowRight />
             </button>
           </div>
-          <h3 className="card-title mt-4 font-semibold text-lg text-[#D6C3A8]">Dernier Don</h3>
-          <p className="card-subtitle subtitle-light text-[#D6C3A8B3]">15 Février 2024</p>
+          <h3 className="font-semibold text-lg mt-4 text-cream">Dernier Don</h3>
+          <p className="mt-1 text-[rgba(214,195,168,0.7)]">{appointmentsStats.last_donation_date}</p>
         </div>
-
-        {/* Repeat other two cards similarly... */}
-      </div>
-
-      {/* Upcoming Appointments */}
-      <div className="upcoming-appointments grid grid-cols-1 gap-6 mb-6">
-        <div className="card card-burgundy bg-[#4A1E1F] border border-[#D6C3A81A] rounded-md shadow-md">
-          <div className="card-header-section p-6 border-b border-[#D6C3A81A]">
-            <h3 className="card-title-header text-lg font-semibold text-[#D6C3A8]">Prochains Rendez-vous</h3>
-          </div>
-          <div className="card-body p-6">
-            <div className="appointment-card bg-[#4A1E1F80] border border-[#D6C3A81A] p-4 rounded-md mb-4">
-              <div className="appointment-content flex items-start gap-4">
-                <div className="icon-container p-3 rounded-full bg-[#D6C3A833]">
-                  <i className="fas fa-calendar text-[#D6C3A8] text-xl"></i>
-                </div>
-                <div className="appointment-details flex-1">
-                  <div className="appointment-header flex justify-between items-center">
-                    <span className="appointment-date font-medium text-[#D6C3A8]">20/03/2024</span>
-                    <span className="appointment-status bg-[#40898A33] text-[#40898A] text-xs rounded-full px-2 py-1">Confirmé</span>
-                  </div>
-                  <p className="appointment-time mt-1 text-[#D6C3A8B3]">14:30</p>
-                  <p className="appointment-center text-[#D6C3A8B3]">Centre de Don Central</p>
-                  <div className="appointment-actions flex justify-end gap-2 mt-2">
-                    <button className="btn-icon btn-edit text-[#40898A] hover:text-[#D6C3A8]">
-                      <i className="fas fa-edit"></i>
-                    </button>
-                    <button className="btn-icon btn-delete text-[#8B2326] hover:text-[#D6C3A8]">
-                      <i className="fas fa-times"></i>
-                    </button>
-                  </div>
-                </div>
-              </div>
+        <div className="bg-white border p-6 rounded-lg shadow">
+          <div className="flex justify-between">
+            <div className="p-3 rounded-full bg-[rgba(26,75,76,0.2)] text-teal">
+              <FaClock />
             </div>
+            <button className="text-teal hover:text-burgundy ">
+              <FaArrowRight />
+            </button>
           </div>
+          <h3 className="font-semibold text-lg mt-4 text-burgundy ">Temps Restant</h3>
+          <p className="mt-1 text-[rgba(74,30,31,0.7)]">{appointmentsStats.time_remaining} jours</p>
+        </div>
+        <div className="bg-burgundy  border p-6 rounded-lg shadow">
+          <div className="flex justify-between">
+            <div className="p-3 rounded-full bg-[rgba(214,195,168,0.2)] text-cream">
+              <FaTrophy />
+            </div>
+            <button className="text-cream hover:text-teal">
+              <FaArrowRight />
+            </button>
+          </div>
+          <h3 className="font-semibold text-lg mt-4 text-cream">Total Dons</h3>
+          <p className="mt-1 text-[rgba(214,195,168,0.7)]">{appointmentsStats.total_donations} dons</p>
         </div>
       </div>
 
-      {/* Past Appointments */}
-      <div className="card card-light border border-[#4A1E1F1A] rounded-md shadow-md">
-        <div className="card-header-section card-header-light p-6 border-b border-[#4A1E1F1A]">
-          <h3 className="card-title-header text-lg font-semibold text-[#4A1E1F]">Historique des Rendez-vous</h3>
+      {/* Prochains rendez-vous */}
+      <div className='rounded-lg shadow-lg overflow-hidden mb-8'>
+      <div className="h-1 mb-6 bg-gradient-to-r from-teal to-wine "></div>
+      
+      {/* Upcoming Appointments Section */}
+      <div className="mb-8">
+        <h2 className="text-lg font-semibold mb-4 text-burgundy px-4">Prochains Rendez-vous</h2>
+        <div className="space-y-4">
+        <div className="space-y-4 h-80 overflow-auto">
+  {appointmentsStats.upcoming_appointments &&
+    appointmentsStats.upcoming_appointments.map((appointment) => {
+      let statusColor = "";
+      let statusText = "";
+
+      switch (appointment.status) {
+        case "en_attente":
+          statusColor = "bg-blue-200 text-blue-800";
+          statusText = "En attente";
+          break;
+        case "confirmée":
+          statusColor = "bg-[#40898A33] text-teal";
+          statusText = "Confirmée";
+          break;
+        case "annulée":
+          statusColor = "bg-gray-200 text-gray-600";
+          statusText = appointment.status;
+      }
+
+      return (
+        <div
+          key={appointment.id}
+          className="flex items-center justify-between p-4 border border-[#d6c3a85c] mx-4 rounded-lg"
+        >
+          <div className="flex items-center">
+            <div className="rounded-full p-2 mr-4 bg-burgundy">
+              <FaCalendar size={18} className="text-cream" />
+            </div>
+            <div>
+              <p className="text-gray-600">{appointment.date}</p>
+              <p className="text-sm text-gray-500">{appointment.time}</p>
+              <p className="text-sm text-gray-600">{appointment.centre.name}</p>
+            </div>
+          </div>
+          <div className="flex flex-col items-end gap-6">
+            <span className={`px-2 py-1 rounded-full text-xs ${statusColor}`}>
+              {statusText}
+            </span>
+            {appointment.status != 'annulée' &&
+
+            <div className="flex space-x-1">
+              <button className="text-teal">
+                <FaEdit size={16} />
+              </button>
+              <button className="text-wine">
+                <FaTrash size={16} />
+              </button>
+            </div>
+            }
+          </div>
         </div>
-        <div className="table-container overflow-x-auto">
+      );
+    })}
+</div>
+
+          
+
+        </div>
+      </div>
+      
+      </div>
+
+    
+
+      {/* Historique */}
+      <div className="bg-white rounded-lg shadow-lg">
+        <div className="p-6 border-b border-[rgba(74,30,31,0.1)]">
+          <h3 className="text-lg font-semibold text-burgundy ">Historique des Rendez-vous</h3>
+        </div>
+        <div className="overflow-x-auto">
           <table className="w-full text-sm">
-            <thead className="bg-[#1A4B4C1A] text-left text-[#4A1E1F] text-xs uppercase font-medium">
+            <thead className="bg-[rgba(26,75,76,0.1)]">
               <tr>
-                <th className="py-3 px-6">Date</th>
-                <th className="py-3 px-6">Centre</th>
-                <th className="py-3 px-6">Type</th>
-                <th className="py-3 px-6">Statut</th>
+                <th className="px-6 py-3 text-left uppercase text-burgundy ">Date</th>
+                <th className="px-6 py-3 text-left uppercase text-burgundy ">Centre</th>
+                <th className="px-6 py-3 text-left uppercase text-burgundy ">Type</th>
+                <th className="px-6 py-3 text-left uppercase text-burgundy ">Statut</th>
               </tr>
             </thead>
             <tbody>
-              <tr className="hover:bg-[#1A4B4C0D] border-b border-[#4A1E1F1A]">
-                <td className="py-4 px-6 text-[#4A1E1FB3]">15/02/2024</td>
-                <td className="py-4 px-6 text-[#4A1E1FB3]">Centre de Don Mobile</td>
-                <td className="py-4 px-6 text-[#4A1E1FB3]">Don de sang total</td>
-                <td className="py-4 px-6">
-                  <span className="status-completed bg-[#40898A33] text-[#40898A] text-xs rounded-full px-2 py-1">Complété</span>
+              {appointmentsStats.appHistory && appointmentsStats.appHistory.map((appointment) => { let statusColor = "";
+                  let statusText = "";
+
+                  switch (appointment.status) {
+                    case "en_attente":
+                      statusColor = "bg-blue-200 text-blue-800";
+                      statusText = "En attente";
+                      break;
+                    case "confirmée":
+                      statusColor = "bg-[#40898A33] text-teal";
+                      statusText = "Confirmée";
+                      break;
+                    case "annulée":
+                      statusColor = "bg-gray-200 text-gray-600";
+                      statusText = appointment.status;
+                  }
+
+                return(
+              <tr className="border-b">
+                <td className="px-6 py-4">{appointment.date}</td>
+                <td className="px-6 py-4">{appointment.centre.name}</td>
+                <td className="px-6 py-4">Don de {appointment.type_don}</td>
+                <td className="px-6 py-4">
+                  <span className={`px-2 py-1 rounded-full text-xs ${statusColor}`}>
+                    {statusText}
+                  </span>
+              
                 </td>
               </tr>
-              <tr className="hover:bg-[#1A4B4C0D] border-b border-[#4A1E1F1A]">
-                <td className="py-4 px-6 text-[#4A1E1FB3]">10/01/2024</td>
-                <td className="py-4 px-6 text-[#4A1E1FB3]">Hôpital Régional</td>
-                <td className="py-4 px-6 text-[#4A1E1FB3]">Don de plasma</td>
-                <td className="py-4 px-6">
-                  <span className="status-cancelled bg-[#8B232633] text-[#8B2326] text-xs rounded-full px-2 py-1">Annulé</span>
-                </td>
-              </tr>
+
+              );
+              })}
+              
             </tbody>
           </table>
         </div>
       </div>
-    </div>
+    </>
   );
-};
-
-export default Appointment;
+}

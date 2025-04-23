@@ -102,10 +102,12 @@ export const Router = createBrowserRouter([
     ],
   },
   {
-    path: "/rdv",
+    path: "/appointments",
     element: 
     <AuthProvider>
+      <DonorProvider>
         <DashboardLayout />
+        </DonorProvider>
     </AuthProvider>,
     children: [
       {

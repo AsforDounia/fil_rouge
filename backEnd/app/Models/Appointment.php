@@ -23,7 +23,7 @@ class Appointment extends Model
 
     public function centre()
     {
-        return $this->belongsTo(CentreManager::class, 'centre_id');
+        return $this->belongsTo(User::class, 'centre_id');
     }
 
 
