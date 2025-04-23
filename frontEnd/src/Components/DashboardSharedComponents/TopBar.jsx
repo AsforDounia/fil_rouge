@@ -31,20 +31,21 @@ const TopBar = () => {
         );
       }
 
+      console.log(user);
 
     return (
                         <div className="flex justify-between items-center mb-8">
                             <div>
                                 <h2 className="text-3xl font-bold text-burgundy ">Mon Espace Donneur</h2>
-                                <p className="text-darkteal ">Bienvenue, {user.name}</p>
+                                <p className="text-darkteal ">Bienvenue, {user?.name}</p>
                             </div>
                             <div className="flex items-center gap-4">
                                 <button className="bg-teal/10 p-2 rounded-lg border-none cursor-pointer text-teal">
                                     <FaBell size={20} />
                                 </button>
                                 <div className="flex items-center gap-2 bg-wine py-2 px-4 rounded-lg">
-                                    <span className="text-cream">{user.blood_type}</span>
-                                    <img src={user.profile_image} alt="Donor" className="w-10 h-10 rounded-full border-2 border-cream" />
+                                    <span className="text-cream">{user?.blood_type}</span>
+                                    <img src={user?.profile_image} alt="Donor" className="w-10 h-10 rounded-full border-2 border-cream" />
                                 </div>
                             </div>
         </div>

@@ -29,10 +29,10 @@ export const AuthProvider = ({ children }) => {
     };
 
     checkAuth();
-  }, [token]);
+  }, []);
 
   const getUser = async () => {
-    const response = await api.get('user'); 
+    const response = await api.get('user');
     setUser(response.data);
   }
 

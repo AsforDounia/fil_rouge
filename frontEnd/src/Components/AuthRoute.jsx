@@ -9,7 +9,7 @@ const AuthRoute = () => {
 
   if (isAuthenticated) {
     if (roles.includes("donor")) {
-      return <Navigate to="/donneur" replace />;
+      return <Navigate to="/donor" replace />;
     }
     if(roles.includes("centre_manager")){
       return <Navigate to="/centre" replace />;

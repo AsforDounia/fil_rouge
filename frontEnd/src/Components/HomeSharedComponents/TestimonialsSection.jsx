@@ -1,35 +1,36 @@
 import React, { useEffect, useState } from 'react';
 import { useTestimonial } from '../../Context/TestimonialContexte';
-import { FaArrowCircleLeft , FaArrowCircleRight  } from "react-icons/fa";
+import { FaArrowCircleLeft, FaArrowCircleRight } from "react-icons/fa";
 import { toast } from "react-toastify";
 
-
 const TestimonialsSection = () => {
-
-
   const { getTestimonials, testimonials } = useTestimonial();
   const [currentPage, setCurrentPage] = useState(1);
   const [loading, setLoading] = useState(true);
-
-
+  const [localTestimonials, setLocalTestimonials] = useState(null);
 
   useEffect(() => {
-    const fetchEvents = async () => {
+    const fetchTestimonials = async () => {
       setLoading(true);
       try {
         await getTestimonials(currentPage);
       } catch (error) {
-        toast.error("Error fetching testimonials :" + error);
+        toast.error("Error fetching testimonials: " + (error.message || error));
       } finally {
         setLoading(false);
       }
     };
-    
-    fetchEvents();
-  }, [currentPage]);
+    fetchTestimonials();
+  }, [currentPage, getTestimonials]);
 
-  console.log(testimonials);
-  if (loading) {
+  // Store testimonials data locally when it's available
+  useEffect(() => {
+    if (testimonials && testimonials.data) {
+      setLocalTestimonials(testimonials);
+    }
+  }, [testimonials]);
+
+  if (loading && !localTestimonials) {
     return (
       <div className="flex justify-center items-center min-h-[60vh]">
         <div className="w-12 h-12 border-4 border-blue-500 border-dashed rounded-full animate-spin" />
@@ -37,9 +38,20 @@ const TestimonialsSection = () => {
     );
   }
 
+  // Fall back to locally stored data if testimonials becomes unavailable
+  const displayTestimonials = localTestimonials || { data: [], current_page: 1, last_page: 1 };
 
-  const lastPage = testimonials.last_page || 1;
-  const currentPageFromData = testimonials.current_page || 1;
+  // Check if we have data to display
+  if (!displayTestimonials.data || displayTestimonials.data.length === 0) {
+    return (
+      <div className="flex justify-center items-center min-h-[60vh]">
+        <p className="text-gray-500">No testimonials found.</p>
+      </div>
+    );
+  }
+  
+  const lastPage = displayTestimonials.last_page || 1;
+  const currentPageFromData = displayTestimonials.current_page || 1;
 
   const handlePageChange = (newPage) => {
     if (newPage >= 1 && newPage <= lastPage) {
@@ -56,24 +68,25 @@ const TestimonialsSection = () => {
         </h2>
 
         <div className="grid md:grid-cols-3 gap-8">
-          {testimonials.data && testimonials.data.map((testimonial, index) => (
+          {displayTestimonials.data.map((testimonial, index) => (
             <div
-              key={index}
+              key={testimonial.id || index}
               className="flex flex-col bg-white rounded-lg p-6 shadow-md hover:shadow-xl transition-shadow"
             >
               <p className="text-gray-600 italic mb-6">
                 {testimonial.contenu}
               </p>
-              <div className="flex-1">
-              </div>
+              <div className="flex-1"></div>
               <div className="flex items-center">
                 <div className="w-12 h-12 bg-gray-200 rounded-full mr-4"></div>
                 <div>
                   <h4 className="font-semibold text-burgundy">
-                    {testimonial.user.name}
+                    {testimonial.user && testimonial.user.name ? testimonial.user.name : "Anonymous"}
                   </h4>
                   <p className="text-gray-500 capitalize">
-                    {testimonial.user.roles[0].name.replace(/_/g, ' ')}
+                    {testimonial.user && testimonial.user.roles && testimonial.user.roles[0] && testimonial.user.roles[0].name 
+                      ? testimonial.user.roles[0].name.replace(/_/g, ' ') 
+                      : "User"}
                   </p>
                 </div>
               </div>
@@ -81,52 +94,56 @@ const TestimonialsSection = () => {
           ))}
         </div>
 
-        {/* Pagination Controls */}
-        <div className="flex justify-center mt-12">
-          <nav className="flex items-center">
-            <button 
-              onClick={() => handlePageChange(currentPageFromData - 1)}
-              disabled={currentPageFromData <= 1}
-              className={`px-4 py-2 mx-1 rounded-md ${
-                currentPageFromData <= 1 
-                  ? 'bg-gray-200 text-gray-500 cursor-not-allowed' 
-                  : 'bg-burgundy text-white hover:bg-wine cursor-pointer'
-              }`}
-            >
-              <FaArrowCircleLeft />
-            </button>
-            
-            <div className="flex mx-2">
-              {Array.from({ length: lastPage }, (_, i) => i + 1).map(page => (
-                <button
-                  key={page}
-                  onClick={() => handlePageChange(page)}
-                  className={`w-10 h-10 mx-1 rounded-full flex items-center justify-center cursor-pointer ${
-                    page === currentPageFromData
-                      ? 'bg-burgundy text-white '
-                      : 'bg-gray-200 text-gray-700 hover:bg-gray-300 '
-                  }`}
-                >
-                  {page}
-                </button>
-              ))}
-            </div>
-            
-            <button
-              onClick={() => handlePageChange(currentPageFromData + 1)}
-              disabled={currentPageFromData >= lastPage}
-              className={`px-4 py-2 mx-1 rounded-md ${
-                currentPageFromData >= lastPage
-                  ? 'bg-gray-200 text-gray-500 cursor-not-allowed'
-                  : 'bg-burgundy text-white hover:bg-wine cursor-pointer'
-              }`}
-            >
-              {/* Suivant */}
-              <FaArrowCircleRight />
+        {/* Pagination Controls - Only show if we have more than one page */}
+        {lastPage > 1 && (
+          <div className="flex justify-center mt-12">
+            <nav className="flex items-center">
+              <button 
+                onClick={() => handlePageChange(currentPageFromData - 1)}
+                disabled={currentPageFromData <= 1}
+                className={`px-4 py-2 mx-1 rounded-md ${
+                  currentPageFromData <= 1 
+                    ? 'bg-gray-200 text-gray-500 cursor-not-allowed' 
+                    : 'bg-burgundy text-white hover:bg-wine cursor-pointer'
+                }`}
+                aria-label="Previous page"
+              >
+                <FaArrowCircleLeft />
+              </button>
               
-            </button>
-          </nav>
-        </div>
+              <div className="flex mx-2">
+                {Array.from({ length: lastPage }, (_, i) => i + 1).map(page => (
+                  <button
+                    key={page}
+                    onClick={() => handlePageChange(page)}
+                    className={`w-10 h-10 mx-1 rounded-full flex items-center justify-center cursor-pointer ${
+                      page === currentPageFromData
+                        ? 'bg-burgundy text-white '
+                        : 'bg-gray-200 text-gray-700 hover:bg-gray-300 '
+                    }`}
+                    aria-label={`Page ${page}`}
+                    aria-current={page === currentPageFromData ? 'page' : undefined}
+                  >
+                    {page}
+                  </button>
+                ))}
+              </div>
+              
+              <button
+                onClick={() => handlePageChange(currentPageFromData + 1)}
+                disabled={currentPageFromData >= lastPage}
+                className={`px-4 py-2 mx-1 rounded-md ${
+                  currentPageFromData >= lastPage
+                    ? 'bg-gray-200 text-gray-500 cursor-not-allowed'
+                    : 'bg-burgundy text-white hover:bg-wine cursor-pointer'
+                }`}
+                aria-label="Next page"
+              >
+                <FaArrowCircleRight />
+              </button>
+            </nav>
+          </div>
+        )}
       </div>
     </section>
   );

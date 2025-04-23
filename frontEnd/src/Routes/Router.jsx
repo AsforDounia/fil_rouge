@@ -23,7 +23,8 @@ import { DonorProvider } from "../Context/DonorContext";
 export const Router = createBrowserRouter([
   {
     path: "/",
-    element: <HomeLayout />,
+    element: 
+    <HomeLayout />,
     children: [
       {
         index: true,
@@ -39,69 +40,69 @@ export const Router = createBrowserRouter([
       },
     ],
   },
-  {
-    path: "/about",
-    element: <HomeLayout />,
-    children: [
-      {
-        index: true,
-        element: (
-          <TestimonialProvider>
-            <About />
-          </TestimonialProvider>
-        ),
-      },
-    ],
-  },
-  {
-    element: (
-      <AuthProvider>
-        <AuthRoute />
-      </AuthProvider>
-    ),
-    children: [
-      {
-        path: "/login",
-        element: <Login />,
-      },
-      {
-        path: "/register",
-        element: <Register />,
-      },
-    ],
-  },
-  {
-    path: "/logout",
-    element: (
-      <AuthProvider>
-        <Logout />
-      </AuthProvider>
-    ),
-  },
-  {
-    path: "/donneur",
-    element: 
-    <AuthProvider>
-      <ProtectedRoute roles={["donor"]}>
-        <DashboardLayout />
-      </ProtectedRoute>
-    </AuthProvider>,
-    children: [
-      {
-        index: true,
-        element: (
-          // <AuthProvider>
-            <DonorProvider>
-                <DonorDashboard />
-              </DonorProvider>
-          // </AuthProvider>
-        ),
-      },
-    ],
-  },
+  // {
+  //   path: "/about",
+  //   element: <HomeLayout />,
+  //   children: [
+  //     {
+  //       index: true,
+  //       element: (
+  //         <TestimonialProvider>
+  //           <About />
+  //         </TestimonialProvider>
+  //       ),
+  //     },
+  //   ],
+  // },
+  // {
+  //   element: (
+  //     <AuthProvider>
+  //       <AuthRoute />
+  //     </AuthProvider>
+  //   ),
+  //   children: [
+  //     {
+  //       path: "/login",
+  //       element: <Login />,
+  //     },
+  //     {
+  //       path: "/register",
+  //       element: <Register />,
+  //     },
+  //   ],
+  // },
+  // {
+  //   path: "/logout",
+  //   element: (
+  //     <AuthProvider>
+  //       <Logout />
+  //     </AuthProvider>
+  //   ),
+  // },
+  // {
+  //   path: "/donneur",
+  //   element: 
+  //   <AuthProvider>
+  //     <ProtectedRoute roles={["donor"]}>
+  //       <DashboardLayout />
+  //     </ProtectedRoute>
+  //   </AuthProvider>,
+  //   children: [
+  //     {
+  //       index: true,
+  //       element: (
+  //         // <AuthProvider>
+  //           <DonorProvider>
+  //               <DonorDashboard />
+  //             </DonorProvider>
+  //         // </AuthProvider>
+  //       ),
+  //     },
+  //   ],
+  // },
   
-  {
-    path: "/unauthorized",
-    element: <div>unauthorized</div>,
-  },
+  // {
+  //   path: "/unauthorized",
+  //   element: <div>unauthorized</div>,
+  // },
 ]);

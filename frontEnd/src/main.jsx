@@ -13,8 +13,7 @@ import { AuthProvider } from './Context/AuthContext.jsx'
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
-     <AuthProvider>
     <ToastContainer />
-    <RouterProvider router={Router} /></AuthProvider>
+    <RouterProvider router={Router} />
   </StrictMode>,
 )

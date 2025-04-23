@@ -6,6 +6,8 @@ import { toast } from "react-toastify";
 export const TestimonialContext = createContext();
 
 export const TestimonialProvider = ({ children }) => {
+
+  
     const [testimonials, setTestimonials] = useState([]);
 
     const getTestimonials = async (page = 1) => {
