@@ -41,6 +41,7 @@ const DonorDashboard = () => {
         );
     }
 
+    console.log(statistics);
 
 
     const livesImpacted = statistics.countImpactedLives;
@@ -50,7 +51,7 @@ const DonorDashboard = () => {
     const daysUntilNextDonation = statistics.daysUntilNextDonation;
 
 
-    const donationLocation = statistics.recentActivities.lastDonationDetails.lastDonationLocation.address;
+    const donationLocation = statistics.recentActivities.lastDonationDetails.lastDonationLocation;
     const donationDate = statistics.recentActivities.lastDonationDetails.lastDonationDate;
 
 

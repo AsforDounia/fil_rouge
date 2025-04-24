@@ -1,25 +1,26 @@
 import { Navigate, Outlet } from 'react-router-dom';
 import { useAuth } from '../Context/AuthContext';
 
-
-
 const AuthRoute = () => {
+  const { isAuthenticated, roles, isLoading } = useAuth();
 
-  const { isAuthenticated, roles } = useAuth();
+  if (isLoading) {
+    return <div>Loading...</div>; 
+  }
 
   if (isAuthenticated) {
     if (roles.includes("donor")) {
-      return <Navigate to="/donneur" replace />;
+      return <Navigate to="/donor" replace />;
     }
-    if(roles.includes("centre_manager")){
+    if (roles.includes("centre_manager")) {
       return <Navigate to="/centre" replace />;
     }
-    else if(roles.includes("patient")) {
+    if (roles.includes("patient")) {
       return <Navigate to="/patient" replace />;
     }
   }
-  return <Outlet />;
 
+  return <Outlet />;
 };
 
 export default AuthRoute;

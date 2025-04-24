@@ -40,7 +40,7 @@ class DatabaseSeeder extends Seeder
         Collecte::factory(5)->create();
 
         // Create donations
-        Don::factory(20)->create();
+        // Don::factory(20)->create();
 
         // Create donation requests
         DonRequest::factory(15)->create();
@@ -77,6 +77,13 @@ class DatabaseSeeder extends Seeder
             $user->roles()->attach($donorRole->id);
             $user->roles()->attach($centreRole->id);
             Appointment::factory()->count(10)->create(['donor_id' => $user->id , 'centre_id' => $centreRole->id]);
+        });
+
+
+        User::factory()->count(20)->create()->each(function ($user) use ($donorRole , $centreRole) {
+            $user->roles()->attach($donorRole->id);
+            $user->roles()->attach($centreRole->id);
+            Don::factory()->count(10)->create(['donor_id' => $user->id , 'centre_id' => $centreRole->id]);
         });
 
     }

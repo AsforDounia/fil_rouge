@@ -9,6 +9,7 @@ use App\Models\Donor;
 use App\Models\DonRequest;
 use App\Models\Event;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class DonorController extends Controller
@@ -67,13 +68,12 @@ class DonorController extends Controller
 
         if ($lastDonation) {
             $lastDonationDate = $lastDonation->created_at;
-            // Exemple : un délai de 56 jours entre deux dons
             $nextEligibleDate = $lastDonationDate->copy()->addDays(56);
             $daysUntilNextDonation = now()->lt($nextEligibleDate) ? ceil(now()->floatDiffInDays($nextEligibleDate)) : 0;
 
             $lastDonationDetails = [
                 'lastDonationDate' => $lastDonationDate->diffForHumans(),
-                'lastDonationLocation' => $lastDonation->localisation,
+                'lastDonationLocation' => $lastDonation->centre->name,
             ];
         } else {
             $daysUntilNextDonation = 0;
@@ -84,25 +84,27 @@ class DonorController extends Controller
         }
         $recentActivities['lastDonationDetails'] = $lastDonationDetails;
         $urgenteRequest = DonRequest::requestsMatchingUser()->where('urgency', 'Urgent')->first();
-        // return  $urgenteRequest;
+
         if ($urgenteRequest) {
             $recentActivities['urgentRequestDetails'] = [
                 'blood_group' => $urgenteRequest->blood_group,
                 'createdAt' => $urgenteRequest->created_at->diffForHumans()
             ];
+        }else{
+            $recentActivities['urgentRequestDetails'] = [
+                'blood_group' => " : Aucune Demande de Sang",
+                'createdAt' => "compatible avec votre group de sang"
+            ];
+
         }
-
-
-        // $firstAppointment = Donor::donorAppointments()->orderBy('appointment_date', 'desc')->first();
-        // Option 1: Use collection methods
         $appointmentScheduled = Donor::donorAppointments()->sortByDesc('appointment_date')->first();
         if ($appointmentScheduled) {
             $centreId = $appointmentScheduled->centre_id;
             $centre = User::find($centreId);
-            $location = $centre->localisation;
+            $location = $centre->name;
             $appointmentDetails = [
                 'appointmentDate' => $appointmentScheduled->appointment_date,
-                'appointmentLocation' => $location->address
+                'appointmentLocation' => $location
             ];
         }
         else{
@@ -113,9 +115,7 @@ class DonorController extends Controller
         }
 
         $recentActivities['appointmentDetails'] = $appointmentDetails;
-        // $lastAppointment = $user->appointments()->orderBy('date', 'desc')->first();
 
-        // $appointmentScheduled = $urgenteRequest->appointment_scheduled ?? null;
 
         return response()->json([
             'countUrgC' => $nbUrgRqsts,
@@ -128,6 +128,51 @@ class DonorController extends Controller
     }
 
 
+
+    public function getAppointmentsStats()
+    {
+
+        $next_appointment = Appointment::where('donor_id', auth()->id())->where('appointment_date', '>', now())->orderBy('appointment_date', 'asc')->first();
+        $next_appointment_date = $next_appointment ? $next_appointment->appointment_date : null;
+
+
+        $last_donation = Don::where('donor_id', auth()->id())->where('donation_date', '<', now())->orderBy('donation_date', 'desc')->first();
+        $last_donation_date = $last_donation ? $last_donation->donation_date : null;
+        $time_remaining = $next_appointment_date ? round(now()->diffInDays($next_appointment_date, true)) : null;
+
+        $total_donations = Don::where('donor_id', auth()->id())->count();
+
+
+        $upcoming_appointments = Appointment::with('centre')->where('donor_id', auth()->id())->where('appointment_date', '>', now())->orderBy('appointment_date', 'asc')->get();
+
+        $upcoming_appointments = $upcoming_appointments->map(function($appointment) {
+            $appointment_date = Carbon::parse($appointment->appointment_date);
+            $formatted_appointment = $appointment->toArray();
+            $formatted_appointment['date'] = $appointment_date->format('Y-m-d');
+            $formatted_appointment['time'] = $appointment_date->format('H:i');
+
+            return $formatted_appointment;
+        });
+
+        $appHistory = Appointment::with('centre')->where('donor_id', auth()->id())->where('appointment_date', '<', now())->orderBy('appointment_date', 'asc')->get();
+
+        $appHistory = $appHistory->map(function($appointment) {
+            $appointment_date = Carbon::parse($appointment->appointment_date);
+            $formatted_appointment = $appointment->toArray();
+            $formatted_appointment['date'] = $appointment_date->format('Y-m-d');
+
+            return $formatted_appointment;
+        });
+
+        return response()->json([
+            'next_appointment_date' => $next_appointment_date,
+            'last_donation_date' => $last_donation_date,
+            'time_remaining' => $time_remaining,
+            'total_donations' => $total_donations,
+            'upcoming_appointments' =>  $upcoming_appointments,
+            'appHistory' => $appHistory
+        ]);
+    }
 
 
 }

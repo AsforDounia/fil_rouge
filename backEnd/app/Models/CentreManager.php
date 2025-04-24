@@ -29,4 +29,7 @@ class CentreManager extends User
         return $this->hasOne(Localisation::class);
     }
 
+    public function donations(){
+        return $this->hasMany(Don::class, 'centre_id');
+    }
 }

@@ -10,7 +10,7 @@ import { MdFestival } from "react-icons/md";
 const Sidebar = () => {
 
     const menuItems = [
-        { icon: <FaHome />, text: 'Tableau de bord', href: '', badge: null },
+        { icon: <FaHome />, text: 'Tableau de bord', href: '/', badge: null },
         { icon: <FaCalendarAlt />, text: 'Mes Rendez-vous', href: '/appointments', badge: null },
         { icon: <FaCalendarPlus />, text: 'Nouveau Rendez-vous', href: '/new-appointment', badge: null },
         { icon: <FaHistory />, text: 'Historique des Dons', href: '/donation-history', active: false, badge: null },

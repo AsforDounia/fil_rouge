@@ -51,4 +51,6 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
 
     Route::get('statistics', [DonorController::class, 'donorDashboard' ]);
 
+    Route::get('appointments/statistics', [DonorController::class, 'getAppointmentsStats']);
 });
+

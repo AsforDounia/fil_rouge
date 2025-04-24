@@ -13,14 +13,11 @@ return new class extends Migration
     {
         Schema::create('appointments', function (Blueprint $table) {
             $table->id();
-
-            // Donor
             $table->foreignId('donor_id')->constrained('users')->onDelete('cascade');
 
-            // Centre (manager of donation)
             $table->foreignId('centre_id')->constrained('users')->onDelete('cascade');
+            $table->enum('type_don', ['Plasma', 'Globules', 'Plaquettes' , 'Sang Total']);
 
-            // Date & status
             $table->dateTime('appointment_date');
             $table->enum('status', ['en_attente', 'confirmée', 'annulée'])->default('en_attente');
 

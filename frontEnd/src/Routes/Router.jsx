@@ -19,11 +19,14 @@ import { EventProvider } from "../Context/EventContext";
 import { RequestProvider } from "../Context/RequestContext";
 import { DonProvider } from "../Context/DonContext";
 import { DonorProvider } from "../Context/DonorContext";
+import Appointment from "../pages/Donor/Appointment";
+import Appointment from "../pages/Donor/Appointment";
 
 export const Router = createBrowserRouter([
   {
     path: "/",
-    element: <HomeLayout />,
+    element: 
+    <HomeLayout />,
     children: [
       {
         index: true,
@@ -78,28 +81,60 @@ export const Router = createBrowserRouter([
       </AuthProvider>
     ),
   },
+  // {
+  //   path: "/donneur",
+  //   element: (
+  //     <AuthProvider>
+  //       <ProtectedRoute roles={["donor"]}>
+  //         <DashboardLayout />
+  //       </ProtectedRoute>
+  //     </AuthProvider>
+  //   ),
+  //   children: [
+  //     {
+  //       index: true,
+  //       element: (
+  //         <DonorProvider>
+  //           <DonorDashboard />
+  //         </DonorProvider>
+  //       ),
+  //     },
+  //   ],
+  // },
+
+
   {
-    path: "/donneur",
-    element: 
-    <AuthProvider>
-      <ProtectedRoute roles={["donor"]}>
-        <DashboardLayout />
-      </ProtectedRoute>
-    </AuthProvider>,
+    element: (
+          <AuthProvider>
+        <ProtectedRoute roles={["donor"]}>
+          <DonorProvider>
+          <DashboardLayout />
+          </DonorProvider>
+        </ProtectedRoute>
+      </AuthProvider>
+    ),
     children: [
       {
-        index: true,
-        element: (
-          // <AuthProvider>
-            <DonorProvider>
-                <DonorDashboard />
-              </DonorProvider>
-          // </AuthProvider>
-        ),
+        path: "/donneur",
+        element: <DonorDashboard />,
+      },
+      {
+        path: "/appointments",
+        element:<Appointment />,
       },
     ],
   },
-  
+ 
+  {
+    path: "/test",
+    element: (
+      <AuthProvider>
+        <ProtectedRoute roles={["donor"]}>
+          <div>This is a test page for donors only</div>
+        </ProtectedRoute>
+      </AuthProvider>
+    ),
+  },
   {
     path: "/unauthorized",
     element: <div>unauthorized</div>,
