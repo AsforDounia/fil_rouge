@@ -14,8 +14,8 @@ return new class extends Migration
         Schema::create('dons', function (Blueprint $table) {
             $table->id();
             $table->foreignId('donor_id')->constrained('users')->onDelete('cascade');
-            $table->foreignId('localisation_id')->constrained()->onDelete('cascade');
-
+            $table->foreignId('centre_id')->constrained('users')->onDelete('cascade');
+            $table->enum('type_don', ['Plasma', 'Globules', 'Plaquettes' , 'Sang Total']);
             $table->foreignId('collecte_id')->constrained()->onDelete('cascade');
             $table->date('donation_date');
             $table->enum('blood_group', ['A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-']);
