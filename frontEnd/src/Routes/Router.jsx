@@ -20,7 +20,10 @@ import { RequestProvider } from "../Context/RequestContext";
 import { DonProvider } from "../Context/DonContext";
 import { DonorProvider } from "../Context/DonorContext";
 import Appointment from "../pages/Donor/Appointment";
-import Appointment from "../pages/Donor/Appointment";
+import CreateAppointment from "../pages/Donor/CreateAppointment";
+import { AppointmentProvider } from "../Context/AppointmentContext";
+import DonnationsHistory from "../pages/Donor/DonnationsHistory";
+import { DonationProvider } from "../Context/DonationContext";
 
 export const Router = createBrowserRouter([
   {
@@ -122,6 +125,21 @@ export const Router = createBrowserRouter([
         path: "/appointments",
         element:<Appointment />,
       },
+      {
+        path : "/new-appointment",
+        element : (
+          <AppointmentProvider>
+          <CreateAppointment />
+          </AppointmentProvider>
+        )
+      },
+      {
+        path : "/donation-history",
+        element : (
+          <DonationProvider>
+          <DonnationsHistory /></DonationProvider>
+        )
+      }
     ],
   },
  

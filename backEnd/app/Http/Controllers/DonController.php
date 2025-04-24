@@ -12,7 +12,12 @@ class DonController extends Controller
      */
     public function index()
     {
-        //
+        $id = auth()->id();
+        $donations = Don::with('centre')->where('donor_id',$id)->paginate(10);
+
+        return response()->json([
+            'donations' => $donations
+        ]);
     }
 
     /**

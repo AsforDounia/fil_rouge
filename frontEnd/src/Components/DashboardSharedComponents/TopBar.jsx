@@ -36,12 +36,32 @@ const TopBar = () => {
         );
     }
 
-    
+    const getPageInfo = () => {
+        const path = location.pathname;
+        
+        if (path === '/appointments') {
+            return {
+                title: "Mes Rendez-vous",
+                subtitle: "Gérez vos rendez-vous de don",
+            };
+        } else if (path === '/new-appointment') {
+            return {
+                title: "Nouveau Rendez-vous",
+                subtitle: "Planifier votre prochain don de sang",
+            };
+        } else {
+            return {
+                title: "Mon Espace Donneur",
+                subtitle: `Bienvenue, ${localUserData?.name}`,
+            };
+        }
+    };
+    const pageInfo = getPageInfo();
     return (
         <div className="flex justify-between items-center mb-8">
             <div>
-                <h2 className="text-3xl font-bold text-burgundy ">Mon Espace Donneur</h2>
-                <p className="text-darkteal ">Bienvenue, {localUserData?.name}</p>
+                <h2 className="text-3xl font-bold text-burgundy ">{pageInfo.title}</h2>
+                <p className="text-darkteal ">{pageInfo.subtitle}</p>
             </div>
             <div className="flex items-center gap-4">
                 <button className="bg-teal/10 p-2 rounded-lg border-none cursor-pointer text-teal">

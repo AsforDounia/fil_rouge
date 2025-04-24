@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Appointment;
+use App\Models\CentreManager;
 use App\Models\Don;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class AppointmentController extends Controller
@@ -49,5 +51,35 @@ class AppointmentController extends Controller
     }
 
 
+    public function getAppointmentFileds(){
+        $appointments = Appointment::all();
+
+        // $dates_unavailable = $appointments->pluck('appointment_date');
+        $centres = CentreManager::all();
+
+        return response()->json([
+            'appointments' => $appointments,
+            'centres' => $centres
+        ]);
+
+
+    }
+
+    public function getUnavailableDates($id) {
+
+        $appointments = Appointment::where('centre_id', $id)->get();
+
+        $dates_unavailable = $appointments->groupBy(function ($appointment) {
+                return Carbon::parse($appointment->appointment_date)->format('Y-m-d');
+            })
+            ->filter(function ($group) {
+                return $group->count() >= 1;
+            })
+            ->keys();
+
+        return response()->json([
+            'dates_unavailable' => $dates_unavailable,
+        ]);
+    }
 
 }

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AppointmentController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CenterController;
 use App\Http\Controllers\DonController;
@@ -52,5 +53,10 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::get('statistics', [DonorController::class, 'donorDashboard' ]);
 
     Route::get('appointments/statistics', [DonorController::class, 'getAppointmentsStats']);
+
+    Route::get('appointment/filds' , [AppointmentController::class,'getAppointmentFileds']);
+    Route::get('appointment/unavailableDates/{id}', [AppointmentController::class, 'getUnavailableDates']);
+    
+    Route::get('donations',[DonController::class,'index']);
 });
 

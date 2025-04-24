@@ -16,7 +16,7 @@ class AppointmentFactory extends Factory
         return [
             'donor_id' => User::factory(),
             'centre_id' => User::factory(),
-            'appointment_date' => $this->faker->dateTimeBetween('+1 days', '+1 month'),
+            'appointment_date' => $this->faker->dateTimeBetween('+1 days', '+1 month')->setTime(rand(9, 18), rand(0, 59)), 
             'status' => $this->faker->randomElement(['en_attente', 'confirmée', 'annulée']),
         ];
     }
