@@ -24,6 +24,8 @@ import CreateAppointment from "../pages/Donor/CreateAppointment";
 import { AppointmentProvider } from "../Context/AppointmentContext";
 import DonnationsHistory from "../pages/Donor/DonnationsHistory";
 import { DonationProvider } from "../Context/DonationContext";
+import Centers from "../pages/Donor/Centers";
+import { CenterProvider } from "../Context/CenterContext";
 
 export const Router = createBrowserRouter([
   {
@@ -138,6 +140,14 @@ export const Router = createBrowserRouter([
         element : (
           <DonationProvider>
           <DonnationsHistory /></DonationProvider>
+        )
+      },
+      {
+        path : "/centers",
+        element : (
+          <CenterProvider>
+            <Centers />
+          </CenterProvider>
         )
       }
     ],
