@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('don_requests', function (Blueprint $table) {
             $table->id();
             $table->foreignId('patient_id')->constrained('users')->onDelete('cascade');
+            $table->foreignId('centre_id')->constrained('users')->onDelete('cascade');
             $table->enum('blood_group', ['A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-']);
             $table->enum('component', ['Plasma', 'Globules', 'Plaquettes' ,'Sang Total']);
 

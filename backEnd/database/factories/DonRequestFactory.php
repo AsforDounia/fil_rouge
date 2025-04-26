@@ -20,12 +20,13 @@ class DonRequestFactory extends Factory
 
 
         return [
-            'patient_id' => User::factory(),  // Random user for the patient
+            'patient_id' => User::factory(),
+            'centre_id' => User::factory(),
             'blood_group' => $this->faker->randomElement(['A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-']),  // Random blood group
             'component' => $this->faker->randomElement(['Plasma', 'Globules', 'Plaquettes']),  // Random component
             'quantity' => $this->faker->numberBetween(1, 5),  // Random quantity between 1 and 5
             'urgency' => $this->faker->randomElement(['Urgent', 'Normal']),  // Random urgency
-            'description' => $this->faker->optional()->text(),  // Optional description
+            'description' => $this->faker->optional()->words(6, true),
             'status' => $this->faker->randomElement(['en_attente', 'approuvée', 'rejetée', 'complétée']),  // Random status
         ];
 

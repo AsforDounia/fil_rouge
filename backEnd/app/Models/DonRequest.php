@@ -21,6 +21,9 @@ class DonRequest extends Model
     }
 
 
+    public function centre(){
+        return $this->belongsTo(User::class,"centre_id");
+    }
 
     public static function requestsMatchingUser()
     {

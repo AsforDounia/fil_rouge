@@ -123,6 +123,11 @@ class User extends Authenticatable
         }
 
 
+        public function donRequest(){
+            return $this->hasMany(DonRequest::class, 'centre_id');
+        }
+
+
 
         public function hasRole($roleName)
         {

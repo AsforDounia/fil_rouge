@@ -26,6 +26,8 @@ import DonnationsHistory from "../pages/Donor/DonnationsHistory";
 import { DonationProvider } from "../Context/DonationContext";
 import Centers from "../pages/Donor/Centers";
 import { CenterProvider } from "../Context/CenterContext";
+import Requests from "../pages/Donor/Requests";
+import Conversation from "../Components/DashboardSharedComponents/Conversation";
 
 export const Router = createBrowserRouter([
   {
@@ -148,6 +150,20 @@ export const Router = createBrowserRouter([
           <CenterProvider>
             <Centers />
           </CenterProvider>
+        )
+      },
+      {
+        path : "/blood-requests",
+        element : (
+            <RequestProvider>
+              <Requests />
+            </RequestProvider>
+        )
+      },
+      {
+        path : "/conversation",
+        element : (
+              <Conversation />
         )
       }
     ],

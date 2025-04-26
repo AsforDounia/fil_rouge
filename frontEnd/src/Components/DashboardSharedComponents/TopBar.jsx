@@ -49,6 +49,11 @@ const TopBar = () => {
                 title: "Nouveau Rendez-vous",
                 subtitle: "Planifier votre prochain don de sang",
             };
+        } else if (path === '/blood-requests') {
+            return {
+                title: "Demandes de sang",
+                subtitle: "Trouvez des opportunités de don de sang près de chez vous",
+            };
         } else {
             return {
                 title: "Mon Espace Donneur",
