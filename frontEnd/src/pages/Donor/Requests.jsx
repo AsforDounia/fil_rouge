@@ -8,7 +8,6 @@ export default function Requests() {
   const [activeTab, setActiveTab] = useState('all');
   const { getRequests, requests } = useRequest();
   const { user, getUser } = useAuth();
-  const [currentPage, setCurrentPage] = useState(1);
   const [loading, setLoading] = useState(true);
   const [filters, setFilters] = useState({
     bloodGroup: '',
@@ -36,7 +35,7 @@ export default function Requests() {
     const fetchRequests = async () => {
       setLoading(true);
       try {
-        await getRequests(currentPage);
+        await getRequests();
         await getUser();
       } catch (error) {
         toast.error("Error fetching events :" + error.message);
@@ -46,7 +45,7 @@ export default function Requests() {
     };
     
     fetchRequests();
-  }, [currentPage]);
+  }, []);
   
   useEffect(() => {
     if (requests && user) {

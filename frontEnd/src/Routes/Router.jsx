@@ -27,7 +27,9 @@ import { DonationProvider } from "../Context/DonationContext";
 import Centers from "../pages/Donor/Centers";
 import { CenterProvider } from "../Context/CenterContext";
 import Requests from "../pages/Donor/Requests";
-import Conversation from "../Components/DashboardSharedComponents/Conversation";
+import Conversation from "../../../HelperFolder/Conversation";
+import { ConversationProvider } from "../../../HelperFolder/CoversationContext";
+import EventsSection from "../Components/HomeComponents/EventsSection";
 
 export const Router = createBrowserRouter([
   {
@@ -122,15 +124,15 @@ export const Router = createBrowserRouter([
     ),
     children: [
       {
-        path: "/donneur",
+        path: "/donneur//dashboard",
         element: <DonorDashboard />,
       },
       {
-        path: "/appointments",
+        path: "/donneur/appointments",
         element:<Appointment />,
       },
       {
-        path : "/new-appointment",
+        path : "donneur/new-appointment",
         element : (
           <AppointmentProvider>
           <CreateAppointment />
@@ -138,14 +140,14 @@ export const Router = createBrowserRouter([
         )
       },
       {
-        path : "/donation-history",
+        path : "donneur/donation-history",
         element : (
           <DonationProvider>
           <DonnationsHistory /></DonationProvider>
         )
       },
       {
-        path : "/centers",
+        path : "donneur/centers",
         element : (
           <CenterProvider>
             <Centers />
@@ -153,7 +155,7 @@ export const Router = createBrowserRouter([
         )
       },
       {
-        path : "/blood-requests",
+        path : "donneur/blood-requests",
         element : (
             <RequestProvider>
               <Requests />
@@ -161,11 +163,22 @@ export const Router = createBrowserRouter([
         )
       },
       {
-        path : "/conversation",
+        path : "donneur/events",
         element : (
-              <Conversation />
+            <EventProvider>
+              <EventsSection />
+            </EventProvider>
         )
-      }
+      },
+      
+      // {
+      //   path : "/messages",
+      //   element : (
+      //     <ConversationProvider>
+      //         <Conversation />
+      //     </ConversationProvider>
+      //   )
+      // }
     ],
   },
  

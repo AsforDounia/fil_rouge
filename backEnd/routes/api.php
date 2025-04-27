@@ -3,6 +3,7 @@
 use App\Http\Controllers\AppointmentController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CenterController;
+use App\Http\Controllers\ConversationController;
 use App\Http\Controllers\DonController;
 use App\Http\Controllers\DonorController;
 use App\Http\Controllers\DonRequestController;
@@ -56,7 +57,12 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
 
     Route::get('appointment/filds' , [AppointmentController::class,'getAppointmentFileds']);
     Route::get('appointment/unavailableDates/{id}', [AppointmentController::class, 'getUnavailableDates']);
-    
+
     Route::get('donations',[DonController::class,'index']);
+    Route::get('conversations',[ConversationController::class,'index']);
+    Route::get('events/user/participer',[EventController::class,'userParticiper']);
+    Route::get('events/participer/{eventId}',[EventController::class,'participer']);
+    Route::get('events/annuler/participer/{eventId}',[EventController::class,'annuler']);
+   
 });
 

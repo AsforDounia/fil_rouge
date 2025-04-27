@@ -18,9 +18,9 @@ export const RequestProvider = ({ children }) => {
         }
     }
 
-    const getRequests = async (page = 1)=>{
+    const getRequests = async ()=>{
         try {
-            const response = await api.get(`requests?page=${page}`);
+            const response = await api.get(`requests`);
             setRequests(response.data.don_requests);
 
         } catch (error) {
