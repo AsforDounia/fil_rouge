@@ -63,6 +63,8 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::get('events/user/participer',[EventController::class,'userParticiper']);
     Route::get('events/participer/{eventId}',[EventController::class,'participer']);
     Route::get('events/annuler/participer/{eventId}',[EventController::class,'annuler']);
-   
+    Route::post('user/update/profile', [AuthController::class, 'updateProfile']);
+    Route::post('user/delete/profile', [AuthController::class, 'deleteProfile']);
+
 });
 

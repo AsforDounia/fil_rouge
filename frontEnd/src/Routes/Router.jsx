@@ -30,6 +30,7 @@ import Requests from "../pages/Donor/Requests";
 import Conversation from "../../../HelperFolder/Conversation";
 import { ConversationProvider } from "../../../HelperFolder/CoversationContext";
 import EventsSection from "../Components/HomeComponents/EventsSection";
+import Profile from "../Components/DashboardSharedComponents/Profile";
 
 export const Router = createBrowserRouter([
   {
@@ -42,9 +43,11 @@ export const Router = createBrowserRouter([
         element: (
           <StatsProvider>
             <TestimonialProvider>
+            <AuthProvider>
               <EventProvider>
                 <Home />
               </EventProvider>
+              </AuthProvider>
             </TestimonialProvider>
           </StatsProvider>
         ),
@@ -124,7 +127,7 @@ export const Router = createBrowserRouter([
     ),
     children: [
       {
-        path: "/donneur//dashboard",
+        path: "/donneur/dashboard",
         element: <DonorDashboard />,
       },
       {
@@ -168,6 +171,15 @@ export const Router = createBrowserRouter([
             <EventProvider>
               <EventsSection />
             </EventProvider>
+        )
+      },
+      {
+        path : "donneur/profile",
+        element : (
+          <AuthProvider>
+            <Profile />
+          </AuthProvider>
+            
         )
       },
       
