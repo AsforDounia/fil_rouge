@@ -30,6 +30,11 @@ class AuthController extends Controller
             ], 401);
         }
 
+        if($user->accountStatus == "bloque"){
+            return response()->json([
+                'message' => 'Le compte utilisateur est bloqué.',
+            ], 403);
+        }
 
         $token = $user->createToken($user->name . '_login_token')->plainTextToken;
 
@@ -59,6 +64,8 @@ class AuthController extends Controller
             'password' => 'required|string|min:8|confirmed',
             'accountType' => 'required|in:patient,donor,centre_manager,hospital_manager,bank_manager,admin'
         ]);
+
+
 
         $userCount = User::count();
         if($userCount == 0){

@@ -3,8 +3,9 @@ import { NavLink } from 'react-router-dom';
 import { FaHome, FaCalendarAlt, FaHistory, FaHandHoldingMedical, FaCalendarPlus, FaProcedures, FaUser } from "react-icons/fa";
 import { RiFileChartLine, RiUserLine } from "react-icons/ri";
 import { TbLogout2 } from "react-icons/tb";
-import { FaHospital } from "react-icons/fa6";
+import { FaHospital, FaUsersGear } from "react-icons/fa6";
 import { IoMdMail, IoMdSettings } from "react-icons/io";
+import { HiUserAdd } from "react-icons/hi";
 import { MdFestival } from "react-icons/md";
 import { useAuth } from '../../Context/AuthContext';
 
@@ -93,7 +94,8 @@ const Sidebar = () => {
             ];
     
             const adminItmes = [
-                { icon: <FaUser />, text: 'Gestion d\'Utilisateurs ', href: `${baseUrl}/donneurs`, badge: null },
+                { icon: <FaUsersGear />, text: 'Gestion d\'Utilisateurs ', href: `${baseUrl}/users`, badge: null },
+                { icon: <HiUserAdd />, text: 'Ajouter new Utilisateur', href: `${baseUrl}/addUser`, badge: null },
                 // { icon: <FaProcedures />, text: 'Gestion des Patients', href: `${baseUrl}/patients`, badge: null },
                 // { icon: <FaHospital />, text: 'Gestion des Centres', href: `${baseUrl}/centers`, badge: null },
                 { icon: <FaHandHoldingMedical />, text: 'Demandes de Sang', href: `${baseUrl}/blood-requests`, badge: null },
