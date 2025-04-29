@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import {
-    FaSearch, FaMapMarkerAlt, FaUser, FaTint, FaCheckCircle,
-    FaInfoCircle, FaExclamationCircle, FaEdit, FaTrashAlt,
+    FaMapMarkerAlt, FaUser, FaTint, FaCheckCircle,
+    FaInfoCircle, FaExclamationCircle, FaTrashAlt,
     FaPlus, FaFilter, FaChevronDown, FaHospital
 } from 'react-icons/fa';
 import { toast } from 'react-toastify';
@@ -34,11 +34,7 @@ export default function AdminRequests() {
     });
 
 
-    // const [centres, setCentres] = useState([
-    //     { id: 1, name: 'Centre Hospitalier Universitaire', address: '123 Boulevard Principal, Ville' },
-    //     { id: 2, name: 'Clinique Médicale Régionale', address: '45 Rue des Soins, Ville' },
-    //     { id: 3, name: 'Hôpital Saint-Louis', address: '78 Avenue de la Santé, Ville' }
-    // ]);
+
 
     const [tabCounts, setTabCounts] = useState({
         all: 0,
@@ -85,7 +81,6 @@ export default function AdminRequests() {
         }
     };
 
-    // Handle filter changes
     const handleFilterChange = (e) => {
         const { name, value } = e.target;
         setFilters(prev => ({
@@ -94,87 +89,9 @@ export default function AdminRequests() {
         }));
     };
 
-    // Add new request
-    const addRequest = () => {
-        const centre = allCenters.find(c => c.id === parseInt(newRequest.centre_id));
 
-        if (!centre) {
-            toast.error("Veuillez sélectionner un centre");
-            return;
-        }
 
-        const newRequestItem = {
-            id: allrequests.length + 1,
-            ...newRequest,
-            centre,
-            created_at: new Date().toISOString(),
-            donations_count: 0
-        };
-
-        setAllRequests([newRequestItem, ...allrequests]);
-        setShowAddModal(false);
-        setNewRequest({
-            blood_group: 'A+',
-            urgency: 'Normal',
-            component: 'Sang total',
-            centre_id: '',
-            description: ''
-        });
-        toast.success("Demande ajoutée avec succès");
-
-        // Update tab counts
-        setTabCounts(prev => ({
-            ...prev,
-            all: prev.all + 1,
-            urgent: newRequest.urgency === 'Urgent' ? prev.urgent + 1 : prev.urgent,
-            recent: prev.recent + 1
-        }));
-    };
-
-    // Edit request
-    const updateRequest = () => {
-        const centre = allCenters.find(c => c.id === parseInt(selectedRequest.centre_id || selectedRequest.centre.id));
-
-        const updatedRequests = allrequests.map(req =>
-            req.id === selectedRequest.id ? { ...selectedRequest, centre } : req
-        );
-
-        setAllRequests(updatedRequests);
-
-        toast.success("Demande mise à jour avec succès");
-
-        // Recalculate tab counts
-        const updatedTabCounts = {
-            all: updatedRequests.length,
-            urgent: updatedRequests.filter(req => req.urgency === 'Urgent').length,
-            recent: updatedRequests.filter(req => {
-                const createdDate = new Date(req.created_at);
-                const today = new Date();
-                const diff = (today - createdDate) / (1000 * 60 * 60 * 24);
-                return diff <= 2;
-            }).length
-        };
-        setTabCounts(updatedTabCounts);
-    };
-
-    // Delete request
     const deleteRequest = () => {
-        const updatedRequests = requests.filter(req => req.id !== selectedRequest.id);
-        setAllRequests(updatedRequests);
-        setShowDeleteConfirm(false);
-        toast.info("Demande supprimée");
-
-        const updatedTabCounts = {
-            all: updatedRequests.length,
-            urgent: updatedRequests.filter(req => req.urgency === 'Urgent').length,
-            recent: updatedRequests.filter(req => {
-                const createdDate = new Date(req.created_at);
-                const today = new Date();
-                const diff = (today - createdDate) / (1000 * 60 * 60 * 24);
-                return diff <= 2;
-            }).length
-        };
-        setTabCounts(updatedTabCounts);
     };
 
 
