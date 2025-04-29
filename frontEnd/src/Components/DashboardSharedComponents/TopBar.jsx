@@ -25,7 +25,26 @@ const TopBar = () => {
               title: "Nouveau Rendez-vous",
               subtitle: "Planifier votre prochain don de sang",
             });
-          } else if (path === '/donneur/blood-requests') {
+          } 
+          else if (path === '/donneur/donation-history') {
+            setPageInfo({
+              title: "Historique des Dons",
+              subtitle: "Suivi de vos contributions",
+            });
+          } 
+          else if (path === '/donneur/centers') {
+            setPageInfo({
+              title: "Centres de Don",
+              subtitle: "Trouvez les centres près de chez vous",
+            });
+          } 
+          else if (path === '/donneur/events') {
+            setPageInfo({
+              title: "Événements de Don",
+              subtitle: "Découvrez les prochaines collectes et opportunités de don",
+            });
+          } 
+          else if (path === '/donneur/blood-requests') {
             setPageInfo({
               title: "Demandes de sang",
               subtitle: "Trouvez des opportunités de don de sang près de chez vous",
@@ -47,8 +66,8 @@ const TopBar = () => {
             });
           } else {
             setPageInfo({
-              title: "hello",
-              subtitle: "hello",
+              title: "Paramètres",
+              subtitle: "Gérez vos informations personnelles",
             });
           }
         }, [location.pathname, localUserData?.name]);

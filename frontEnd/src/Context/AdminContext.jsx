@@ -28,15 +28,32 @@ export const AdminProvider = ({ children }) => {
         }
     }
 
+    const addUser = async (userData) => {
+        try {
+          await api.post('admin/addUser', userData);
+          return { success: true };
+        } catch (error) {
+          return { success: false, message: error.response?.data?.message || 'Add failed' };
+        }
+      };
 
+    const deleteUser = async (id) => {
+        try {
+          await api.post(`admin/deleteUser/${id}`);
+          setUsers(prevUsers => prevUsers?.filter(user => user.id !== id));
+        } catch (error) {
+          return { success: false, message: error.response?.data?.message || 'Add failed' };
+        }
+    };
 
     return (
         <AdminContext.Provider value={{
-
             getStatistics,
             statistics,
             getUsers,
-            users
+            users,
+            addUser,
+            deleteUser,
         }}>
             {children}
         </AdminContext.Provider>

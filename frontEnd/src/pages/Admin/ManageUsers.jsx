@@ -2,9 +2,10 @@ import React, { useEffect, useState } from "react";
 import { FaSearch, FaUserPlus, FaTrashAlt } from "react-icons/fa";
 import { MdBlock } from "react-icons/md";
 import { useAdmin } from "../../Context/AdminContext";
+import { toast } from "react-toastify";
 
 export default function ManageUsers() {
-  const { users, getUsers } = useAdmin();
+  const { users, getUsers ,deleteUser } = useAdmin();
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedRole, setSelectedRole] = useState("");
   const [loading, setLoading] = useState(true);
@@ -20,6 +21,15 @@ export default function ManageUsers() {
       }
     })();
   }, [getUsers]);
+
+  const handeleDeleteUser = async(id) => {
+    try {
+        await deleteUser(id);
+        toast.success('user is delete with success');
+      } catch (error) {
+        toast.error("deletion user failed: " + error);
+      }
+  }
 
   const filteredUsers = users?.filter((user) => {
     const matchesSearch =
@@ -86,7 +96,7 @@ export default function ManageUsers() {
               <th className="p-4 text-left">Email</th>
               <th className="p-4 text-left">Ville</th>
               <th className="p-4 text-left">Rôle</th>
-              <th className="p-4 text-left">Actions</th>
+              <th className="p-4 text-center w-[160px]" colSpan={2}>Actions</th>
             </tr>
           </thead>
           <tbody>
@@ -98,21 +108,21 @@ export default function ManageUsers() {
                   <td className="p-4">{user.city}</td>
                   <td className="p-4">{user.roles[0]?.name || "-"}</td>
                   <td className="p-4 flex gap-4 items-center">
-                  <td className="p-4 flex gap-4 items-center">
-                  <button
+                    <button
                       className={`flex items-center justify-center transition w-24 cursor-pointer ${
                         user.accountStatus === "bloque"
-                          ? "text-green-600 hover:text-red-500"  // Style pour Débloquer
-                          : "text-red-600 hover:text-green-500"  // Nouveau style pour Bloquer
+                          ? "text-green-600 hover:text-red-500" 
+                          : "text-red-600 hover:text-green-500"
                       }`}
                     >
-    {user.accountStatus === "bloque" ? "Débloquer" : "Bloquer"}
-                      <MdBlock className="ml-1" />
-                    </button>
-                    <button className="text-red-500 hover:text-red-700 transition">
-                      <FaTrashAlt />
+                      {user.accountStatus === "bloque" ? "Débloquer" : "Bloquer"}
+                      
                     </button>
                   </td>
+                  <td className="p-4">
+                    <button onClick={() => handeleDeleteUser(user.id)} className="text-red-500 hover:text-red-700 transition">
+                      <FaTrashAlt />
+                    </button>
                   </td>
                 </tr>
               ))

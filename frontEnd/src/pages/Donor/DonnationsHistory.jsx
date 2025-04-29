@@ -69,7 +69,7 @@ export default function BloodDonationDashboard() {
                   <th className="py-3 px-4 text-left text-sm font-medium text-gray-600">Date</th>
                   <th className="py-3 px-4 text-left text-sm font-medium text-gray-600">Type de Don</th>
                   <th className="py-3 px-4 text-left text-sm font-medium text-gray-600">Centre</th>
-                  <th className="py-3 px-4 text-left text-sm font-medium text-gray-600">Actions</th>
+                  {/* <th className="py-3 px-4 text-left text-sm font-medium text-gray-600">Actions</th> */}
                 </tr>
               </thead>
               <tbody>
@@ -78,13 +78,13 @@ export default function BloodDonationDashboard() {
                     <td className="py-4 px-4">{donation.donation_date}</td>
                     <td className="py-4 px-4">{donation.type_don}</td>
                     <td className="py-4 px-4">{donation.centre.name}</td>
-                    <td className="py-4 px-4">
+                    {/* <td className="py-4 px-4">
                       <div className="flex space-x-2">
                         <button onClick={handleDownload} className="p-1 text-gray-600 hover:text-blue-600 cursor-pointer">
                           <FaDownload size={16} />
                         </button>
                       </div>
-                    </td>
+                    </td> */}
                   </tr>
                 ))}
               </tbody>

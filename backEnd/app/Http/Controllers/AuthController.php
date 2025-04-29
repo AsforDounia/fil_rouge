@@ -60,6 +60,8 @@ class AuthController extends Controller
             'accountType' => 'required|in:patient,donor,centre_manager,hospital_manager,bank_manager,admin'
         ]);
 
+
+
         $userCount = User::count();
         if($userCount == 0){
             $accountType = 'admin';

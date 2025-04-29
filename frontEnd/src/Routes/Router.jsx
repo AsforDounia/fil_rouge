@@ -34,6 +34,7 @@ import Profile from "../Components/DashboardSharedComponents/Profile";
 import AdminDashboard from "../pages/Admin/AdminDashboard";
 import { AdminProvider } from "../Context/AdminContext";
 import ManageUsers from "../pages/Admin/ManageUsers";
+import AddUser from "../pages/Admin/AddUser";
 
 export const Router = createBrowserRouter([
   {
@@ -134,8 +135,12 @@ export const Router = createBrowserRouter([
         element: <AdminDashboard />,
       },
       {
-        path: "/admin/donneurs",
+        path: "/admin/users",
         element: <ManageUsers />,
+      },
+      {
+        path: "/admin/addUser",
+        element: <AddUser />,
       },
 
     ],
