@@ -133,10 +133,6 @@ export default function Appointment() {
     let statusText = "";
 
     switch (appointment.status) {
-      case "en_attente":
-        statusColor = "bg-blue-200 text-blue-800";
-        statusText = "En attente";
-        break;
       case "confirmée":
         statusColor = "bg-[#40898A33] text-teal";
         statusText = "Confirmée";
