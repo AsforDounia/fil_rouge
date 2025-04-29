@@ -66,9 +66,17 @@ class AppointmentController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Appointment $appointment)
+    public function destroy($id)
     {
-        //
+        $appointment = Appointment::find($id);
+
+        if ($appointment) {
+            $appointment->status = 'annulée';
+            $appointment->save();
+            return response()->json(['message' => 'Rendez-vous annulé avec succès.']);
+        }
+
+        return response()->json(['message' => 'Rendez-vous non trouvé.'], 404);
     }
 
 

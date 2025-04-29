@@ -18,7 +18,7 @@ class AppointmentFactory extends Factory
             'centre_id' => User::factory(),
             'appointment_date' => $this->faker->dateTimeBetween('+1 days', '+1 month')->setTime(rand(9, 18), rand(0, 59))->format('Y-m-d'),
             'appointment_time' => $this->generateRandomAppointmentTime(),
-            'status' => $this->faker->randomElement(['en_attente', 'confirmée', 'annulée']),
+            'status' => $this->faker->randomElement(['confirmée', 'annulée']),
         ];
     }
 

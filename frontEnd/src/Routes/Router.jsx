@@ -31,6 +31,9 @@ import Conversation from "../../../HelperFolder/Conversation";
 import { ConversationProvider } from "../../../HelperFolder/CoversationContext";
 import EventsSection from "../Components/HomeComponents/EventsSection";
 import Profile from "../Components/DashboardSharedComponents/Profile";
+import AdminDashboard from "../pages/Admin/AdminDashboard";
+import { AdminProvider } from "../Context/AdminContext";
+import ManageUsers from "../pages/Admin/ManageUsers";
 
 export const Router = createBrowserRouter([
   {
@@ -117,6 +120,28 @@ export const Router = createBrowserRouter([
 
   {
     element: (
+      <AuthProvider>
+        <ProtectedRoute roles={["admin"]}>
+          <AdminProvider>
+          <DashboardLayout />
+          </AdminProvider>
+        </ProtectedRoute>
+      </AuthProvider>
+    ),
+    children: [
+      {
+        path: "/admin/dashboard",
+        element: <AdminDashboard />,
+      },
+      {
+        path: "/admin/donneurs",
+        element: <ManageUsers />,
+      },
+
+    ],
+  },
+  {
+    element: (
           <AuthProvider>
         <ProtectedRoute roles={["donor"]}>
           <DonorProvider>
@@ -132,7 +157,10 @@ export const Router = createBrowserRouter([
       },
       {
         path: "/donneur/appointments",
-        element:<Appointment />,
+        element:
+        <AppointmentProvider>
+        <Appointment />
+        </AppointmentProvider>
       },
       {
         path : "donneur/new-appointment",

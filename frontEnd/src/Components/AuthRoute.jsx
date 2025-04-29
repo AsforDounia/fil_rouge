@@ -18,6 +18,12 @@ const AuthRoute = () => {
     if (roles.includes("patient")) {
       return <Navigate to="/patient/profile" replace />;
     }
+    if (roles.includes("patient")) {
+      return <Navigate to="/patient/profile" replace />;
+    }
+    if (roles.includes("admin")) {
+      return <Navigate to="/admin/dashboard" replace />;
+    }
   }
 
   return <Outlet />;

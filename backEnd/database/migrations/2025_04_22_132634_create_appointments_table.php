@@ -21,7 +21,7 @@ return new class extends Migration
             $table->dateTime('appointment_date');
             $table->time('appointment_time');
 
-            $table->enum('status', ['en_attente', 'confirmée', 'annulée'])->default('en_attente');
+            $table->enum('status', ['confirmée', 'annulée'])->default('confirmée');
 
             $table->timestamps();
         });

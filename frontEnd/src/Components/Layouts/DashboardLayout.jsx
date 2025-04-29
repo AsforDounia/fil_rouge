@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Outlet } from 'react-router-dom';
 import Sidebar from '../DashboardSharedComponents/Sidebar';
 import TopBar from '../DashboardSharedComponents/TopBar';
@@ -6,6 +6,9 @@ import { useAuth } from '../../Context/AuthContext';
 function DashboardLayout() {
 
 
+    useEffect(()=>{
+        
+    },[])
 
     return (
         <>

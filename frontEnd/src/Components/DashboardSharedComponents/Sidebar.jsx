@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { NavLink } from 'react-router-dom';
-import { FaHome, FaCalendarAlt, FaHistory, FaHandHoldingMedical, FaCalendarPlus } from "react-icons/fa";
+import { FaHome, FaCalendarAlt, FaHistory, FaHandHoldingMedical, FaCalendarPlus, FaProcedures, FaUser } from "react-icons/fa";
+import { RiFileChartLine, RiUserLine } from "react-icons/ri";
 import { TbLogout2 } from "react-icons/tb";
 import { FaHospital } from "react-icons/fa6";
 import { IoMdMail, IoMdSettings } from "react-icons/io";
@@ -31,40 +32,115 @@ const Sidebar = () => {
                 }
             } catch (error) {
                 console.error("Error fetching user role:", error);
-                setUserRole("user"); // Default fallback
+                setUserRole("user");
             }
         };
         
         fetchRole();
     }, [hasRole]);
 
-    // Set menu items based on user role
-    useEffect(() => {
-        const baseUrls = {
-            donor: '/donneur',
-            admin: '/admin',
-            centre_manager: '/centre-manager',
-            user: '/user'
-        };
+    // useEffect(() => {
+    //     const baseUrls = {
+    //         donor: '/donneur',
+    //         admin: '/admin',
+    //         centre_manager: '/centre-manager',
+    //         user: '/user'
+    //     };
         
-        const baseUrl = baseUrls[userRole] || '/user';
+    //     const baseUrl = baseUrls[userRole] || '/user';
 
-        const items = [
-            { icon: <FaHome />, text: 'Tableau de bord', href: `${baseUrl}/dashboard`, badge: null },
-            { icon: <FaCalendarAlt />, text: 'Mes Rendez-vous', href: `${baseUrl}/appointments`, badge: null },
-            { icon: <FaCalendarPlus />, text: 'Nouveau Rendez-vous', href: `${baseUrl}/new-appointment`, badge: null },
-            { icon: <FaHistory />, text: 'Historique des Dons', href: `${baseUrl}/donation-history`, active: false, badge: null },
-            { icon: <FaHospital />, text: 'Centres de Don', href: `${baseUrl}/centers`, active: false, badge: null },
-            { icon: <FaHandHoldingMedical />, text: 'Demandes de Sang', href: `${baseUrl}/blood-requests`, active: false, badge: null },
-            // { icon: <IoMdMail />, text: 'Messages', href: `${baseUrl}/messages`, active: false, badge: null },
-            { icon: <MdFestival />, text: 'Evenements', href: `${baseUrl}/events`, active: false, badge: null },
-            { icon: <IoMdSettings />, text: 'Paramètres', href: `${baseUrl}/profile`, badge: null },
-            { icon: <TbLogout2 />, text: 'Déconnexion', href: 'logout', badge: null },
-        ];
+    //     const items = [
+    //         { icon: <FaHome />, text: 'Tableau de bord', href: `${baseUrl}/dashboard`, badge: null },
+    //         { icon: <FaCalendarAlt />, text: 'Mes Rendez-vous', href: `${baseUrl}/appointments`, badge: null },
+    //         { icon: <FaCalendarPlus />, text: 'Nouveau Rendez-vous', href: `${baseUrl}/new-appointment`, badge: null },
+    //         { icon: <FaHistory />, text: 'Historique des Dons', href: `${baseUrl}/donation-history`, active: false, badge: null },
+    //         { icon: <FaHospital />, text: 'Centres de Don', href: `${baseUrl}/centers`, active: false, badge: null },
+    //         { icon: <FaHandHoldingMedical />, text: 'Demandes de Sang', href: `${baseUrl}/blood-requests`, active: false, badge: null },
+    //         // { icon: <IoMdMail />, text: 'Messages', href: `${baseUrl}/messages`, active: false, badge: null },
+    //         { icon: <MdFestival />, text: 'Evenements', href: `${baseUrl}/events`, active: false, badge: null },
+    //         { icon: <IoMdSettings />, text: 'Paramètres', href: `${baseUrl}/profile`, badge: null },
+    //         { icon: <TbLogout2 />, text: 'Déconnexion', href: 'logout', badge: null },
+    //     ];
         
-        setMenuItems(items);
-    }, [userRole]);
+    //     setMenuItems(items);
+    // }, [userRole]);
 
+
+        useEffect(() => {
+            const baseUrls = {
+                donor: '/donneur',
+                admin: '/admin',
+                centre_manager: '/centre-manager',
+                user: '/user'
+            };
+            
+            const baseUrl = baseUrls[userRole] || '/user';
+    
+            // Common items for all roles
+            const commonItems = [
+                { icon: <FaHome />, text: 'Tableau de bord', href: `${baseUrl}/dashboard`, badge: null },
+                { icon: <IoMdSettings />, text: 'Paramètres', href: `${baseUrl}/profile`, badge: null },
+                { icon: <TbLogout2 />, text: 'Déconnexion', href: 'logout', badge: null },
+            ];
+    
+            
+            const donorItmes = [
+                { icon: <FaCalendarAlt />, text: 'Mes Rendez-vous', href: `${baseUrl}/appointments`, badge: null },
+                { icon: <FaCalendarPlus />, text: 'Nouveau Rendez-vous', href: `${baseUrl}/new-appointment`, badge: null },
+                { icon: <FaHistory />, text: 'Historique des Dons', href: `${baseUrl}/donation-history`, badge: null },
+                { icon: <FaHospital />, text: 'Centres de Don', href: `${baseUrl}/centers`, badge: null },
+                { icon: <MdFestival />, text: 'Evenements', href: `${baseUrl}/events`, badge: null },
+            ];
+    
+            const adminItmes = [
+                { icon: <FaUser />, text: 'Gestion d\'Utilisateurs ', href: `${baseUrl}/donneurs`, badge: null },
+                // { icon: <FaProcedures />, text: 'Gestion des Patients', href: `${baseUrl}/patients`, badge: null },
+                // { icon: <FaHospital />, text: 'Gestion des Centres', href: `${baseUrl}/centers`, badge: null },
+                { icon: <FaHandHoldingMedical />, text: 'Demandes de Sang', href: `${baseUrl}/blood-requests`, badge: null },
+                { icon: <RiFileChartLine />, text: 'Rapports', href: `${baseUrl}/reports`, badge: null },
+                { icon: <MdFestival />, text: 'Gestion Evenements', href: `${baseUrl}/events`, badge: null },
+            ];
+    
+            const centreManagerItmes = [
+                { icon: <FaCalendarAlt />, text: 'Rendez-vous', href: `${baseUrl}/appointments`, badge: null },
+                { icon: <FaHospital />, text: 'Mon Centre', href: `${baseUrl}/my-center`, badge: null },
+                { icon: <FaHandHoldingMedical />, text: 'Demandes de Sang', href: `${baseUrl}/blood-requests`, badge: null },
+                { icon: <FaHistory />, text: 'Historique des Dons', href: `${baseUrl}/donation-records`, badge: null },
+                { icon: <MdFestival />, text: 'Evenements Centre', href: `${baseUrl}/center-events`, badge: null },
+            ];
+    
+            const userItmes = [
+                { icon: <FaHospital />, text: 'Centres de Don', href: `${baseUrl}/centers`, badge: null },
+                { icon: <MdFestival />, text: 'Evenements', href: `${baseUrl}/events`, badge: null },
+            ];
+            
+            // Combine common items with role-specific items
+            let items = [];
+            
+            // Always put dashboard as the first item
+            items.push(commonItems[0]);
+            
+            // Add role-specific items
+            switch (userRole) {
+                case 'donor':
+                    items = [...items, ...donorItmes];
+                    break;
+                case 'admin':
+                    items = [...items, ...adminItmes];
+                    break;
+                case 'centre_manager':
+                    items = [...items, ...centreManagerItmes];
+                    break;
+                default:
+                    items = [...items, ...userItmes];
+                    break;
+            }
+            
+            // Add settings and logout at the end
+            items.push(commonItems[1], commonItems[2]);
+            
+            setMenuItems(items);
+        }, [userRole]);
     if (loading) {
         return <div>Chargement...</div>;
     }

@@ -13,12 +13,16 @@ import {
 import { useDonor } from '../../Context/DonorContext';
 import { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
+import { Link } from 'react-router-dom';
+import { useAppointment } from '../../Context/AppointmentContext';
 
 
 export default function Appointment() {
 
   const {getAppointmentsStats , appointmentsStats} = useDonor();
   const [loading , setLoading] = useState(true);
+
+  const {deleteAppointment} = useAppointment();
 
   useEffect(()=>{
     const fetchStats = async () => {
@@ -35,6 +39,14 @@ export default function Appointment() {
   },[])
 
 
+  const handeleDelete = async (id) => {
+    try{
+      await deleteAppointment(id);
+      await getAppointmentsStats();
+    }catch(error){
+      console.error(error);
+    }
+  }
   if(loading){
     return (
       <div className="flex justify-center items-center min-h-[60vh]">
@@ -47,14 +59,10 @@ export default function Appointment() {
   return (
     <>
       {/* Header */}
-      <div className="flex justify-between mb-8">
-        <div>
-          <h2 className="text-2xl font-bold text-wine">Mes Rendez-vous</h2>
-          <p className="text-teal opacity-90">Gérez vos rendez-vous de don</p>
-        </div>
-        <button className="flex items-center gap-1 bg-wine text-white py-2 px-4 rounded-lg border hover:opacity-90 cursor-pointer">
+      <div className="flex justify-end mb-8">
+        <Link to="/donneur/new-appointment" className="flex items-center gap-1 bg-wine text-white py-2 px-4 rounded-lg border hover:opacity-90 cursor-pointer">
           <FaPlus /> <span> Nouveau Rendez-vous</span>
-        </button>
+        </Link>
       </div>
 
       {/* Cartes de résumé */}
@@ -82,7 +90,7 @@ export default function Appointment() {
             </button>
           </div>
           <h3 className="font-semibold text-lg mt-4 text-cream">Dernier Don</h3>
-          <p className="mt-1 text-[rgba(214,195,168,0.7)]">{appointmentsStats.last_donation_date}</p>
+          <p className="mt-1 text-[rgba(214,195,168,0.7)]">{appointmentsStats.last_donation_date ? (appointmentsStats.last_donation_date): "aucune don trouve"}</p>
         </div>
         <div className="bg-white border p-6 rounded-lg shadow">
           <div className="flex justify-between">
@@ -153,7 +161,7 @@ export default function Appointment() {
           </div>
           <div>
             <p className="text-gray-600">{appointment.date}</p>
-            <p className="text-sm text-gray-500">{appointment.time}</p>
+            <p className="text-sm text-gray-500">{appointment.appointment_time}</p>
             <p className="text-sm text-gray-600">{appointment.centre.name}</p>
           </div>
         </div>
@@ -163,10 +171,10 @@ export default function Appointment() {
           </span>
           {appointment.status !== 'annulée' && (
             <div className="flex space-x-1">
-              <button className="text-teal">
+              {/* <button className="text-teal">
                 <FaEdit size={16} />
-              </button>
-              <button className="text-wine">
+              </button> */}
+              <button onClick={ () => handeleDelete(appointment.id)} className="text-wine cursor-pointer ">
                 <FaTrash size={16} />
               </button>
             </div>

@@ -1,13 +1,57 @@
 import React, { useEffect, useState } from 'react';
-import { FaBell } from 'react-icons/fa';
+import { FaBell, FaUserShield } from 'react-icons/fa';
 import { useAuth } from '../../Context/AuthContext';
 import { toast } from 'react-toastify';
+import { useLocation } from 'react-router-dom';
 
 const TopBar = () => {
-    const { user, getUser } = useAuth();
+    const { user, getUser , hasRole } = useAuth();
     const [loading, setLoading] = useState(true);
     const [localUserData, setLocalUserData] = useState(null);
-
+        const [userRole, setUserRole] = useState("user");
+        const location = useLocation();
+        const [pageInfo, setPageInfo] = useState({ title: '', subtitle: '' });
+      
+        useEffect(() => {
+          const path = location.pathname;
+      
+          if (path === '/donneur/appointments') {
+            setPageInfo({
+              title: "Mes Rendez-vous",
+              subtitle: "Gérez vos rendez-vous de don",
+            });
+          } else if (path === '/donneur/new-appointment') {
+            setPageInfo({
+              title: "Nouveau Rendez-vous",
+              subtitle: "Planifier votre prochain don de sang",
+            });
+          } else if (path === '/donneur/blood-requests') {
+            setPageInfo({
+              title: "Demandes de sang",
+              subtitle: "Trouvez des opportunités de don de sang près de chez vous",
+            });
+          } else if (path === '/donneur/dashboard') {
+            setPageInfo({
+              title: "Mon Espace Donneur",
+              subtitle: `Bienvenue, ${localUserData?.name}`,
+            });
+          } else if (path === '/admin/dashboard') {
+            setPageInfo({
+              title: "Espace Admin",
+              subtitle: `Bienvenue, ${localUserData?.name}`,
+            });
+          } else if (path === '/admin/donneurs') {
+            setPageInfo({
+              title: "Gestion des Donneurs",
+              subtitle: `Gérer les donneurs`,
+            });
+          } else {
+            setPageInfo({
+              title: "hello",
+              subtitle: "hello",
+            });
+          }
+        }, [location.pathname, localUserData?.name]);
     useEffect(() => {
         if (user) {
             setLocalUserData(user);
@@ -19,12 +63,15 @@ const TopBar = () => {
         const fetchData = async () => {
             try {
                 await getUser();
+                const isAdmin = await hasRole(["admin"]);
+                if (isAdmin) {
+                    setUserRole("admin");
+                }
             } catch (error) {
                 toast.error("Error get user: " + error.message);
             }
         };
         fetchData();
-
     }, []);
 
 
@@ -36,32 +83,51 @@ const TopBar = () => {
         );
     }
 
-    const getPageInfo = () => {
-        const path = location.pathname;
+    // const getPageInfo = () => {
+    //     const path = location.pathname;
         
-        if (path === '/appointments') {
-            return {
-                title: "Mes Rendez-vous",
-                subtitle: "Gérez vos rendez-vous de don",
-            };
-        } else if (path === '/new-appointment') {
-            return {
-                title: "Nouveau Rendez-vous",
-                subtitle: "Planifier votre prochain don de sang",
-            };
-        } else if (path === '/blood-requests') {
-            return {
-                title: "Demandes de sang",
-                subtitle: "Trouvez des opportunités de don de sang près de chez vous",
-            };
-        } else {
-            return {
-                title: "Mon Espace Donneur",
-                subtitle: `Bienvenue, ${localUserData?.name}`,
-            };
-        }
-    };
-    const pageInfo = getPageInfo();
+    //     if (path === '/donneur/appointments') {
+    //         return {
+    //             title: "Mes Rendez-vous",
+    //             subtitle: "Gérez vos rendez-vous de don",
+    //         };
+    //     } else if (path === '/donneur/new-appointment') {
+    //         return {
+    //             title: "Nouveau Rendez-vous",
+    //             subtitle: "Planifier votre prochain don de sang",
+    //         };
+    //     } else if (path === '/donneur/blood-requests') {
+    //         return {
+    //             title: "Demandes de sang",
+    //             subtitle: "Trouvez des opportunités de don de sang près de chez vous",
+    //         };
+    //     } else if(path === '/donneur/dashboard'){
+    //         return {
+    //             title: "Mon Espace Donneur",
+    //             subtitle: `Bienvenue, ${localUserData?.name}`,
+    //         };
+    //     }
+    //      else if(path === '/admin/dashboard'){
+    //         return {
+    //             title: "Espace Admin",
+    //             subtitle: `Bienvenue, ${localUserData?.name}`,
+    //         };
+    //     }
+    //      else if(path === '/admin/donneurs'){
+    //         return {
+    //             title: "Gestion des Donneurs",
+    //             subtitle: `Gérer les donneurs`,
+    //         };
+    //     }
+    //     else{
+    //         return {
+    //             title: "hello",
+    //             subtitle: `hello`,
+    //         };
+    //     }
+
+    // };
+    // const pageInfo = getPageInfo();
     return (
         <div className="flex justify-between items-center mb-8">
             <div>
@@ -72,10 +138,22 @@ const TopBar = () => {
                 <button className="bg-teal/10 p-2 rounded-lg border-none cursor-pointer text-teal">
                     <FaBell size={20} />
                 </button>
-                <div className="flex items-center gap-2 bg-wine py-2 px-4 rounded-lg">
-                    <span className="text-cream">{localUserData?.blood_type}</span>
-                    <img src={localUserData?.profile_image} alt="Donor" className="w-10 h-10 rounded-full border-2 border-cream" />
-                </div>
+                {userRole && userRole == "admin" ? (
+                    <div className="flex items-center space-x-2">
+                        <div className="w-10 h-10 rounded-full bg-burgundy flex items-center justify-center text-white">
+                            <FaUserShield />
+                        </div>
+                        <div className="hidden md:block">
+                            <div className="text-sm font-medium">Admin</div>
+                            <div className="text-xs text-gray-500">Administrateur</div>
+                        </div>
+                    </div>
+                ):(
+                    <div className="flex items-center gap-2 bg-wine py-2 px-4 rounded-lg">
+                        <span className="text-cream">{localUserData?.blood_type}</span>
+                        <img src={`http://127.0.0.1:8000/storage/${localUserData?.profile_image}`} alt="User" className="w-10 h-10 rounded-full border-2 border-cream" />
+                    </div>
+                )}
             </div>
 </div>
 );

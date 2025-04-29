@@ -79,6 +79,7 @@ Route::group(['middleware' => ['auth:sanctum', 'role:donor']], function () {
     Route::post('appointment/unavailableTimes', [AppointmentController::class, 'getUnavailableTimes']);
     Route::get('donations',[DonController::class,'index']);
     Route::post('appointments',[AppointmentController::class,'store']);
+    Route::post('donor/annuler/appointment/{id}',[AppointmentController::class,'destroy']);
 });
 
 
