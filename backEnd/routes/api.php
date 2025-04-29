@@ -31,6 +31,7 @@ Route::get('stats',[HomeController::class,'index']);
 Route::get('testimonials',[TemoignageController::class,'index']);
 Route::get('events',[EventController::class,'index']);
 Route::get('centers',[CenterController::class,'index']);
+Route::get('allCenters',[CenterController::class,'allCentres']);
 Route::get('centers/search', [CenterController::class, 'search']);
 
 

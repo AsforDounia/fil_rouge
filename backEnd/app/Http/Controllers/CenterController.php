@@ -20,6 +20,15 @@ class CenterController extends Controller
         ]);
     }
 
+    public function allCentres(){
+        $centers = User::whereHas('roles', function ($query) {
+            $query->where('name', 'centre_manager');
+        })->get();
+        
+        return response()->json([
+            "centers" => $centers
+        ]);
+    }
 
     public function search(Request $request)
     {

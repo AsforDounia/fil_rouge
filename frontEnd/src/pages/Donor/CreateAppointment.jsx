@@ -257,8 +257,7 @@ export default function CreateAppointment() {
                         : "Pick a day."
                     }
                     disabled={[
-                      { before: new Date(2025, 3, 27) },
-                      new Date(2025, 3, 29),
+                      { before: new Date() },
                       ...(disabledDates ? disabledDates.map((date) => new Date(date)) : []),
                     ]}
                   />

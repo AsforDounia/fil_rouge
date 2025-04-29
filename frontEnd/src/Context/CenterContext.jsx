@@ -36,6 +36,7 @@ const CenterContext = createContext();
 
 export const CenterProvider = ({ children }) => {
   const [centers, setCenters] = useState(null);
+  const [allCenters, setAllCenters] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
@@ -56,6 +57,20 @@ export const CenterProvider = ({ children }) => {
     }
   };
 
+  const getAllCentres = async() => {
+    try {
+      const response = await api.get('allCenters');
+      setAllCenters(response.data.centers);
+      setError(null);
+      return response.data.centers;
+    } catch (err) {
+      setError(err.message || 'Une erreur est survenue');
+      console.error('Error fetching centers:', err);
+      return null;
+    } finally {
+      setLoading(false);
+    }
+  }
   // New function to search centers for autocomplete suggestions
   const searchCenters = async (query) => {
     if (!query || query.length < 1) return [];
@@ -76,7 +91,9 @@ export const CenterProvider = ({ children }) => {
         loading,
         error,
         getCenters,
-        searchCenters
+        searchCenters,
+        getAllCentres,
+        allCenters
       }}
     >
       {children}

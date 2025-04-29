@@ -98,7 +98,7 @@ const Sidebar = () => {
                 { icon: <HiUserAdd />, text: 'Ajouter new Utilisateur', href: `${baseUrl}/addUser`, badge: null },
                 // { icon: <FaProcedures />, text: 'Gestion des Patients', href: `${baseUrl}/patients`, badge: null },
                 // { icon: <FaHospital />, text: 'Gestion des Centres', href: `${baseUrl}/centers`, badge: null },
-                { icon: <FaHandHoldingMedical />, text: 'Demandes de Sang', href: `${baseUrl}/blood-requests`, badge: null },
+                { icon: <FaHandHoldingMedical />, text: 'Demandes de Sang', href: `${baseUrl}/requests`, badge: null },
                 { icon: <RiFileChartLine />, text: 'Rapports', href: `${baseUrl}/reports`, badge: null },
                 { icon: <MdFestival />, text: 'Gestion Evenements', href: `${baseUrl}/events`, badge: null },
             ];

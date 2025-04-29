@@ -35,6 +35,7 @@ import AdminDashboard from "../pages/Admin/AdminDashboard";
 import { AdminProvider } from "../Context/AdminContext";
 import ManageUsers from "../pages/Admin/ManageUsers";
 import AddUser from "../pages/Admin/AddUser";
+import AdminRequests from "../pages/Admin/AdminRequests";
 
 export const Router = createBrowserRouter([
   {
@@ -141,6 +142,16 @@ export const Router = createBrowserRouter([
       {
         path: "/admin/addUser",
         element: <AddUser />,
+      },
+      {
+        path: "/admin/requests",
+        element:
+        <CenterProvider>
+          <RequestProvider>
+            <AdminRequests />
+          </RequestProvider>
+        </CenterProvider>
+        ,
       },
 
     ],

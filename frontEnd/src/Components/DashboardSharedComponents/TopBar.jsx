@@ -66,6 +66,18 @@ const TopBar = () => {
               subtitle: "",
             });
           } 
+           else if (path === '/admin/requests') {
+            setPageInfo({
+              title: "Gestion des demandes de don",
+              subtitle: "",
+            });
+          } 
+           else if (path === '/admin/addUser') {
+            setPageInfo({
+              title: "Ajouter des nouveaux utilisateurs",
+              subtitle: "",
+            });
+          } 
           else {
             setPageInfo({
               title: "Paramètres",
