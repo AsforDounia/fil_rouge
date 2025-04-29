@@ -17,8 +17,8 @@ class RoleSeeder extends Seeder
             'donor',
             'patient',
             'centre_manager',
-            'hospital_manager',
-            'bank_manager',
+            // 'hospital_manager',
+            // 'bank_manager',
             'admin',
         ];
 

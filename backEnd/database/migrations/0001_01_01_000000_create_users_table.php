@@ -28,6 +28,7 @@ return new class extends Migration
             $table->decimal('weight', 5, 2)->nullable();
             $table->integer('height')->nullable();
 
+
             $table->rememberToken();
             $table->timestamps();
         });

@@ -27,6 +27,14 @@ class DatabaseSeeder extends Seeder
 
 
         $users = User::factory(20)->create();
+
+        $users->each(function ($user) {
+            Localisation::factory()->create([
+                'user_id' => $user->id,
+            ]);
+        });
+
+
         $roles = Role::all();
 
         $firstUser = $users->first();
@@ -40,58 +48,71 @@ class DatabaseSeeder extends Seeder
 
 
 
-        Conversation::factory(10)->create();
+        // Conversation::factory(10)->create();
+        // Message::factory(30)->create();
 
-        // Create messages
-        Message::factory(30)->create();
 
-        // Create blood collection campaigns
-        Collecte::factory(5)->create();
+        // Collecte::factory(5)->create();
 
-        // Create donations
-        // Don::factory(20)->create();
-
-        // Create donation requests
-
-        // Create events
         $events = Event::factory(5)->create();
 
-        // Attach users to events (pivot)
         foreach ($events as $event) {
             $event->participants()->attach(
                 $users->random(rand(3, 7))->pluck('id')->toArray()
             );
         }
 
-        // Create reports
-
-
-        // Localisation data
-        Localisation::factory(20)->create();
-
-        // Testimonials
-        Temoignage::factory(10)->create();
 
 
 
+        $temoignages = Temoignage::factory(10)->create();
 
 
+        foreach ($temoignages as $temoignage) {
+            $temoignage->user_id = $users->random()->id;
+            $temoignage->save();
+        }
 
 
+        $donors = User::factory(10)->create();
 
-        $donors = User::factory()->count(10)->create()->each(function ($user) use ($donorRole) {
-            $user->roles()->attach($donorRole->id);
-        });
-        $patients = User::factory()->count(10)->create()->each(function ($user) use ($patientRole) {
-            $user->roles()->attach($patientRole->id);
+        $donors->each(function ($donor) use ($donorRole) {
+            Localisation::factory()->create([
+                'user_id' => $donor->id,
+            ]);
+            $donor->roles()->attach($donorRole->id);
         });
 
-        $centres = User::factory()->count(10)->create()->each(function ($user) use ($centreRole) {
-            $user->roles()->attach($centreRole->id);
+        $patients = User::factory(10)->create();
+
+        $patients->each(function ($patient) use ($patientRole) {
+            Localisation::factory()->create([
+                'user_id' => $patient->id,
+            ]);
+            $patient->roles()->attach($patientRole->id);
         });
-        $admins = User::factory()->count(10)->create()->each(function ($user) use ($adminRole) {
-            $user->roles()->attach($adminRole->id);
+
+
+        $centres = User::factory(10)->create();
+
+        $centres->each(function ($centre) use ($centreRole) {
+            Localisation::factory()->create([
+                'user_id' => $centre->id,
+            ]);
+            $centre->roles()->attach($centreRole->id);
         });
+
+
+        $admins = User::factory(10)->create();
+
+        $admins->each(function ($admin) use ($adminRole) {
+            Localisation::factory()->create([
+                'user_id' => $admin->id,
+            ]);
+            $admin->roles()->attach($adminRole->id);
+        });
+
+
 
         foreach ($admins as $admin) {
             Rapport::factory()->count(1)->create([
@@ -106,10 +127,12 @@ class DatabaseSeeder extends Seeder
                 'donor_id' => $donor->id,
                 'centre_id' => $centres->random()->id,
             ]);
-            Appointment::factory()->count(3)->create(['donor_id' => $donor->id , 'centre_id' => $centres->random()->id]);
-
-
+            Appointment::factory()->count(3)->create([
+                'donor_id' => $donor->id ,
+                'centre_id' => $centres->random()->id
+            ]);
         }
+        
         foreach ($patients as $patient) {
             DonRequest::factory()->count(5)->create([
                 'patient_id' => $patient->id,

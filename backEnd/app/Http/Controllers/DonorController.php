@@ -149,7 +149,6 @@ class DonorController extends Controller
             $appointment_date = Carbon::parse($appointment->appointment_date);
             $formatted_appointment = $appointment->toArray();
             $formatted_appointment['date'] = $appointment_date->format('Y-m-d');
-            $formatted_appointment['time'] = $appointment_date->format('H:i');
 
             return $formatted_appointment;
         });

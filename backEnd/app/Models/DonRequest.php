@@ -8,7 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 class DonRequest extends Model
 {
     use HasFactory;
-    protected $fillable = ['patient_id', 'blood_group', 'rh_factor', 'description', 'status'];
+    protected $fillable = ['patient_id','centre_id', 'blood_group', 'component', 'quantity', 'description','urgency', 'status'];
+
 
     public function patient()
     {

@@ -19,6 +19,8 @@ return new class extends Migration
             $table->enum('type_don', ['Plasma', 'Globules', 'Plaquettes' , 'Sang Total']);
 
             $table->dateTime('appointment_date');
+            $table->time('appointment_time');
+
             $table->enum('status', ['en_attente', 'confirmée', 'annulée'])->default('en_attente');
 
             $table->timestamps();

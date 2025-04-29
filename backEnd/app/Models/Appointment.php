@@ -13,6 +13,7 @@ class Appointment extends Model
         'donor_id',
         'centre_id',
         'appointment_date',
+        'appointment_time',
         'status',
     ];
 
