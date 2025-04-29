@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Event;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class EventController extends Controller
 {
@@ -58,5 +59,56 @@ class EventController extends Controller
         return response()->json([
             'count' => $count
             ]);
+    }
+    public function participer($eventId)
+    {
+        $userId = auth()->id();
+
+        $event = Event::find($eventId);
+        if (!$event) {
+            return response()->json([
+                'error' => 'Événement non trouvé.'
+            ], 404);
+        }
+
+        $event->participants()->attach($userId);
+
+        return response()->json([
+            'success'=> 'Vous participez maintenant à cet événement.'
+        ]);
+    }
+    public function annuler($eventId)
+    {
+        $userId = auth()->id();
+
+        $event = Event::find($eventId);
+        if (!$event) {
+            return response()->json([
+                'error' => 'Événement non trouvé.'
+            ], 404);
+        }
+
+        $event->participants()->detach($userId);
+
+        return response()->json([
+            'success' => 'Votre participation a été annulée.'
+        ]);
+    }
+
+    public function userParticiper()
+    {
+        $userId = auth()->id();
+
+        $events = Event::whereHas('participants', function($query) use ($userId) {
+            $query->where('user_id', $userId);
+        })->get();
+
+        $isParticipating = DB::table('inscription_event')->where('user_id', $userId)->get();
+
+            return response()->json([
+                'userEvents' => $isParticipating
+            ]);
+
+
     }
 }

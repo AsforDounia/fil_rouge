@@ -10,13 +10,19 @@ const AuthRoute = () => {
 
   if (isAuthenticated) {
     if (roles.includes("donor")) {
-      return <Navigate to="/donor" replace />;
+      return <Navigate to="/donneur/profile" replace />;
     }
     if (roles.includes("centre_manager")) {
-      return <Navigate to="/centre" replace />;
+      return <Navigate to="/centre/profile" replace />;
     }
     if (roles.includes("patient")) {
-      return <Navigate to="/patient" replace />;
+      return <Navigate to="/patient/profile" replace />;
+    }
+    if (roles.includes("patient")) {
+      return <Navigate to="/patient/profile" replace />;
+    }
+    if (roles.includes("admin")) {
+      return <Navigate to="/admin/dashboard" replace />;
     }
   }
 

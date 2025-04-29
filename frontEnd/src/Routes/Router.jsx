@@ -20,7 +20,20 @@ import { RequestProvider } from "../Context/RequestContext";
 import { DonProvider } from "../Context/DonContext";
 import { DonorProvider } from "../Context/DonorContext";
 import Appointment from "../pages/Donor/Appointment";
-import Appointment from "../pages/Donor/Appointment";
+import CreateAppointment from "../pages/Donor/CreateAppointment";
+import { AppointmentProvider } from "../Context/AppointmentContext";
+import DonnationsHistory from "../pages/Donor/DonnationsHistory";
+import { DonationProvider } from "../Context/DonationContext";
+import Centers from "../pages/Donor/Centers";
+import { CenterProvider } from "../Context/CenterContext";
+import Requests from "../pages/Donor/Requests";
+import Conversation from "../../../HelperFolder/Conversation";
+import { ConversationProvider } from "../../../HelperFolder/CoversationContext";
+import EventsSection from "../Components/HomeComponents/EventsSection";
+import Profile from "../Components/DashboardSharedComponents/Profile";
+import AdminDashboard from "../pages/Admin/AdminDashboard";
+import { AdminProvider } from "../Context/AdminContext";
+import ManageUsers from "../pages/Admin/ManageUsers";
 
 export const Router = createBrowserRouter([
   {
@@ -33,9 +46,11 @@ export const Router = createBrowserRouter([
         element: (
           <StatsProvider>
             <TestimonialProvider>
+            <AuthProvider>
               <EventProvider>
                 <Home />
               </EventProvider>
+              </AuthProvider>
             </TestimonialProvider>
           </StatsProvider>
         ),
@@ -105,6 +120,28 @@ export const Router = createBrowserRouter([
 
   {
     element: (
+      <AuthProvider>
+        <ProtectedRoute roles={["admin"]}>
+          <AdminProvider>
+          <DashboardLayout />
+          </AdminProvider>
+        </ProtectedRoute>
+      </AuthProvider>
+    ),
+    children: [
+      {
+        path: "/admin/dashboard",
+        element: <AdminDashboard />,
+      },
+      {
+        path: "/admin/donneurs",
+        element: <ManageUsers />,
+      },
+
+    ],
+  },
+  {
+    element: (
           <AuthProvider>
         <ProtectedRoute roles={["donor"]}>
           <DonorProvider>
@@ -115,13 +152,73 @@ export const Router = createBrowserRouter([
     ),
     children: [
       {
-        path: "/donneur",
+        path: "/donneur/dashboard",
         element: <DonorDashboard />,
       },
       {
-        path: "/appointments",
-        element:<Appointment />,
+        path: "/donneur/appointments",
+        element:
+        <AppointmentProvider>
+        <Appointment />
+        </AppointmentProvider>
       },
+      {
+        path : "donneur/new-appointment",
+        element : (
+          <AppointmentProvider>
+          <CreateAppointment />
+          </AppointmentProvider>
+        )
+      },
+      {
+        path : "donneur/donation-history",
+        element : (
+          <DonationProvider>
+          <DonnationsHistory /></DonationProvider>
+        )
+      },
+      {
+        path : "donneur/centers",
+        element : (
+          <CenterProvider>
+            <Centers />
+          </CenterProvider>
+        )
+      },
+      {
+        path : "donneur/blood-requests",
+        element : (
+            <RequestProvider>
+              <Requests />
+            </RequestProvider>
+        )
+      },
+      {
+        path : "donneur/events",
+        element : (
+            <EventProvider>
+              <EventsSection />
+            </EventProvider>
+        )
+      },
+      {
+        path : "donneur/profile",
+        element : (
+          <AuthProvider>
+            <Profile />
+          </AuthProvider>
+            
+        )
+      },
+      
+      // {
+      //   path : "/messages",
+      //   element : (
+      //     <ConversationProvider>
+      //         <Conversation />
+      //     </ConversationProvider>
+      //   )
+      // }
     ],
   },
  

@@ -6,7 +6,7 @@ import api from '../api/axios';
 export const RequestContext = createContext();
 
 export const RequestProvider = ({ children }) => {
-    const [request, setRequest] = useState(null);
+    const [requests, setRequests] = useState(null);
     const [nbRstUrgC, setNbRstUrgC] = useState(null);
 
     const getnbRstUrgC = async () => {
@@ -18,10 +18,22 @@ export const RequestProvider = ({ children }) => {
         }
     }
 
+    const getRequests = async ()=>{
+        try {
+            const response = await api.get(`requests`);
+            setRequests(response.data.don_requests);
+
+        } catch (error) {
+            console.error(error);
+        }
+    }
+
     return (
         <RequestContext.Provider value={{
             getnbRstUrgC,
-            nbRstUrgC
+            nbRstUrgC,
+            getRequests,
+            requests
 
         }}>
             {children}

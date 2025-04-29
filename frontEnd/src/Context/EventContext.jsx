@@ -9,6 +9,7 @@ export const EventProvider = ({ children }) => {
 
     const [events, setEvents] = useState();
     const [comingNb , setComingNb] = useState();
+    const [userEvents , setUserEvents] = useState();
 
     const getEvents = async (page = 1) => {
         try {
@@ -27,12 +28,44 @@ export const EventProvider = ({ children }) => {
             toast.error("Error fetching upcoming events :" + error);
         }
     }
+
+    const userParticiper = async () => {
+        try {
+            const response = await api.get('events/user/participer');
+            setUserEvents(response.data.userEvents);
+        } catch (error) {
+            toast.error("Error fetching upcoming events :" + error);
+        }
+    }
+
+
+    const participer = async (eventId) => {
+        try {
+            const response = await api.get(`events/participer/${eventId}`);
+        } catch (error) {
+            toast.error("Error fetching upcoming events :" + error);
+        }
+    }
+    const annulerParticipation = async (eventId) => {
+        try {
+            const response = await api.get(`events/annuler/participer/${eventId}`);
+        } catch (error) {
+            toast.error("Error fetching upcoming events :" + error);
+        }
+    }
+
+
+
     return (
         <EventContext.Provider value={{
             getEvents,
             events,
             nbComingEvents,
-            comingNb
+            comingNb,
+            userParticiper,
+            userEvents,
+            participer,
+            annulerParticipation 
         }}>
             {children}
         </EventContext.Provider>

@@ -123,6 +123,27 @@ export const AuthProvider = ({ children }) => {
       delete api.defaults.headers.common['Authorization'];
     }
   };
+
+
+  const updateProfile = async(profileForm) => {
+    try{
+      // console.log(profileForm);
+      const response = await api.post('user/update/profile', profileForm , {
+        headers: { 'Content-Type': 'multipart/form-data' }
+    });
+      setUser(response.data.user)
+      console.log(response.data.user);
+      
+    }catch(error){
+      console.error('update profile failed:', error);
+    }
+  }
+  
+
+  const deleteAccount = async() => {
+      const response = await api.post('user/delete/profile');
+      logout();
+  }
   
   return (
     <AuthContext.Provider
@@ -136,7 +157,9 @@ export const AuthProvider = ({ children }) => {
         roles,
         registerf,
         logout,
-        getUser
+        getUser,
+        updateProfile,
+        deleteAccount
       }}
     >
       {children}

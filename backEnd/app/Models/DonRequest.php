@@ -8,7 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 class DonRequest extends Model
 {
     use HasFactory;
-    protected $fillable = ['patient_id', 'blood_group', 'rh_factor', 'description', 'status'];
+    protected $fillable = ['patient_id','centre_id', 'blood_group', 'component', 'quantity', 'description','urgency', 'status'];
+
 
     public function patient()
     {
@@ -21,6 +22,9 @@ class DonRequest extends Model
     }
 
 
+    public function centre(){
+        return $this->belongsTo(User::class,"centre_id");
+    }
 
     public static function requestsMatchingUser()
     {

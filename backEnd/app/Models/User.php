@@ -33,6 +33,7 @@ class User extends Authenticatable
         'weight',
         'height',
         'password',
+        'localisation_id'
     ];
 
     /**
@@ -59,10 +60,8 @@ class User extends Authenticatable
     }
 
 
-        // Roles and permissions
         public function roles()
         {
-            // return $this->belongsToMany(Role::class,"role_user");
             return $this->belongsToMany(Role::class, 'role_user', 'user_id', 'role_id');
         }
 
@@ -120,6 +119,11 @@ class User extends Authenticatable
         public function temoignages()
         {
             return $this->hasOne(Temoignage::class);
+        }
+
+
+        public function donRequest(){
+            return $this->hasMany(DonRequest::class, 'centre_id');
         }
 
 

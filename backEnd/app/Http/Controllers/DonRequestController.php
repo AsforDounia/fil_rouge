@@ -12,7 +12,10 @@ class DonRequestController extends Controller
      */
     public function index()
     {
-        //
+        $donRequests = DonRequest::with('centre')->where('status', 'en_attente')->get();
+    return response()->json([
+            "don_requests" => $donRequests,
+        ]);
     }
 
     /**
