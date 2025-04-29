@@ -18,7 +18,7 @@ return new class extends Migration
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->string('profile_image')->nullable();
-            $table->enum('accountStatus', ['actif', 'inactif', 'suspendu', 'bloque'])->default('actif');
+            $table->enum('accountStatus', ['actif','bloque'])->default('actif');
             $table->date('date_of_birth')->nullable();
             $table->enum('blood_type', ['A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-'])->nullable();
             $table->text('address')->nullable();

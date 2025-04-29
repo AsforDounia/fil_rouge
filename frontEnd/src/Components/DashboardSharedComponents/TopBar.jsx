@@ -59,12 +59,14 @@ const TopBar = () => {
               title: "Espace Admin",
               subtitle: `Bienvenue, ${localUserData?.name}`,
             });
-          } else if (path === '/admin/donneurs') {
+          } 
+           else if (path === '/admin/users') {
             setPageInfo({
-              title: "Gestion des Donneurs",
-              subtitle: `Gérer les donneurs`,
+              title: "Gérer les Utilisateurs",
+              subtitle: "",
             });
-          } else {
+          } 
+          else {
             setPageInfo({
               title: "Paramètres",
               subtitle: "Gérez vos informations personnelles",

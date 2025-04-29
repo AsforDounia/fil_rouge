@@ -46,6 +46,15 @@ export const AdminProvider = ({ children }) => {
         }
     };
 
+    const changeAccountStatus = async (id) => {
+        try {
+          await api.post(`admin/ChangeAccountStatus/${id}`);
+
+        } catch (error) {
+          return { success: false, message: error.response?.data?.message || 'Add failed' };
+        }
+    };
+
     return (
         <AdminContext.Provider value={{
             getStatistics,
@@ -54,6 +63,7 @@ export const AdminProvider = ({ children }) => {
             users,
             addUser,
             deleteUser,
+            changeAccountStatus
         }}>
             {children}
         </AdminContext.Provider>

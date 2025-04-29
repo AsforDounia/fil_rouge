@@ -122,4 +122,22 @@ class AdminController extends Controller
 
         return response()->json(['message' => 'Utilisateur supprimé avec succès'], 200);
     }
+
+
+    public function changeAccountStatus($id)
+    {
+        $user = User::find($id);
+
+        if (!$user) {
+            return response()->json(['message' => 'Utilisateur non trouvé'], 404);
+        }
+
+        $user->accountStatus = $user->accountStatus === 'bloque' ? 'actif' : 'bloque';
+        $user->save();
+
+        return response()->json([
+            'message' => 'Statut du compte mis à jour avec succès',
+            'nouveau_statut' => $user->accountStatus
+        ]);
+    }
 }

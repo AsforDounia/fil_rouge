@@ -30,6 +30,11 @@ class AuthController extends Controller
             ], 401);
         }
 
+        if($user->accountStatus == "bloque"){
+            return response()->json([
+                'message' => 'Le compte utilisateur est bloqué.',
+            ], 403);
+        }
 
         $token = $user->createToken($user->name . '_login_token')->plainTextToken;
 

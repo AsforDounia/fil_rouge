@@ -88,4 +88,5 @@ Route::group(['middleware' => ['auth:sanctum', 'role:admin']], function () {
     Route::get('admin/users', [AdminController::class, 'getUsers' ]);
     Route::post('admin/addUser', [AdminController::class, 'addUser' ]);
     Route::post('admin/deleteUser/{id}', [AdminController::class, 'deleteUser' ]);
+    Route::post('admin/ChangeAccountStatus/{id}', [AdminController::class, 'ChangeAccountStatus' ]);
 });

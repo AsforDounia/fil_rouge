@@ -3,9 +3,10 @@ import { FaSearch, FaUserPlus, FaTrashAlt } from "react-icons/fa";
 import { MdBlock } from "react-icons/md";
 import { useAdmin } from "../../Context/AdminContext";
 import { toast } from "react-toastify";
+import { Link } from "react-router-dom";
 
 export default function ManageUsers() {
-  const { users, getUsers ,deleteUser } = useAdmin();
+  const { users, getUsers ,deleteUser , changeAccountStatus } = useAdmin();
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedRole, setSelectedRole] = useState("");
   const [loading, setLoading] = useState(true);
@@ -31,6 +32,15 @@ export default function ManageUsers() {
       }
   }
 
+  const handeleBloque = async(id) => {
+    try {
+      await changeAccountStatus(id);
+      toast.success('user Account Status is change it with success');
+    } catch (error) {
+      toast.error(error);
+    }
+  }
+
   const filteredUsers = users?.filter((user) => {
     const matchesSearch =
       user.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -51,12 +61,11 @@ export default function ManageUsers() {
   return (
     <div className="p-6">
       {/* Header */}
-      <div className="flex justify-between items-center mb-6">
-        <h1 className="text-2xl font-bold text-burgundy">Gérer les Utilisateurs</h1>
-        <button className="flex items-center gap-2 bg-teal text-white px-4 py-2 rounded-lg hover:bg-darkteal transition">
+      <div className="flex justify-end items-center mb-6">
+        <Link to="/admin/addUser" className="flex items-center gap-2 bg-teal text-white px-4 py-2 rounded-lg hover:bg-darkteal transition">
           <FaUserPlus />
           Ajouter
-        </button>
+        </Link>
       </div>
 
       {/* Search and Role Filter */}
@@ -96,6 +105,7 @@ export default function ManageUsers() {
               <th className="p-4 text-left">Email</th>
               <th className="p-4 text-left">Ville</th>
               <th className="p-4 text-left">Rôle</th>
+              <th className="p-4 text-left">Account Status</th>
               <th className="p-4 text-center w-[160px]" colSpan={2}>Actions</th>
             </tr>
           </thead>
@@ -107,12 +117,20 @@ export default function ManageUsers() {
                   <td className="p-4">{user.email}</td>
                   <td className="p-4">{user.city}</td>
                   <td className="p-4">{user.roles[0]?.name || "-"}</td>
+                  <td className="p-4 text-center">
+                    <span className={`rounded-2xl px-2 ${
+                      user.accountStatus === "bloque"
+                        ? "bg-red-300" 
+                        : "bg-green-300"
+                    }`}
+                  >{user.accountStatus}</span>
+                  </td>
                   <td className="p-4 flex gap-4 items-center">
-                    <button
-                      className={`flex items-center justify-center transition w-24 cursor-pointer ${
+                    <button onClick={() => handeleBloque(user.id)}
+                      className={`w-24 cursor-pointer ${
                         user.accountStatus === "bloque"
-                          ? "text-green-600 hover:text-red-500" 
-                          : "text-red-600 hover:text-green-500"
+                          ? "text-red-600 hover:text-green-500"
+                          : "text-green-600 hover:text-red-500" 
                       }`}
                     >
                       {user.accountStatus === "bloque" ? "Débloquer" : "Bloquer"}
