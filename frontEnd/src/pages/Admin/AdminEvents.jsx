@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { useEvent } from '../../Context/EventContext';
-import { FaArrowCircleLeft, FaArrowCircleRight, FaSearch, FaTrash, FaFilter } from 'react-icons/fa';
-import { Link } from 'react-router-dom';
+import { FaSearch, FaTrash } from 'react-icons/fa';
+
 import { toast } from "react-toastify";
-import { useAuth } from '../../Context/AuthContext';
+
 import AddEventModal from '../../Components/DashboardSharedComponents/AddEventModal';
 
 const AdminEvents = () => {
@@ -145,7 +145,6 @@ const AdminEvents = () => {
 
 
 
-                {/* Results count */}
                 <div className="mb-4 text-gray-600">
                     {displayEvents?.length} événement{displayEvents?.length !== 1 ? 's' : ''} trouvé{displayEvents?.length !== 1 ? 's' : ''}
                 </div>
