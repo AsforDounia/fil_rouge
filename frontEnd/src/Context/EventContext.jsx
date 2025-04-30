@@ -55,6 +55,39 @@ export const EventProvider = ({ children }) => {
     }
 
 
+    const getAllEvent  = async () => {
+        try {
+            const response = await api.get(`admin/events`);
+            setEvents(response.data.events);
+        } catch (error) {
+            toast.error("Error fetching events :" + error);
+        }
+    };
+
+    const deleteEvent  = async (id) => {
+        try {
+            const response = await api.delete(`events/${id}`);
+            if(response.data.success){
+                toast.success(response.data.message);
+                setEvents(prevEvents => prevEvents?.filter(event => event.id !== id));
+            }
+        } catch (error) {
+            toast.error("Error fetching events :" + error);
+        }
+    };
+
+
+    const createEvent = async (formData) => {
+        try {
+            const response = await api.post(`events`,formData);
+            if(response.data.success){
+                toast.success(response.data.message);
+                setEvents(prevEvents => [response.data.event, ...prevEvents]);
+            }
+        } catch (error) {
+            toast.error("Error fetching events :" + error);
+        }
+    };
 
     return (
         <EventContext.Provider value={{
@@ -65,7 +98,10 @@ export const EventProvider = ({ children }) => {
             userParticiper,
             userEvents,
             participer,
-            annulerParticipation 
+            annulerParticipation ,
+            getAllEvent,
+            deleteEvent,
+            createEvent
         }}>
             {children}
         </EventContext.Provider>

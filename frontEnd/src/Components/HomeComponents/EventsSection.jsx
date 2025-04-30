@@ -78,7 +78,11 @@ const EventsSection = () => {
                 <div className="grid grid-cols-1 gap-8 md:grid-cols-3">
                     {events.data.map((event, index) => (
                         <div key={index} className="flex flex-col bg-white rounded-lg overflow-hidden shadow-lg transition-all duration-300 hover:-translate-y-1">
-                            <img src={event.localisation.user.profile_image || '../../../public/images/event.png'} alt={event.title} className="w-full h-48 object-cover" />
+                             {event.localisation.user.profile_image ?(
+                                <img src={`http://127.0.0.1:8000/storage/${event.localisation.user.profile_image}`} alt={event.title} className="w-full h-48 object-cover" />
+                            ):(
+                                <img src='../../../public/images/event.png' alt={event.title} className="w-full h-48 object-cover" />
+                            )}
                             <div className="p-6 py-0">
                                 <span className="inline-block px-3 py-1 bg-cream text-burgundy rounded text-sm mb-4">
                                     {event.date}

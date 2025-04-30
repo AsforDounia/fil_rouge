@@ -42,11 +42,33 @@ export const RequestProvider = ({ children }) => {
 
     const deleteRequest = async(id) => {
         try {
-            console.log(id);
             const response = await api.delete(`requests/${id}`);
             toast.success(response.data.message);
             setRequests(prevRequests => prevRequests?.filter(request => request.id !== id));
 
+        } catch (error) {
+            console.error(error);
+        }
+    }
+    const createRequest = async(newRequest) => {
+        try {
+            const response = await api.post(`requests`,newRequest);
+            if(response.data.success){
+                toast.success(response.data.message);
+                setRequests(prevRequests => [response.data.request, ...prevRequests]);
+            }
+        } catch (error) {
+            console.error(error);
+        }
+    }
+
+
+    const patientRequest = async() => {
+        try {
+            const response = await api.get(`patientRequest`);
+            if(response.data.success){
+                setRequests(response.data.requests);
+            }
         } catch (error) {
             console.error(error);
         }
@@ -59,7 +81,9 @@ export const RequestProvider = ({ children }) => {
             getRequests,
             requests,
             deleteRequest,
-            getAllRequest
+            getAllRequest,
+            createRequest,
+            patientRequest
 
         }}>
             {children}

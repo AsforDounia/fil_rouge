@@ -18,9 +18,18 @@ class DonRequestController extends Controller
         ]);
     }
 
+
+    public function getMyResquests(){
+        $donRequests = DonRequest::with('centre')->where('patient_id',auth()->id())->orderBy('created_at', 'desc')->get();
+        return response()->json([
+            'success' => true,
+            'requests' => $donRequests
+        ]);
+    }
+
     public function getAllRequest()
     {
-        $donRequests = DonRequest::with('centre')->get();
+        $donRequests = DonRequest::with('centre')->orderBy('created_at', 'desc')->get();
         return response()->json([
             "allRequest" => $donRequests,
         ]);
@@ -30,7 +39,30 @@ class DonRequestController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validatedData = $request->validate([
+            'blood_group' => 'required|string|in:A+,A-,B+,B-,AB+,AB-,O+,O-',
+            'urgency' => 'required|string|in:Normal,Urgent',
+            'component' => 'required|string|in:Sang total,Plaquettes,Plasma,Globules',
+            'centre_id' => 'required|integer|exists:users,id',
+            'quantity' => 'required|integer|min:1|max:5',
+            'description' => 'nullable|string|max:500',
+        ]);
+
+        $validatedData['status'] = 'en_attente';
+        $validatedData['patient_id'] = auth()->id();
+
+
+        $request = DonRequest::create($validatedData);
+
+        $request->load('centre');
+
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Demande de don créée avec succès',
+            'request' => $request
+        ], 201);
+
     }
 
     /**

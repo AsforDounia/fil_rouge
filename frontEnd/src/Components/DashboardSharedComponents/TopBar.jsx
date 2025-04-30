@@ -54,9 +54,16 @@ const TopBar = () => {
               title: "Mon Espace Donneur",
               subtitle: `Bienvenue, ${localUserData?.name}`,
             });
-          } else if (path === '/admin/dashboard') {
+          } 
+          else if (path === '/admin/dashboard') {
             setPageInfo({
               title: "Espace Admin",
+              subtitle: `Bienvenue, ${localUserData?.name}`,
+            });
+          } 
+          else if (path === '/centre/dashboard') {
+            setPageInfo({
+              title: "Espace Centre",
               subtitle: `Bienvenue, ${localUserData?.name}`,
             });
           } 
@@ -75,6 +82,12 @@ const TopBar = () => {
            else if (path === '/admin/addUser') {
             setPageInfo({
               title: "Ajouter des nouveaux utilisateurs",
+              subtitle: "",
+            });
+          } 
+           else if (path === '/admin/events') {
+            setPageInfo({
+              title: "Actualités et Événements",
               subtitle: "",
             });
           } 

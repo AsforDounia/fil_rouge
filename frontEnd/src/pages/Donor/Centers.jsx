@@ -348,22 +348,7 @@ const Centers = () => {
                 <span>{center.phone || '+212 5xx-xxxxxx'}</span>
               </div>
             </div>
-            <div className="flex gap-2 mt-4">
-              <button className="bg-burgundy hover:bg-wine text-white rounded-lg py-3 px-4 font-medium flex-grow transition-all duration-300">
-                S'inscrire
-              </button>
-              <button className="bg-cream hover:opacity-90 text-burgundy rounded-lg py-3 px-3 transition-all duration-300">
-                <FaInfoCircle />
-              </button>
-              <button 
-                className="bg-lightGray hover:bg-darkteal hover:text-white text-darkteal border border-gray-200 rounded-lg py-3 px-3 transition-all duration-300"
-                onClick={() => focusOnCenter(center)}
-                disabled={!center.localisation}
-                title={center.localisation ? "Voir sur la carte" : "Emplacement non disponible"}
-              >
-                <FaMapMarkerAlt />
-              </button>
-            </div>
+
           </div>
         </div>
       ));
@@ -414,22 +399,7 @@ const Centers = () => {
               <span>{center.phone || '+212 5xx-xxxxxx'}</span>
             </div>
           </div>
-          <div className="flex gap-2 mt-4">
-            <button className="bg-burgundy hover:bg-wine text-white rounded-lg py-3 px-4 font-medium flex-grow transition-all duration-300">
-              S'inscrire
-            </button>
-            <button className="bg-cream hover:opacity-90 text-burgundy rounded-lg py-3 px-3 transition-all duration-300">
-              <FaInfoCircle />
-            </button>
-            <button 
-              className="bg-lightGray hover:bg-darkteal hover:text-white text-darkteal border border-gray-200 rounded-lg py-3 px-3 transition-all duration-300"
-              onClick={() => focusOnCenter(center)}
-              disabled={!center.localisation}
-              title={center.localisation ? "Voir sur la carte" : "Emplacement non disponible"}
-            >
-              <FaMapMarkerAlt />
-            </button>
-          </div>
+
         </div>
       </div>
     ));

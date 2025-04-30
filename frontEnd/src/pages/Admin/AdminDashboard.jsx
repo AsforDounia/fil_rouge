@@ -17,6 +17,7 @@ import {
   FaProcedures
 } from "react-icons/fa";
 import { useAdmin } from "../../Context/AdminContext";
+import ManageUsers from "./ManageUsers";
 
 export default function AdminDashboard() {
   const {statistics , getStatistics} = useAdmin();
@@ -94,68 +95,7 @@ export default function AdminDashboard() {
             </div>
           </div>
 
-          {/* Quick Actions */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-            <div className="bg-white border border-darkteal rounded-lg p-4 shadow-sm hover:shadow transition-shadow duration-300 transform hover:scale-105 cursor-pointer">
-              <div className="flex justify-between items-center mb-3">
-                <div className="bg-teal/30 p-3 rounded-full">
-                  <FaUserPlus className="text-teal text-xl" />
-                </div>
-                <button className="text-teal hover:text-teal">
-                  <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
-                  </svg>
-                </button>
-              </div>
-              <h3 className="text-lg font-semibold text-burgundy">Ajouter User</h3>
-              <p className="text-teal text-sm mt-1">Enregistrer un nouveau user</p>
-            </div>
-            
-            <div className="bg-burgundy border border-teal rounded-lg p-4 shadow-sm hover:shadow transition-shadow duration-300 transform hover:scale-105 cursor-pointer">
-              <div className="flex justify-between items-center mb-3">
-                <div className="bg-cream/40 p-3 rounded-full">
-                  <FaTint className="text-cream text-xl" />
-                </div>
-                <button className="text-cream hover:text-white">
-                  <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
-                  </svg>
-                </button>
-              </div>
-              <h3 className="text-lg font-semibold text-cream">Ajouter Stock</h3>
-              <p className="text-cream/70 text-sm mt-1">Enregistrer du nouveau sang</p>
-            </div>
-            
-            <div className="bg-white border border-darkteal rounded-lg p-4 shadow-sm hover:shadow transition-shadow duration-300 transform hover:scale-105 cursor-pointer">
-              <div className="flex justify-between items-center mb-3">
-                <div className="bg-teal/30 p-3 rounded-full">
-                  <FaCalendarPlus className="text-wine text-xl" />
-                </div>
-                <button className="text-teal hover:text-teal">
-                  <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
-                  </svg>
-                </button>
-              </div>
-              <h3 className="text-lg font-semibold text-burgundy">Programmer Collecte</h3>
-              <p className="text-teal text-sm mt-1">Planifier un événement</p>
-            </div>
-            
-            <div className="bg-burgundy border border-teal rounded-lg p-4 shadow-sm hover:shadow transition-shadow duration-300 transform hover:scale-105 cursor-pointer">
-              <div className="flex justify-between items-center mb-3">
-                <div className="bg-cream/40 p-3 rounded-full">
-                  <FaListAlt className="text-cream text-xl" />
-                </div>
-                <button className="text-cream hover:text-white">
-                  <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
-                  </svg>
-                </button>
-              </div>
-              <h3 className="text-lg font-semibold text-cream">Génerer Rapport</h3>
-              <p className="text-white/70 text-sm mt-1">Créer un rapport détaillé</p>
-            </div>
-          </div>
+          <ManageUsers />
 
 
       </div>

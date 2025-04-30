@@ -10,7 +10,7 @@ import { useCenter } from '../../Context/CenterContext';
 
 export default function AdminRequests() {
 
-    const { requests, getAllRequest , deleteRequest } = useRequest();
+    const { requests, getAllRequest , deleteRequest , createRequest } = useRequest();
     const {allCenters , getAllCentres} = useCenter();
     const [activeTab, setActiveTab] = useState('all');
     const [allrequests, setAllRequests] = useState([]);
@@ -26,16 +26,15 @@ export default function AdminRequests() {
         component: '',
         status:''
     });
-    // const [newRequest, setNewRequest] = useState({
-    //     blood_group: 'A+',
-    //     urgency: 'Normal',
-    //     component: 'Sang total',
-    //     centre_id: '',
-    //     description: ''
-    // });
 
-
-
+    const [newRequest, setNewRequest] = useState({
+        blood_group: 'A+',
+        urgency: 'Normal',
+        component: 'Sang total',
+        centre_id: '',
+        quantity: 1,
+        description: ''
+    });
 
     const [tabCounts, setTabCounts] = useState({
         all: 0,
@@ -55,8 +54,6 @@ export default function AdminRequests() {
         
     }, []);
 
-
-    console.log(allCenters);
     useEffect(() => {
         if(requests){
             setAllRequests(requests);
@@ -70,14 +67,7 @@ export default function AdminRequests() {
     },[requests]);
 
 
-    // const handleInputChange = (e, isNewRequest = true) => {
-    //     const { name, value } = e.target;
-    //     if (isNewRequest) {
-    //         setNewRequest(prev => ({ ...prev, [name]: value }));
-    //     } else {
-    //         setSelectedRequest(prev => ({ ...prev, [name]: value }));
-    //     }
-    // };
+
 
     const handleFilterChange = (e) => {
         const { name, value } = e.target;
@@ -133,8 +123,42 @@ export default function AdminRequests() {
             return true;
         });
     };
+       
 
-    
+    const handleInputChange = (e, isNewRequest = true) => {
+        const { name, value } = e.target;
+        if (isNewRequest) {
+            setNewRequest(prev => ({ ...prev, [name]: value }));
+        } 
+        else {
+            setSelectedRequest(prev => ({ ...prev, [name]: value }));
+        }
+    };
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+
+        if (!newRequest.centre_id) {
+            toast.error("Veuillez sélectionner un centre");
+            return;
+        }
+        
+        try {
+            await createRequest(newRequest);
+            setShowAddModal(false);
+            setNewRequest({
+                blood_group: 'A+',
+                urgency: 'Normal',
+                component: 'Sang total',
+                centre_id: '',
+                quantity: 1,
+                description: ''
+            });
+        } catch(error) {
+            console.error("Error creating request:", error);
+            toast.error("Erreur lors de la création de la demande");
+        }
+    };
 
     const visibleRequests = getVisibleRequests();
 
@@ -251,7 +275,7 @@ export default function AdminRequests() {
                                 <option value="Sang total">Sang total</option>
                                 <option value="Plaquettes">Plaquettes</option>
                                 <option value="Plasma">Plasma</option>
-                                <option value="Globules rouges">Globules rouges</option>
+                                <option value="Globules">Globules</option>
                             </select>
                             <select
                                 name="status"
@@ -318,10 +342,7 @@ export default function AdminRequests() {
                                         <FaTint className="w-4 h-4 text-[#40898A]" />
                                         <span>Besoin de {request.component}</span>
                                     </div>
-                                    <div className="flex items-center gap-2 text-[#1A4B4C]">
-                                        <FaCheckCircle className="w-4 h-4 text-[#40898A]" />
-                                        <span>{request.donations_count} réponse(s) reçue(s)</span>
-                                    </div>
+                  
                                 </div>
                             </div>
                             <div className="p-4 border-t border-gray-200 flex justify-between items-center">
@@ -359,7 +380,7 @@ export default function AdminRequests() {
 
             {/* Add Request Modal */}
             {showAddModal && (
-                <div className="fixed inset-0 bg-black/50 flex justify-center items-center z-50 p-4">
+                <form onSubmit={handleSubmit} className="fixed inset-0 bg-black/50 flex justify-center items-center z-50 p-4">
                     <div className="bg-white rounded-lg shadow-lg max-w-2xl w-full max-h-[90vh] overflow-y-auto">
                         <div className="p-6 border-b border-gray-200 flex justify-between items-center relative">
                             <h3 className="text-xl font-semibold text-[#4A1E1F]">Nouvelle demande de don</h3>
@@ -414,10 +435,26 @@ export default function AdminRequests() {
                                         <option value="Sang total">Sang total</option>
                                         <option value="Plaquettes">Plaquettes</option>
                                         <option value="Plasma">Plasma</option>
-                                        <option value="Globules rouges">Globules rouges</option>
+                                        <option value="Globules">Globules</option>
                                     </select>
                                 </div>
+
                                 <div>
+                                    <label className="block text-[#1A4B4C] font-medium mb-2">Quantité</label>
+                                    <select
+                                        name="quantity"
+                                        value={newRequest.quantity}
+                                        onChange={(e) => handleInputChange(e)}
+                                        className="p-3 border border-gray-200 rounded-lg text-base w-full"
+                                    >
+                                        <option value="">Sélectionner une quantité</option>
+                                        {[1, 2, 3, 4, 5].map((num) => (
+                                            <option key={num} value={num}>{num}</option>
+                                        ))}
+                                    </select>
+                                </div>
+                            </div>
+                            <div>
                                     <label className="block text-[#1A4B4C] font-medium mb-2">Centre</label>
                                     <select
                                         name="centre_id"
@@ -431,7 +468,6 @@ export default function AdminRequests() {
                                         ))}
                                     </select>
                                 </div>
-                            </div>
                             <div className="mb-4">
                                 <label className="block text-[#1A4B4C] font-medium mb-2">Description</label>
                                 <textarea
@@ -450,7 +486,7 @@ export default function AdminRequests() {
                                     Annuler
                                 </button>
                                 <button
-                                    onClick={addRequest}
+                                    type='submit'
                                     className="px-4 py-2 bg-[#1A4B4C] text-white rounded-lg hover:bg-[#40898A] transition-colors"
                                 >
                                     Ajouter
@@ -458,7 +494,7 @@ export default function AdminRequests() {
                             </div>
                         </div>
                     </div>
-                </div>
+                </form>
             )}
 
 
