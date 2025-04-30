@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useState } from 'react'
 import api from '../api/axios';
+import { toast } from 'react-toastify';
 
 
 
@@ -27,13 +28,38 @@ export const RequestProvider = ({ children }) => {
             console.error(error);
         }
     }
+    const getAllRequest = async ()=>{
+        try {
+            const response = await api.get(`admin/requests`);
+            setRequests(response.data.allRequest);
+
+        } catch (error) {
+            console.error(error);
+        }
+    }
+
+
+
+    const deleteRequest = async(id) => {
+        try {
+            console.log(id);
+            const response = await api.delete(`requests/${id}`);
+            toast.success(response.data.message);
+            setRequests(prevRequests => prevRequests?.filter(request => request.id !== id));
+
+        } catch (error) {
+            console.error(error);
+        }
+    }
 
     return (
         <RequestContext.Provider value={{
             getnbRstUrgC,
             nbRstUrgC,
             getRequests,
-            requests
+            requests,
+            deleteRequest,
+            getAllRequest
 
         }}>
             {children}

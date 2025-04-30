@@ -10,7 +10,7 @@ import { useCenter } from '../../Context/CenterContext';
 
 export default function AdminRequests() {
 
-    const { requests, getRequests } = useRequest();
+    const { requests, getAllRequest , deleteRequest } = useRequest();
     const {allCenters , getAllCentres} = useCenter();
     const [activeTab, setActiveTab] = useState('all');
     const [allrequests, setAllRequests] = useState([]);
@@ -23,15 +23,16 @@ export default function AdminRequests() {
         bloodGroup: '',
         urgency: '',
         centre: '',
-        component: ''
+        component: '',
+        status:''
     });
-    const [newRequest, setNewRequest] = useState({
-        blood_group: 'A+',
-        urgency: 'Normal',
-        component: 'Sang total',
-        centre_id: '',
-        description: ''
-    });
+    // const [newRequest, setNewRequest] = useState({
+    //     blood_group: 'A+',
+    //     urgency: 'Normal',
+    //     component: 'Sang total',
+    //     centre_id: '',
+    //     description: ''
+    // });
 
 
 
@@ -39,13 +40,13 @@ export default function AdminRequests() {
     const [tabCounts, setTabCounts] = useState({
         all: 0,
         urgent: 0,
-        recent: 0,
+        normal: 0,
     });
 
     useEffect(() => {
 
         const fetchRequest = async()=>{
-            await getRequests();
+            await getAllRequest();
             await getAllCentres();
         }
         fetchRequest();
@@ -55,31 +56,28 @@ export default function AdminRequests() {
     }, []);
 
 
+    console.log(allCenters);
     useEffect(() => {
         if(requests){
             setAllRequests(requests);
             setTabCounts({
                 all: requests.length,
                 urgent: requests.filter(req => req.urgency === 'Urgent').length,
-                recent: requests.filter(req => {
-                    const createdDate = new Date(req.created_at);
-                    const today = new Date();
-                    const diff = (today - createdDate) / (1000 * 60 * 60 * 24);
-                    return diff <= 2;
-                }).length
+                normal: requests.filter(req => req.urgency === 'Normal').length,
+
             });
         }
     },[requests]);
 
 
-    const handleInputChange = (e, isNewRequest = true) => {
-        const { name, value } = e.target;
-        if (isNewRequest) {
-            setNewRequest(prev => ({ ...prev, [name]: value }));
-        } else {
-            setSelectedRequest(prev => ({ ...prev, [name]: value }));
-        }
-    };
+    // const handleInputChange = (e, isNewRequest = true) => {
+    //     const { name, value } = e.target;
+    //     if (isNewRequest) {
+    //         setNewRequest(prev => ({ ...prev, [name]: value }));
+    //     } else {
+    //         setSelectedRequest(prev => ({ ...prev, [name]: value }));
+    //     }
+    // };
 
     const handleFilterChange = (e) => {
         const { name, value } = e.target;
@@ -91,7 +89,15 @@ export default function AdminRequests() {
 
 
 
-    const deleteRequest = () => {
+    const handeleDeleteRequest = async(id) => {
+        try{
+            await deleteRequest(id);
+            setShowDeleteConfirm(false);
+        }
+        catch(error){
+            console.error(error);
+            
+        }
     };
 
 
@@ -103,12 +109,10 @@ export default function AdminRequests() {
             if (activeTab === 'urgent' && request.urgency !== "Urgent") {
                 return false;
             }
-            if (activeTab === 'recent') {
-                const createdDate = new Date(request.created_at);
-                const today = new Date();
-                const diff = (today - createdDate) / (1000 * 60 * 60 * 24);
-                if (diff > 2) return false;
+            if (activeTab === 'normal' && request.urgency !== "Normal") {
+                return false;
             }
+
 
             if (filters.bloodGroup && request.blood_group !== filters.bloodGroup) {
                 return false;
@@ -122,10 +126,15 @@ export default function AdminRequests() {
             if (filters.component && request.component !== filters.component) {
                 return false;
             }
+            if (filters.status && request.status !== filters.status) {
+                return false;
+            }
 
             return true;
         });
     };
+
+    
 
     const visibleRequests = getVisibleRequests();
 
@@ -144,7 +153,7 @@ export default function AdminRequests() {
         }
     };
 
-    if (loading) {
+    if (loading || !allCenters) {
         return <div className="p-8 w-full flex justify-center items-center">Chargement...</div>;
     }
 
@@ -172,11 +181,12 @@ export default function AdminRequests() {
                     Urgentes <span className="bg-gray-200 text-[#1A4B4C] text-xs py-0.5 px-1.5 rounded-full ml-2">{tabCounts.urgent}</span>
                 </div>
                 <div
-                    className={`px-6 py-4 cursor-pointer text-[#1A4B4C] border-b-2 ${activeTab === 'recent' ? 'border-[#8B2326] text-[#4A1E1F] font-medium' : 'border-transparent'}`}
-                    onClick={() => setActiveTab('recent')}
+                    className={`px-6 py-4 cursor-pointer text-[#1A4B4C] border-b-2 ${activeTab === 'normal' ? 'border-[#8B2326] text-[#4A1E1F] font-medium' : 'border-transparent'}`}
+                    onClick={() => setActiveTab('normal')}
                 >
-                    Récentes <span className="bg-gray-200 text-[#1A4B4C] text-xs py-0.5 px-1.5 rounded-full ml-2">{tabCounts.recent}</span>
+                    Normales <span className="bg-gray-200 text-[#1A4B4C] text-xs py-0.5 px-1.5 rounded-full ml-2">{tabCounts.normal}</span>
                 </div>
+               
             </div>
 
             {/* Filter Controls */}
@@ -243,6 +253,17 @@ export default function AdminRequests() {
                                 <option value="Plasma">Plasma</option>
                                 <option value="Globules rouges">Globules rouges</option>
                             </select>
+                            <select
+                                name="status"
+                                value={filters.status}
+                                onChange={handleFilterChange}
+                                className="p-3 border border-gray-200 rounded-lg text-base"
+                            >
+                                <option value="">Tous les status</option>
+                                <option value="en_attente">En Attente</option>
+                                <option value="complétée">Complétée</option>
+                                <option value="rejetée">Rejetée</option>
+                            </select>
                         </div>
    
                     </div>
@@ -259,13 +280,18 @@ export default function AdminRequests() {
                         <div
                             key={request.id}
                             className={`flex flex-col bg-white rounded-lg shadow-md overflow-hidden transition-all hover:translate-y-[-5px] hover:shadow-lg
-                ${isUrgent ? 'border-t-4 border-t-[#FF9800]' : 'border-t-4 border-t-[#8B2326]'}`}
+                            ${isUrgent ? 'border-t-4 border-t-[#FF9800]' : 'border-t-4 border-t-[#8B2326]'}`}
                         >
                             <div className="p-4 flex justify-between items-center border-b border-gray-200">
                                 <div className="flex items-center gap-2">
                                     <span className={`text-sm py-1 px-2 rounded-full font-medium ${urgencyDisplay.bgClass}`}>
                                         {urgencyDisplay.icon}
                                         {request.urgency}
+                                    </span>
+                                    <span className={`text-sm py-1 px-2 rounded-full font-medium ${request.status == "en_attente" ? (
+                                        "bg-blue-200"):(request.status == "rejetée")?("bg-red-200"):("bg-green-200")
+                                    }`}>
+                                        {request.status}
                                     </span>
                                 </div>
                                 <div className="text-2xl font-bold text-[#8B2326] bg-[#8B2326]/10 p-2 rounded-lg min-w-[3rem] text-center">
@@ -464,7 +490,7 @@ export default function AdminRequests() {
                                     Annuler
                                 </button>
                                 <button
-                                    onClick={deleteRequest}
+                                    onClick={() => handeleDeleteRequest(selectedRequest.id)}
                                     className="px-4 py-2 bg-[#8B2326] text-white rounded-lg hover:bg-[#4A1E1F] transition-colors"
                                 >
                                     Supprimer

@@ -13,11 +13,18 @@ class DonRequestController extends Controller
     public function index()
     {
         $donRequests = DonRequest::with('centre')->where('status', 'en_attente')->get();
-    return response()->json([
+        return response()->json([
             "don_requests" => $donRequests,
         ]);
     }
 
+    public function getAllRequest()
+    {
+        $donRequests = DonRequest::with('centre')->get();
+        return response()->json([
+            "allRequest" => $donRequests,
+        ]);
+    }
     /**
      * Store a newly created resource in storage.
      */
@@ -45,10 +52,18 @@ class DonRequestController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(DonRequest $donRequest)
+    public function destroy($id)
     {
-        //
+        $donRequest=DonRequest::find($id);
+        if (!$donRequest) {
+            return response()->json(['message' => 'Request non trouvé'], 404);
+        }
+        $donRequest->delete();
+        return response()->json([
+            'message' => 'Demande de don supprimée avec succès.'
+        ], 200);
     }
+
 
 
 
