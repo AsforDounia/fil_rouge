@@ -70,7 +70,6 @@ class User extends Authenticatable
             $this->roles()->attach($roleId);
         }
 
-        // Geolocation
         public function localisation()
         {
             return $this->hasOne(Localisation::class);

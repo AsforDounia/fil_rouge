@@ -18,11 +18,20 @@ export const DonationProvider = ({ children }) => {
         }
     };
 
-
+    const getAllDonations = async (page = 1) => {
+        try {
+            const response = await api.get(`donations?page=${page}`);
+            setDonations(response.data.donations);
+        } catch (error) {
+            toast.error("Error fetching Donations :" + error);
+        }
+    };
+    
     return (
         <DonationContext.Provider value={{
             getDonations,
             donations,
+            getAllDonations
        
         }}>
             {children}

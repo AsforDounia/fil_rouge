@@ -13,10 +13,10 @@ const AuthRoute = () => {
       return <Navigate to="/donneur/profile" replace />;
     }
     if (roles.includes("centre_manager")) {
-      return <Navigate to="/centre/profile" replace />;
+      return <Navigate to="/centre/dashboard" replace />;
     }
     if (roles.includes("patient")) {
-      return <Navigate to="/patient/profile" replace />;
+      return <Navigate to="/patient/dashboard" replace />;
     }
     if (roles.includes("patient")) {
       return <Navigate to="/patient/profile" replace />;

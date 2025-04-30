@@ -27,14 +27,19 @@ import { DonationProvider } from "../Context/DonationContext";
 import Centers from "../pages/Donor/Centers";
 import { CenterProvider } from "../Context/CenterContext";
 import Requests from "../pages/Donor/Requests";
-import Conversation from "../../../HelperFolder/Conversation";
-import { ConversationProvider } from "../../../HelperFolder/CoversationContext";
+
 import EventsSection from "../Components/HomeComponents/EventsSection";
-import Profile from "../Components/DashboardSharedComponents/Profile";
 import AdminDashboard from "../pages/Admin/AdminDashboard";
 import { AdminProvider } from "../Context/AdminContext";
 import ManageUsers from "../pages/Admin/ManageUsers";
 import AddUser from "../pages/Admin/AddUser";
+import AdminRequests from "../pages/Admin/AdminRequests";
+import Profile from "../Components/DashboardSharedComponents/UserProfile";
+
+import AdminEvents from "../pages/Admin/AdminEvents";
+import CentreDashboard from "../pages/Centre/CentreDashboard";
+import PatientDashboard from "../../../HelperFolder/PatientDashboard";
+
 
 export const Router = createBrowserRouter([
   {
@@ -120,6 +125,7 @@ export const Router = createBrowserRouter([
 
 
   {
+    path : 'admin',
     element: (
       <AuthProvider>
         <ProtectedRoute roles={["admin"]}>
@@ -131,21 +137,93 @@ export const Router = createBrowserRouter([
     ),
     children: [
       {
-        path: "/admin/dashboard",
+        path: "dashboard",
         element: <AdminDashboard />,
       },
       {
-        path: "/admin/users",
+        path: "users",
         element: <ManageUsers />,
       },
       {
-        path: "/admin/addUser",
+        path: "addUser",
         element: <AddUser />,
       },
+      {
+        path: "requests",
+        element:
+        <CenterProvider>
+          <RequestProvider>
+            <AdminRequests />
+          </RequestProvider>
+        </CenterProvider>
+        ,
+      },
+      
+      {
+        path: "events",
+        element:
+        <CenterProvider>
+          <EventProvider>
+            <AdminEvents />
+          </EventProvider>
+        </CenterProvider>
+        ,
+      },
+      
 
     ],
   },
   {
+    path : 'patient',
+    element: (
+      <AuthProvider>
+        <ProtectedRoute roles={["patient"]}>
+          
+          <DashboardLayout />
+          
+        </ProtectedRoute>
+      </AuthProvider>
+    ),
+    children: [
+      {
+        path: "dashboard",
+        element: <PatientDashboard />,
+      },
+      {
+        path: "users",
+        element: <ManageUsers />,
+      },
+      {
+        path: "addUser",
+        element: <AddUser />,
+      },
+      {
+        path: "requests",
+        element:
+        <CenterProvider>
+          <RequestProvider>
+            <AdminRequests />
+          </RequestProvider>
+        </CenterProvider>
+        ,
+      },
+      
+      {
+        path: "events",
+        element:
+        <CenterProvider>
+          <EventProvider>
+            <AdminEvents />
+          </EventProvider>
+        </CenterProvider>
+        ,
+      },
+      
+
+    ],
+  },
+  {
+
     element: (
           <AuthProvider>
         <ProtectedRoute roles={["donor"]}>

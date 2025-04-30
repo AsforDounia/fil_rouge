@@ -27,7 +27,7 @@ class DonRequestFactory extends Factory
             'quantity' => $this->faker->numberBetween(1, 5),  // Random quantity between 1 and 5
             'urgency' => $this->faker->randomElement(['Urgent', 'Normal']),  // Random urgency
             'description' => $this->faker->optional()->words(6, true),
-            'status' => $this->faker->randomElement(['en_attente', 'approuvée', 'rejetée', 'complétée']),  // Random status
+            'status' => $this->faker->randomElement(['en_attente', 'rejetée', 'complétée']),  // Random status
         ];
 
     }

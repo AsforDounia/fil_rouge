@@ -97,8 +97,8 @@ export default function ManageUsers() {
       </div>
 
       {/* Users Table */}
-      <div className="overflow-x-auto bg-white shadow rounded-lg">
-        <table className="w-full table-auto">
+      <div className="max-h-160 overflow-auto bg-white shadow rounded-lg">
+        <table className="w-full table-auto ">
           <thead className="bg-burgundy text-white">
             <tr>
               <th className="p-4 text-left">Nom</th>

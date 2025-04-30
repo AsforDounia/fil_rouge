@@ -81,7 +81,7 @@ const Sidebar = () => {
             const commonItems = [
                 { icon: <FaHome />, text: 'Tableau de bord', href: `${baseUrl}/dashboard`, badge: null },
                 { icon: <IoMdSettings />, text: 'Paramètres', href: `${baseUrl}/profile`, badge: null },
-                { icon: <TbLogout2 />, text: 'Déconnexion', href: 'logout', badge: null },
+                { icon: <TbLogout2 />, text: 'Déconnexion', href: '/logout', badge: null },
             ];
     
             
@@ -98,8 +98,8 @@ const Sidebar = () => {
                 { icon: <HiUserAdd />, text: 'Ajouter new Utilisateur', href: `${baseUrl}/addUser`, badge: null },
                 // { icon: <FaProcedures />, text: 'Gestion des Patients', href: `${baseUrl}/patients`, badge: null },
                 // { icon: <FaHospital />, text: 'Gestion des Centres', href: `${baseUrl}/centers`, badge: null },
-                { icon: <FaHandHoldingMedical />, text: 'Demandes de Sang', href: `${baseUrl}/blood-requests`, badge: null },
-                { icon: <RiFileChartLine />, text: 'Rapports', href: `${baseUrl}/reports`, badge: null },
+                { icon: <FaHandHoldingMedical />, text: 'Demandes de Sang', href: `${baseUrl}/requests`, badge: null },
+                // { icon: <RiFileChartLine />, text: 'Rapports', href: `${baseUrl}/reports`, badge: null },
                 { icon: <MdFestival />, text: 'Gestion Evenements', href: `${baseUrl}/events`, badge: null },
             ];
     
