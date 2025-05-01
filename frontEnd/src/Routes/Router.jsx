@@ -38,7 +38,10 @@ import Profile from "../Components/DashboardSharedComponents/UserProfile";
 
 import AdminEvents from "../pages/Admin/AdminEvents";
 import CentreDashboard from "../pages/Centre/CentreDashboard";
-import PatientDashboard from "../../../HelperFolder/PatientDashboard";
+import PatientDashboard from "../pages/Patient/PatientDashboard";
+import CentresView from "../Components/DashboardSharedComponents/CentresView";
+import EventsView from "../Components/DashboardSharedComponents/EventsView";
+import RequestsView from "../Components/DashboardSharedComponents/RequestsView";
 
 
 export const Router = createBrowserRouter([
@@ -164,9 +167,65 @@ export const Router = createBrowserRouter([
         element:
         <CenterProvider>
           <EventProvider>
-            <AdminEvents />
+            <EventsView />
           </EventProvider>
         </CenterProvider>
+        ,
+      },
+      {
+        path: "profile",
+        element:
+          <Profile />
+        ,
+      },
+      
+
+    ],
+  },
+  {
+    path : 'centre',
+    element: (
+      <AuthProvider>
+        <ProtectedRoute roles={["centre_manager"]}>
+        <CenterProvider>
+          <DashboardLayout />
+          </CenterProvider>
+        </ProtectedRoute>
+      </AuthProvider>
+    ),
+    children: [
+      {
+        path: "dashboard",
+        element:
+        <RequestProvider>
+          <CentreDashboard />
+        </RequestProvider>
+        ,
+      },
+      {
+        path: "centers",
+        element: <CentresView />,
+      },
+      {
+        path: "events",
+        element:
+        <EventProvider>
+        <EventsView /></EventProvider>
+        ,
+      },
+      {
+        path: "requests",
+        element : (
+            <RequestProvider>
+              <RequestsView />
+            </RequestProvider>
+        )
+      },
+      
+      {
+        path: "profile",
+        element:
+          <Profile />
         ,
       },
       
@@ -178,44 +237,45 @@ export const Router = createBrowserRouter([
     element: (
       <AuthProvider>
         <ProtectedRoute roles={["patient"]}>
-          
+        <CenterProvider>
           <DashboardLayout />
-          
+          </CenterProvider>
         </ProtectedRoute>
       </AuthProvider>
     ),
     children: [
       {
         path: "dashboard",
-        element: <PatientDashboard />,
-      },
-      {
-        path: "users",
-        element: <ManageUsers />,
-      },
-      {
-        path: "addUser",
-        element: <AddUser />,
-      },
-      {
-        path: "requests",
         element:
-        <CenterProvider>
-          <RequestProvider>
-            <AdminRequests />
-          </RequestProvider>
-        </CenterProvider>
+        <RequestProvider>
+          <PatientDashboard />
+        </RequestProvider>
         ,
       },
-      
+      {
+        path: "centers",
+        element: <CentresView />,
+      },
       {
         path: "events",
         element:
-        <CenterProvider>
-          <EventProvider>
-            <AdminEvents />
-          </EventProvider>
-        </CenterProvider>
+        <EventProvider>
+        <EventsView /></EventProvider>
+        ,
+      },
+      {
+        path: "requests",
+        element : (
+            <RequestProvider>
+              <RequestsView />
+            </RequestProvider>
+        )
+      },
+      
+      {
+        path: "profile",
+        element:
+          <Profile />
         ,
       },
       
@@ -264,7 +324,7 @@ export const Router = createBrowserRouter([
         path : "donneur/centers",
         element : (
           <CenterProvider>
-            <Centers />
+            <CentresView />
           </CenterProvider>
         )
       },
@@ -280,7 +340,7 @@ export const Router = createBrowserRouter([
         path : "donneur/events",
         element : (
             <EventProvider>
-              <EventsSection />
+              <EventsView />
             </EventProvider>
         )
       },

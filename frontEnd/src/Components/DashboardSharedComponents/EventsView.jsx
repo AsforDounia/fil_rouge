@@ -1,12 +1,18 @@
 import React, { useEffect, useState } from 'react';
-import { useEvent } from '../../Context/EventContext';
 import { FaSearch, FaTrash } from 'react-icons/fa';
 
 import { toast } from "react-toastify";
 
-import AddEventModal from '../../Components/DashboardSharedComponents/AddEventModal';
 
-const AdminEvents = () => {
+import { useAuth } from '../../Context/AuthContext';
+import { useEvent } from '../../Context/EventContext';
+import AddEventModal from './AddEventModal';
+
+const EventsView = () => {
+
+    const {hasRole} = useAuth();
+    const [isAdmin , setIsAdmin] = useState(null);
+    const [isCenter , setIsCenter] = useState(null);
     const [loading, setLoading] = useState(true);
     const { events, getAllEvent, deleteEvent } = useEvent();
     const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
@@ -28,6 +34,11 @@ const AdminEvents = () => {
             setLoading(true);
             try {
                 await getAllEvent();
+                const admin = await hasRole(["admin"]);
+                const centre = await hasRole(["centre_manager"]);
+                setIsAdmin(admin);
+                console.log(admin)
+                setIsCenter(centre);
             } catch (error) {
                 console.error("Error fetching events:", error);
                 toast.error("Error fetching events: " + (error.message || "Unknown error"));
@@ -152,6 +163,7 @@ const AdminEvents = () => {
                     {displayEvents && displayEvents.length > 0 ? (
                         displayEvents.map((event, index) => (
                             <div key={index} className="flex flex-col bg-white rounded-lg overflow-hidden shadow-lg transition-all duration-300 hover:-translate-y-1">
+                                {isAdmin && (
                                 <span className='flex justify-end'>
                                     <button
                                         onClick={() => openDeleteModal(event)}
@@ -160,6 +172,8 @@ const AdminEvents = () => {
                                         <FaTrash />
                                     </button>
                                 </span>
+
+                                )}
                                 {event.localisation?.user?.profile_image ? (
                                     <img src={`http://127.0.0.1:8000/storage/${event.localisation.user.profile_image}`} alt={event.title} className="w-full h-48 object-cover" />
                                 ) : (
@@ -236,4 +250,4 @@ const AdminEvents = () => {
     );
 };
 
-export default AdminEvents;
+export default EventsView;

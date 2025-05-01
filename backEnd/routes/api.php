@@ -54,6 +54,7 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
 
 
 
+    Route::get('admin/events', [EventController::class, 'getAllEvents' ]);
 
     // Route::get('conversations',[ConversationController::class,'index']);
     Route::get('events/user/participer',[EventController::class,'userParticiper']);
@@ -91,7 +92,6 @@ Route::group(['middleware' => ['auth:sanctum', 'role:admin']], function () {
     Route::post('admin/deleteUser/{id}', [AdminController::class, 'deleteUser' ]);
     Route::post('admin/ChangeAccountStatus/{id}', [AdminController::class, 'ChangeAccountStatus' ]);
     Route::get('admin/requests', [DonRequestController::class, 'getAllRequest' ]);
-    Route::get('admin/events', [EventController::class, 'getAllEvents' ]);
 });
 
 Route::group(['middleware' => ['auth:sanctum', 'role:admin,patient']], function () {
@@ -101,7 +101,10 @@ Route::group(['middleware' => ['auth:sanctum', 'role:admin,centre_manager']], fu
     Route::delete('events/{id}', [EventController::class, 'destroy' ]);
     Route::post('events', [EventController::class, 'store' ]);
 });
+
+
 Route::group(['middleware' => ['auth:sanctum', 'role:patient']], function () {
     Route::get('patientRequest', [DonRequestController::class, 'getMyResquests']);
+    Route::put('requests', [DonRequestController::class, 'update']);
 
 });

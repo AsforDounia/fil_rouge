@@ -1,12 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { FaCalendarAlt, FaUsers, FaMapMarkerAlt, FaChartLine, FaClipboardList, FaCog, FaBell } from 'react-icons/fa';
-import { Link } from 'react-router-dom';
 import { useAuth } from '../../Context/AuthContext';
-import { useEvent } from '../../Context/EventContext';
 
 const CentreDashboard = () => {
     const { user } = useAuth();
-    const { events, getAllEvent } = useEvent();
+    
     const [loading, setLoading] = useState(true);
     const [stats, setStats] = useState({
         totalEvents: 0,
@@ -20,9 +18,7 @@ const CentreDashboard = () => {
         const fetchData = async () => {
             setLoading(true);
             try {
-                await getAllEvent();
-                // In a real app, you'd fetch these stats from your API
-                // This is mock data for demonstration
+
                 setStats({
                     totalEvents: 12,
                     upcomingEvents: 5,

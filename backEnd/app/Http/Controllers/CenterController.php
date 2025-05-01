@@ -24,7 +24,7 @@ class CenterController extends Controller
         $centers = User::whereHas('roles', function ($query) {
             $query->where('name', 'centre_manager');
         })->get();
-        
+
         return response()->json([
             "centers" => $centers
         ]);
@@ -44,9 +44,7 @@ class CenterController extends Controller
 
         return response()->json(['data' => $centers], 200);
     }
-    /**
-     * Store a newly created resource in storage.
-     */
+
     public function store(Request $request)
     {
         //

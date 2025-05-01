@@ -76,9 +76,24 @@ class DonRequestController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, DonRequest $donRequest)
+    public function update(Request $request , DonRequest $donRequest)
     {
-        //
+
+        $validated = $request->validate([
+            'blood_group' => 'required|string|in:A+,A-,B+,B-,AB+,AB-,O+,O-',
+            'quantity' => 'required|integer|min:1',
+            'description' => 'nullable|string',
+            'urgency' => 'required|string',
+            'component' => 'required|string|in:Sang total,Plaquettes,Plasma,Globules',
+        ]);
+
+        $donRequest->update($validated);
+
+        return response()->json([
+            'success' => true ,
+            'message' => 'Demande mise à jour avec succès.',
+            'request_updated' => $donRequest,
+        ], 200);
     }
 
     /**

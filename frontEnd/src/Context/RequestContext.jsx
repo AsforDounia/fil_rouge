@@ -73,6 +73,20 @@ export const RequestProvider = ({ children }) => {
             console.error(error);
         }
     }
+    const editRequest = async(formData , request) => {
+        try {
+            const response = await api.put(`requests`,formData , request);
+            if(response.data.success){
+                toast.success(response.data.message)
+                setRequests((prevRequests) =>
+                    prevRequests.map((req) =>
+                        req.id === request.id ? { ...req, ...formData } : req
+                ));
+            }
+        } catch (error) {
+            console.error(error);
+        }
+    }
 
     return (
         <RequestContext.Provider value={{
@@ -83,7 +97,8 @@ export const RequestProvider = ({ children }) => {
             deleteRequest,
             getAllRequest,
             createRequest,
-            patientRequest
+            patientRequest,
+            editRequest
 
         }}>
             {children}

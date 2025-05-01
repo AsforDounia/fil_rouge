@@ -20,6 +20,7 @@ const Sidebar = () => {
             try {
                 const isDonor = await hasRole(["donor"]);
                 const isAdmin = await hasRole(["admin"]);
+                const isPatient = await hasRole(["patient"]);
                 const isCentreManager = await hasRole(["centre_manager"]);
                 
                 if (isAdmin) {
@@ -28,6 +29,8 @@ const Sidebar = () => {
                     setUserRole("centre_manager");
                 } else if (isDonor) {
                     setUserRole("donor");
+                } else if (isPatient) {
+                    setUserRole("patient");
                 } else {
                     setUserRole("user");
                 }
@@ -71,6 +74,7 @@ const Sidebar = () => {
             const baseUrls = {
                 donor: '/donneur',
                 admin: '/admin',
+                patient : '/patient',
                 centre_manager: '/centre-manager',
                 user: '/user'
             };
@@ -115,6 +119,11 @@ const Sidebar = () => {
                 { icon: <FaHospital />, text: 'Centres de Don', href: `${baseUrl}/centers`, badge: null },
                 { icon: <MdFestival />, text: 'Evenements', href: `${baseUrl}/events`, badge: null },
             ];
+            const patientItmes = [
+                { icon: <FaHandHoldingMedical />, text: 'Demandes de Sang', href: `${baseUrl}/requests`, badge: null },
+                { icon: <FaHospital />, text: 'Centres de Don', href: `${baseUrl}/centers`, badge: null },
+                { icon: <MdFestival />, text: 'Evenements', href: `${baseUrl}/events`, badge: null },
+            ];
             
             // Combine common items with role-specific items
             let items = [];
@@ -132,6 +141,9 @@ const Sidebar = () => {
                     break;
                 case 'centre_manager':
                     items = [...items, ...centreManagerItmes];
+                    break;
+                case 'patient':
+                    items = [...items, ...patientItmes];
                     break;
                 default:
                     items = [...items, ...userItmes];
