@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Don extends Model
 {
     use HasFactory;
-    protected $fillable = ['donor_id', 'collecte_id', 'donation_date', 'blood_group'];
+    protected $fillable = ['donor_id', 'collecte_id', 'donation_date', 'blood_group' , 'centre_id'];
 
     public function donor()
     {

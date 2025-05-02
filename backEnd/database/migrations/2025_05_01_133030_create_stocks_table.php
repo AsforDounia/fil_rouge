@@ -11,16 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('dons', function (Blueprint $table) {
+        Schema::create('stocks', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('donor_id')->constrained('users')->onDelete('cascade');
+            $table->string('groupSanguin');
+            $table->string('composantSanguin');
+            $table->integer('quantite');
             $table->foreignId('centre_id')->constrained('users')->onDelete('cascade');
-            $table->enum('type_don', ['Plasma', 'Globules', 'Plaquettes' , 'Sang Total']);
-            $table->date('donation_date');
-            $table->enum('blood_group', ['A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-']);
             $table->timestamps();
         });
-
     }
 
     /**
@@ -28,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('dons');
+        Schema::dropIfExists('stocks');
     }
 };

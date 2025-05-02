@@ -80,11 +80,11 @@ class DonRequestController extends Controller
     {
 
         $validated = $request->validate([
-            'blood_group' => 'required|string|in:A+,A-,B+,B-,AB+,AB-,O+,O-',
-            'quantity' => 'required|integer|min:1',
-            'description' => 'nullable|string',
-            'urgency' => 'required|string',
-            'component' => 'required|string|in:Sang total,Plaquettes,Plasma,Globules',
+            'blood_group' => 'sometimes|string|in:A+,A-,B+,B-,AB+,AB-,O+,O-',
+            'quantity' => 'sometimes|integer|min:1',
+            'description' => 'sometimes|string',
+            'urgency' => 'sometimes|string',
+            'component' => 'sometimes|string|in:Sang total,Plaquettes,Plasma,Globules',
         ]);
 
         $donRequest->update($validated);

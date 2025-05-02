@@ -22,7 +22,7 @@ class UserFactory extends Factory
             'email_verified_at' => now(),
             'password' => bcrypt('password'),
             'profile_image' => null,
-            'accountStatus' => $this->faker->randomElement(['actif', 'inactif', 'suspendu', 'bloque']),
+            'accountStatus' => $this->faker->randomElement(['actif','bloque']),
             'date_of_birth' => $this->faker->date('Y-m-d', '-18 years'),
             'blood_type' => $this->faker->randomElement(['A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-']),
             'address' => $this->faker->address(),

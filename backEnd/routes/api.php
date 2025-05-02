@@ -4,6 +4,7 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AppointmentController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CenterController;
+use App\Http\Controllers\CentreManagerController;
 use App\Http\Controllers\ConversationController;
 use App\Http\Controllers\DonController;
 use App\Http\Controllers\DonorController;
@@ -12,6 +13,8 @@ use App\Http\Controllers\EventController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\TemoignageController;
 use App\Http\Controllers\UserController;
+use App\Models\Appointment;
+use App\Models\CentreManager;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -106,5 +109,9 @@ Route::group(['middleware' => ['auth:sanctum', 'role:admin,centre_manager']], fu
 Route::group(['middleware' => ['auth:sanctum', 'role:patient']], function () {
     Route::get('patientRequest', [DonRequestController::class, 'getMyResquests']);
     Route::put('requests', [DonRequestController::class, 'update']);
-
+});
+Route::group(['middleware' => ['auth:sanctum', 'role:centre_manager']], function () {
+    Route::get('centreManager/stats', [CentreManagerController::class, 'getStats']);
+    Route::put('centreManager/appointments/{id}', [AppointmentController::class, 'update']);
+    Route::get('centreManager/appointments', [AppointmentController::class, 'index']);
 });

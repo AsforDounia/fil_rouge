@@ -42,6 +42,8 @@ import PatientDashboard from "../pages/Patient/PatientDashboard";
 import CentresView from "../Components/DashboardSharedComponents/CentresView";
 import EventsView from "../Components/DashboardSharedComponents/EventsView";
 import RequestsView from "../Components/DashboardSharedComponents/RequestsView";
+import { CentreManagerProvider } from "../Context/CentreManagerContext";
+import CentreAppointments from "../pages/Centre/CentreAppointements";
 
 
 export const Router = createBrowserRouter([
@@ -187,9 +189,10 @@ export const Router = createBrowserRouter([
     element: (
       <AuthProvider>
         <ProtectedRoute roles={["centre_manager"]}>
-        <CenterProvider>
+        <CentreManagerProvider>
           <DashboardLayout />
-          </CenterProvider>
+          </CentreManagerProvider>
+
         </ProtectedRoute>
       </AuthProvider>
     ),
@@ -198,13 +201,19 @@ export const Router = createBrowserRouter([
         path: "dashboard",
         element:
         <RequestProvider>
-          <CentreDashboard />
+            <AppointmentProvider>
+            <CentreDashboard />
+            </AppointmentProvider>
         </RequestProvider>
         ,
       },
       {
-        path: "centers",
-        element: <CentresView />,
+        path: "appointments",
+        element:
+        <AppointmentProvider>
+        
+          <CentreAppointments />
+          </AppointmentProvider>,
       },
       {
         path: "events",

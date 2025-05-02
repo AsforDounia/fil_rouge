@@ -75,7 +75,7 @@ const Sidebar = () => {
                 donor: '/donneur',
                 admin: '/admin',
                 patient : '/patient',
-                centre_manager: '/centre-manager',
+                centre_manager: '/centre',
                 user: '/user'
             };
             
@@ -109,7 +109,7 @@ const Sidebar = () => {
     
             const centreManagerItmes = [
                 { icon: <FaCalendarAlt />, text: 'Rendez-vous', href: `${baseUrl}/appointments`, badge: null },
-                { icon: <FaHospital />, text: 'Mon Centre', href: `${baseUrl}/my-center`, badge: null },
+                { icon: <FaHospital />, text: 'Mon Centre', href: `${baseUrl}/mycenter`, badge: null },
                 { icon: <FaHandHoldingMedical />, text: 'Demandes de Sang', href: `${baseUrl}/blood-requests`, badge: null },
                 { icon: <FaHistory />, text: 'Historique des Dons', href: `${baseUrl}/donation-records`, badge: null },
                 { icon: <MdFestival />, text: 'Evenements Centre', href: `${baseUrl}/center-events`, badge: null },

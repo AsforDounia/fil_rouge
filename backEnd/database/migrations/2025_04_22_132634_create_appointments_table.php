@@ -14,14 +14,12 @@ return new class extends Migration
         Schema::create('appointments', function (Blueprint $table) {
             $table->id();
             $table->foreignId('donor_id')->constrained('users')->onDelete('cascade');
-
             $table->foreignId('centre_id')->constrained('users')->onDelete('cascade');
             $table->enum('type_don', ['Plasma', 'Globules', 'Plaquettes' , 'Sang Total']);
-
             $table->dateTime('appointment_date');
             $table->time('appointment_time');
 
-            $table->enum('status', ['confirmée', 'annulée'])->default('confirmée');
+            $table->enum('status', ['confirmée', 'annulée','effectuée'])->default('confirmée');
 
             $table->timestamps();
         });

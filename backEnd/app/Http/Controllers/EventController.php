@@ -16,14 +16,14 @@ class EventController extends Controller
     public function index()
     {
 
-        $events = Event::with('localisation.user')->paginate(3);
+        $events = Event::with('centre')->paginate(3);
         return response()->json([
             'events' => $events
         ]);
     }
 
     public function getAllEvents(){
-        $events = Event::with('localisation.user')->orderBy('date','asc')->get();
+        $events = Event::with('centre.localisation')->orderBy('date','asc')->get();
         return response()->json([
             'events' => $events
         ]);

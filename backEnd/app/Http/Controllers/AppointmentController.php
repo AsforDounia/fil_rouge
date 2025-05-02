@@ -16,7 +16,13 @@ class AppointmentController extends Controller
      */
     public function index()
     {
-        //
+        $centre_id = auth()->id();
+        $appointments = Appointment::with('centre')->where('centre_id',$centre_id)->orderBy('appointment_date', 'asc')->get();
+
+        return response()->json([
+            'appointments' => $appointments,
+        ]);
+
     }
 
     /**
@@ -58,9 +64,42 @@ class AppointmentController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Appointment $appointment)
+    public function update(Request $request, $id)
     {
-        //
+
+        $validated = $request->validate([
+            'status' => 'required|string|in:annulée,effectuée',
+        ]);
+
+        $appointment= Appointment::find($id);
+
+        if (!$appointment) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Rendez-vous non trouvé.',
+            ], 404);
+        }
+
+        $appointment->update([
+            'status' => $validated['status'],
+        ]);
+
+        if($request->status === "effectuée"){
+            Don::create([
+                'donor_id' => $appointment->donor_id,
+                'centre_id' => $appointment->centre_id,
+                'type_don' => $appointment->type_don,
+                'donation_date' => now(),
+                'blood_group' => $appointment->donor->blood_type,
+            ]);
+        }
+
+        $appointment->update($validated);
+        return response()->json([
+            'success' => true,
+            'message' => 'Le statut du rendez-vous a été mis à jour avec succès.',
+            'appointment' => $appointment,
+        ]);
     }
 
     /**

@@ -26,7 +26,7 @@ const EventsView = () => {
 
 
     const uniqueLocations = events ? [...new Set(events.map(event =>
-        event.localisation ? event.localisation.address : "Unknown"
+        event.centre ? event.centre.name : "Unknown"
     ))] : [];
 
     useEffect(() => {
@@ -59,14 +59,15 @@ const EventsView = () => {
             result = result.filter(event =>
                 event.title?.toLowerCase().includes(searchTerm.toLowerCase()) ||
                 event.description?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                (event.localisation?.address && event.localisation.address.toLowerCase().includes(searchTerm.toLowerCase()))
+                (event.centre?.address && event.centre.address.toLowerCase().includes(searchTerm.toLowerCase())) ||
+                (event.centre?.name && event.centre.name.toLowerCase().includes(searchTerm.toLowerCase()))
             );
         }
 
 
         if (locationFilter) {
             result = result.filter(event =>
-                event.localisation?.address === locationFilter
+                event.centre?.name === locationFilter
             );
         }
 
@@ -101,6 +102,7 @@ const EventsView = () => {
             </div>
         );
     }
+
 
     const displayEvents = filteredEvents.length > 0 || searchTerm || locationFilter ? filteredEvents : events;
 
@@ -184,8 +186,12 @@ const EventsView = () => {
                                         {event.date || "No date"}
                                     </span>
                                     <span className="min-h-20 max-h-20 block items-center gap-2 text-teal font-medium transition-all duration-300 hover:text-darkTeal">
+                                        <span className='text-burgundy mb-4'>Centre : </span>
+                                        {event.centre ? event.centre.name : "No address"}
+                                    </span>
+                                    <span className="min-h-20 max-h-20 block items-center gap-2 text-teal font-medium transition-all duration-300 hover:text-darkTeal">
                                         <span className='text-burgundy mb-4'>Adresse : </span>
-                                        {event.localisation ? event.localisation.address : "No address"}
+                                        {event.centre ? event.centre.address : "No address"}
                                     </span>
                                     <h3 className="text-xl text-burgundy mb-4 leading-snug">
                                         {event.title || "Untitled Event"}

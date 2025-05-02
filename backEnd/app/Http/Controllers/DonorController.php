@@ -153,9 +153,7 @@ class DonorController extends Controller
             return $formatted_appointment;
         });
 
-        $appHistory = Appointment::with('centre')
-    ->where('donor_id', auth()->id())
-    ->where(function ($query) {
+        $appHistory = Appointment::with('centre')->where('donor_id', auth()->id())->where(function ($query) {
         $query->where('appointment_date', '<', now())
               ->orWhere('status', 'annulée');
     })
