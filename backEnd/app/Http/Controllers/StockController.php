@@ -12,7 +12,11 @@ class StockController extends Controller
      */
     public function index()
     {
-        //
+        $stocks = Stock::where('centre_id',auth()->id())->get();
+        return response()->json([
+            'success' => true,
+            'stocks' => $stocks
+        ]);
     }
 
     /**

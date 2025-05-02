@@ -112,7 +112,7 @@ const Sidebar = () => {
                 { icon: <FaHospital />, text: 'Mon Centre', href: `${baseUrl}/mycenter`, badge: null },
                 { icon: <FaHandHoldingMedical />, text: 'Demandes de Sang', href: `${baseUrl}/requests`, badge: null },
                 { icon: <FaHistory />, text: 'Historique des Dons', href: `${baseUrl}/donations`, badge: null },
-                { icon: <MdFestival />, text: 'Evenements Centre', href: `${baseUrl}/center-events`, badge: null },
+                { icon: <MdFestival />, text: 'Evenements', href: `${baseUrl}/events`, badge: null },
             ];
     
             const userItmes = [

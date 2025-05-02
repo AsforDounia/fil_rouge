@@ -48,13 +48,13 @@ class EventController extends Controller
             ], 422);
         }
 
-        $localisationId = $centre->localisation->id;
+        // $localisationId = $centre->localisation->id;
 
         $event = Event::create([
             'title' => $validated['title'],
             'description' => $validated['description'],
             'date' => $validated['date'],
-            'localisation_id' => $localisationId,
+            'centre_id' => $validated['centre_id'],
         ]);
 
         return response()->json([
@@ -75,9 +75,37 @@ class EventController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Event $event)
+    public function update(Request $request)
     {
-        //
+
+        $validatedData = $request->validate([
+            'id' => 'required|exists:events,id',
+            'title' => 'sometimes|string|max:255',
+            'description' => 'sometimes|string',
+            'date' => 'sometimes|date|after_or_equal:today',
+        ]);
+
+
+        $event = Event::find($validatedData['id']);
+
+        if (!$event) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Événement non trouvé.'
+            ], 404);
+        }
+
+        $event->update([
+            'title' => $validatedData['title'],
+            'description' => $validatedData['description'],
+            'date' => $validatedData['date']
+        ]);
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Événement mis à jour avec succès.',
+            'event' => $event,
+        ]);
     }
 
     /**

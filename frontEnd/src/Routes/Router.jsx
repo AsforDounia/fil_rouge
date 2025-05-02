@@ -234,10 +234,21 @@ export const Router = createBrowserRouter([
       {
         path: "donations",
         element : (
-            <RequestProvider>
-              {/* <CentreDonations /> */}
-            </RequestProvider>
+            <DonationProvider>
+              <CentreDonations />
+            </DonationProvider>
         )
+      },
+
+      {
+        path: "events",
+        element:
+          <EventProvider>
+            <CenterProvider>
+            <EventsView />
+          </CenterProvider>
+          </EventProvider>
+        ,
       },
       
       {

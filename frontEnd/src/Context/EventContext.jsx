@@ -86,7 +86,24 @@ export const EventProvider = ({ children }) => {
             }
         } catch (error) {
             toast.error("Error fetching events :" + error);
-        }
+        } 
+    };
+    
+    
+    const updateEvent = async (formData) => {
+        try {
+            const response = await api.put(`events`,formData);
+            if(response.data.success){
+                toast.success(response.data.message);
+                setEvents((prevEvents) => 
+                    prevEvents.map((event) => 
+                        event.id === formData.id ? { ...event, ...formData } : event
+                    )
+                );
+            }
+        } catch (error) {
+            toast.error("Error updating events :" + error);
+        } 
     };
 
     return (
@@ -101,7 +118,8 @@ export const EventProvider = ({ children }) => {
             annulerParticipation ,
             getAllEvent,
             deleteEvent,
-            createEvent
+            createEvent,
+            updateEvent
         }}>
             {children}
         </EventContext.Provider>

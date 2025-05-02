@@ -10,6 +10,7 @@ import { toast } from 'react-toastify';
 import { FaHeartCircleExclamation } from "react-icons/fa6";
 import { useCentreManager } from '../../Context/CentreManagerContext';
 import { useAppointment } from '../../Context/AppointmentContext';
+import { Link } from 'react-router-dom';
 
 
 const ManagerDashboard = () => {
@@ -41,7 +42,7 @@ const ManagerDashboard = () => {
     return (
         <>
             <div className="grid grid-cols-1 md:grid-cols-4 gap-2 mb-8">
-                <div className="bg-white rounded-lg shadow-lg p-6 transform scale-100 transition-all duration-300 hover:scale-105 cursor-pointer border border-turquoise hover:border-wine">
+                <Link to={'/centre/stocks'} className="bg-white rounded-lg shadow-lg p-6 transform scale-100 transition-all duration-300 hover:scale-105 cursor-pointer border border-turquoise hover:border-wine">
                     <div className="flex items-center justify-between mb-4">
                         <div className="p-3 rounded-full bg-wine/10">
                             <FaHeartCircleExclamation className="text-xl text-wine" />
@@ -50,9 +51,9 @@ const ManagerDashboard = () => {
                             <FaArrowRight />
                         </button>
                     </div>
-                    <h3 className="text-lg font-semibold text-burgundy">Stocks critiques de groupe sanguin</h3>
-                    <p className="mt-2 text-darkteal">A+</p>
-                </div>
+                    <h3 className="text-lg font-semibold text-burgundy">Voir Stocks de groupe sanguin</h3>
+                    <p className="mt-2 text-darkteal"></p>
+                </Link>
 
                 <div className="bg-burgundy rounded-lg shadow-lg p-6 transform scale-100 transition-all duration-300 hover:scale-105 cursor-pointer border border-teal hover:border-cream">
                     <div className="flex items-center justify-between mb-4">
@@ -96,7 +97,7 @@ const ManagerDashboard = () => {
             </div>
 
             <div className="p-6 pl-0 border-b border-gray-200 relative mt-8">
-                <h3 className="text-xl font-semibold text-burgundy">Les événements d'aujourd'hui</h3>
+                <h3 className="text-xl font-semibold text-burgundy">Les dons d'aujourd'hui</h3>
             </div>
             <div className="max-h-160 overflow-auto bg-white shadow rounded-lg">
 
@@ -111,7 +112,7 @@ const ManagerDashboard = () => {
     </tr>
   </thead>
   <tbody>
-    {stats.todayAppointments && stats.todayAppointments.map((appointment) => (
+    {(stats.todayAppointments && stats.todayAppointments.length > 0) ? stats.todayAppointments.map((appointment) => (
       <tr key={appointment.id} className="border-b hover:bg-gray-50">
         <td className="p-4">{appointment.donor.name}</td>
         <td className="p-4">{appointment.type_don}</td>
@@ -123,7 +124,7 @@ const ManagerDashboard = () => {
           const now = new Date();
           const appointmentTime = new Date(now);
           appointmentTime.setHours(hours, minutes, seconds, 0);
-          const nowPlus20Min = new Date(now.getTime() + 20 * 60 * 1000); // 🔥 ici j'ai corrigé !
+          const nowPlus20Min = new Date(now.getTime() + 20 * 60 * 1000);
 
           return appointmentTime < nowPlus20Min ? (
             <>
@@ -156,7 +157,11 @@ const ManagerDashboard = () => {
           );
         })()}
       </tr>
-    ))}
+    )):(
+      <td className="col-span-3 text-center py-8" colSpan={5}>
+      <p className="text-gray-500">Aucun Don trouvé aujourd'huit</p>
+  </td>
+    )}
   </tbody>
 </table>
 
