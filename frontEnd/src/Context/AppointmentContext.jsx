@@ -10,6 +10,7 @@ export const AppointmentProvider = ({ children }) => {
     const [appointmentFileds , setAppointmentFileds] = useState(null);
     const [unavailbleDates , setUnavailbleDates] = useState(null);
     const [unavailbleTimes , setUnavailbleTimes] = useState(null);
+    const [centreAppointments , setCentreAppointments] = useState(null);
 
     const getAppointmentFileds = async () => {
         try {
@@ -61,6 +62,27 @@ export const AppointmentProvider = ({ children }) => {
             console.error('Erreur lors de l’annulation du rendez-vous:', error);
         }
     };
+    const updateAppointemt = async (id , status) => {
+        try {
+            const response = await api.put(`centreManager/appointments/${id}`, status);
+            if(response.data.success){
+                toast.success(response.data.message);
+            };
+        } catch (error) {
+            console.error('Erreur lors de l’annulation du rendez-vous:', error);
+        }
+    };
+
+    const getCentreAppointements = async () => {
+        try {
+            const response = await api.get(`centreManager/appointments`);
+            setCentreAppointments(response.data.appointments)
+            // console.log(response.data.appointments)
+        } catch (error) {
+            console.error('Erreur lors de l’annulation du rendez-vous:', error);
+        }
+    };
+
     return (
         <AppointmentContext.Provider value={{
             getAppointmentFileds,
@@ -70,7 +92,10 @@ export const AppointmentProvider = ({ children }) => {
             createAppointment,
             getUnavailableTimes,
             unavailbleTimes,
-            deleteAppointment
+            deleteAppointment,
+            updateAppointemt,
+            getCentreAppointements,
+            centreAppointments
         }}>
             {children}
         </AppointmentContext.Provider>

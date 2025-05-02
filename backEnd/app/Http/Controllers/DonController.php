@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Appointment;
 use App\Models\Don;
 use Illuminate\Http\Request;
 
@@ -20,12 +21,24 @@ class DonController extends Controller
         ]);
     }
 
+    public function getCentreDonations()
+    {
+        $id = auth()->id();
+        $donations = Don::where('centre_id',$id)->paginate(10);
+
+        return response()->json([
+            'donations' => $donations
+        ]);
+    }
+
     /**
      * Store a newly created resource in storage.
      */
     public function store(Request $request)
     {
-        //
+
+
+
     }
 
     /**

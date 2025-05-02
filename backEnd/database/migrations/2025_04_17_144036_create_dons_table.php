@@ -16,7 +16,8 @@ return new class extends Migration
             $table->foreignId('donor_id')->constrained('users')->onDelete('cascade');
             $table->foreignId('centre_id')->constrained('users')->onDelete('cascade');
             $table->enum('type_don', ['Plasma', 'Globules', 'Plaquettes' , 'Sang Total']);
-            $table->foreignId('collecte_id')->constrained()->onDelete('cascade');
+
+            $table->integer('quantity')->min(1)->max(5)->default(1);
             $table->date('donation_date');
             $table->enum('blood_group', ['A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-']);
             $table->timestamps();

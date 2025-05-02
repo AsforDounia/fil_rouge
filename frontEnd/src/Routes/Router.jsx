@@ -17,7 +17,7 @@ import { StatsProvider } from "../Context/StatsContext";
 import { TestimonialProvider } from "../Context/TestimonialContexte";
 import { EventProvider } from "../Context/EventContext";
 import { RequestProvider } from "../Context/RequestContext";
-import { DonProvider } from "../Context/DonContext";
+
 import { DonorProvider } from "../Context/DonorContext";
 import Appointment from "../pages/Donor/Appointment";
 import CreateAppointment from "../pages/Donor/CreateAppointment";
@@ -38,7 +38,14 @@ import Profile from "../Components/DashboardSharedComponents/UserProfile";
 
 import AdminEvents from "../pages/Admin/AdminEvents";
 import CentreDashboard from "../pages/Centre/CentreDashboard";
-import PatientDashboard from "../../../HelperFolder/PatientDashboard";
+import PatientDashboard from "../pages/Patient/PatientDashboard";
+import CentresView from "../Components/DashboardSharedComponents/CentresView";
+import EventsView from "../Components/DashboardSharedComponents/EventsView";
+import RequestsView from "../Components/DashboardSharedComponents/RequestsView";
+import { CentreManagerProvider } from "../Context/CentreManagerContext";
+import CentreAppointments from "../pages/Centre/CentreAppointements";
+import CentreRequests from "../pages/Centre/CentreRequests";
+import CentreDonations from "../pages/Centre/CentreDonations";
 
 
 export const Router = createBrowserRouter([
@@ -164,9 +171,79 @@ export const Router = createBrowserRouter([
         element:
         <CenterProvider>
           <EventProvider>
-            <AdminEvents />
+            <EventsView />
           </EventProvider>
         </CenterProvider>
+        ,
+      },
+      {
+        path: "profile",
+        element:
+          <Profile />
+        ,
+      },
+      
+
+    ],
+  },
+  {
+    path : 'centre',
+    element: (
+      <AuthProvider>
+        <ProtectedRoute roles={["centre_manager"]}>
+        <CentreManagerProvider>
+          <DashboardLayout />
+          </CentreManagerProvider>
+
+        </ProtectedRoute>
+      </AuthProvider>
+    ),
+    children: [
+      {
+        path: "dashboard",
+        element:
+        <RequestProvider>
+            <AppointmentProvider>
+            <CentreDashboard />
+            </AppointmentProvider>
+        </RequestProvider>
+        ,
+      },
+      {
+        path: "appointments",
+        element:
+        <AppointmentProvider>
+          <CentreAppointments />
+        </AppointmentProvider>,
+      },
+      {
+        path: "events",
+        element:
+        <EventProvider>
+        <EventsView /></EventProvider>
+        ,
+      },
+      {
+        path: "requests",
+        element : (
+            <RequestProvider>
+              <CentreRequests />
+            </RequestProvider>
+        )
+      },
+      {
+        path: "donations",
+        element : (
+            <RequestProvider>
+              {/* <CentreDonations /> */}
+            </RequestProvider>
+        )
+      },
+      
+      {
+        path: "profile",
+        element:
+          <Profile />
         ,
       },
       
@@ -178,44 +255,45 @@ export const Router = createBrowserRouter([
     element: (
       <AuthProvider>
         <ProtectedRoute roles={["patient"]}>
-          
+        <CenterProvider>
           <DashboardLayout />
-          
+          </CenterProvider>
         </ProtectedRoute>
       </AuthProvider>
     ),
     children: [
       {
         path: "dashboard",
-        element: <PatientDashboard />,
-      },
-      {
-        path: "users",
-        element: <ManageUsers />,
-      },
-      {
-        path: "addUser",
-        element: <AddUser />,
-      },
-      {
-        path: "requests",
         element:
-        <CenterProvider>
-          <RequestProvider>
-            <AdminRequests />
-          </RequestProvider>
-        </CenterProvider>
+        <RequestProvider>
+          <PatientDashboard />
+        </RequestProvider>
         ,
       },
-      
+      {
+        path: "centers",
+        element: <CentresView />,
+      },
       {
         path: "events",
         element:
-        <CenterProvider>
-          <EventProvider>
-            <AdminEvents />
-          </EventProvider>
-        </CenterProvider>
+        <EventProvider>
+        <EventsView /></EventProvider>
+        ,
+      },
+      {
+        path: "requests",
+        element : (
+            <RequestProvider>
+              <RequestsView />
+            </RequestProvider>
+        )
+      },
+      
+      {
+        path: "profile",
+        element:
+          <Profile />
         ,
       },
       
@@ -264,7 +342,7 @@ export const Router = createBrowserRouter([
         path : "donneur/centers",
         element : (
           <CenterProvider>
-            <Centers />
+            <CentresView />
           </CenterProvider>
         )
       },
@@ -280,7 +358,7 @@ export const Router = createBrowserRouter([
         path : "donneur/events",
         element : (
             <EventProvider>
-              <EventsSection />
+              <EventsView />
             </EventProvider>
         )
       },

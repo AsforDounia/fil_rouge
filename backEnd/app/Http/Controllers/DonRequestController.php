@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\DonRequest;
+use App\Models\Stock;
 use Illuminate\Http\Request;
 
 class DonRequestController extends Controller
@@ -17,6 +18,10 @@ class DonRequestController extends Controller
             "don_requests" => $donRequests,
         ]);
     }
+
+
+
+
 
 
     public function getMyResquests(){
@@ -76,9 +81,79 @@ class DonRequestController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, DonRequest $donRequest)
+    public function update(Request $request , DonRequest $donRequest)
     {
-        //
+
+        $validated = $request->validate([
+            'blood_group' => 'sometimes|string|in:A+,A-,B+,B-,AB+,AB-,O+,O-',
+            'quantity' => 'sometimes|integer|min:1',
+            'description' => 'sometimes|string',
+            'urgency' => 'sometimes|string',
+            'component' => 'sometimes|string|in:Sang total,Plaquettes,Plasma,Globules',
+        ]);
+
+
+        $donRequest->update($validated);
+
+        return response()->json([
+            'success' => true ,
+            'message' => 'Demande mise à jour avec succès.',
+            'request_updated' => $donRequest,
+        ], 200);
+    }
+
+    public function updatetatus(Request $request,$id)
+    {
+        $validated = $request->validate([
+            'status' => 'sometimes|string|in:acceptée,complétée,annulée,rejetée',
+        ]);
+
+        $donRequest = DonRequest::findOrFail($id);
+
+        if ($donRequest) {
+
+            $donRequest->status = $validated['status'];
+
+            if($validated['status'] === "complétée"){
+                $stock = Stock::where('groupSanguin', $donRequest->blood_group)->where('composantSanguin', $donRequest->type_don)->where('centre_id', $donRequest->centre_id)->first();
+
+                $stock = Stock::where('groupSanguin', $donRequest->blood_group)
+                      ->where('composantSanguin', $donRequest->type_don)
+                      ->where('centre_id', $donRequest->centre_id)
+                      ->first();
+
+                if ($stock && $stock->quantite >= $donRequest->quantity) {
+                    $donRequest->status = $validated['status'];
+                    $donRequest->save();
+
+                    return response()->json([
+                        'success' => true,
+                        'message' => 'Statut mis à jour avec succès.',
+                        'donRequest' => $donRequest,
+                    ], 200);
+                } else {
+                    return response()->json([
+                        'success' => false,
+                        'message' => 'Stock insuffisant pour complétée cette demande.',
+                    ], 400);
+                }
+            }
+            else{
+                $donRequest->save();
+                return response()->json([
+                    'success' => true,
+                    'message' => 'Statut mis à jour avec succès.',
+                    'donRequest' => $donRequest,
+                ], 200);
+            }
+
+
+        }
+
+        return response()->json([
+            'success' => false,
+            'message' => 'Demande non trouvée.',
+        ], 404);
     }
 
     /**
@@ -108,5 +183,14 @@ class DonRequestController extends Controller
     }
 
 
+
+    public function getCentreRequests()
+    {
+        $donRequests = DonRequest::where('centre_id',auth()->id())->get();
+        return response()->json([
+            'success' => true,
+            "don_requests" => $donRequests,
+        ]);
+    }
 
 }

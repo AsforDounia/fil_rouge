@@ -10,9 +10,9 @@ class Event extends Model
     use HasFactory;
     protected $fillable = ['title', 'description', 'date', 'localisation_id'];
 
-    public function localisation()
+    public function centre()
     {
-        return $this->belongsTo(Localisation::class);
+        return $this->belongsTo(User::class);
     }
 
     public function participants()

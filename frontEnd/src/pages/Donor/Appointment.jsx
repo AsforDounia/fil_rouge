@@ -56,6 +56,7 @@ export default function Appointment() {
 
 }
 
+
   return (
     <>
       {/* Header */}
@@ -77,7 +78,8 @@ export default function Appointment() {
             </button>
           </div>
           <h3 className="font-semibold text-lg mt-4 text-burgundy ">Prochain RDV</h3>
-          <p className="mt-1 text-[rgba(74,30,31,0.7)]">{appointmentsStats.next_appointment_date ? appointmentsStats.next_appointment_date : 'Aucun rendez-vous trouvé'} jours</p>
+          <p className="mt-1 text-[rgba(74,30,31,0.7)]">{appointmentsStats.next_appointment_date ? appointmentsStats.next_appointment_date.slice(0, 10) : 'Aucun rendez-vous trouvé'}</p>
+          <p className="mt-1 text-[rgba(74,30,31,0.7)]">{appointmentsStats.next_appointment_time ? appointmentsStats.next_appointment_time.slice(0, 5) : ''}</p>
          
         </div>
         <div className="bg-burgundy  border p-6 rounded-lg shadow">

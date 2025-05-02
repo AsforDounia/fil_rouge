@@ -8,6 +8,7 @@ export const RequestContext = createContext();
 
 export const RequestProvider = ({ children }) => {
     const [requests, setRequests] = useState(null);
+    const [centreRequests, setCentreRequests] = useState(null);
     const [nbRstUrgC, setNbRstUrgC] = useState(null);
 
     const getnbRstUrgC = async () => {
@@ -74,6 +75,51 @@ export const RequestProvider = ({ children }) => {
         }
     }
 
+    const getCentreRequests = async() => {
+        try {
+            const response = await api.get(`centre/requests`);
+            if(response.data.success){
+                setCentreRequests(response.data.don_requests);
+            }
+        } catch (error) {
+            console.error(error);
+        }
+    }
+
+    const editRequest = async(formData , request) => {
+        try {
+            const response = await api.put(`requests`,formData , request);
+            if(response.data.success){
+                toast.success(response.data.message)
+                setRequests((prevRequests) =>
+                    prevRequests.map((req) =>
+                        req.id === request.id ? { ...req, ...formData } : req
+                ));
+            }
+        } catch (error) {
+            console.error(error);
+        }
+    }
+
+    const updateRequestStatus = async(requestId, status) => {
+        try {
+            const response = await api.put(`requests/${requestId}`, { status });
+            if(response.data.success){
+                toast.success(response.data.message);
+                setCentreRequests((prevRequests) =>
+                    prevRequests.map((req) =>
+                        req.id === requestId ? { ...req, status: status } : req
+                    )
+                );
+            } else {
+                toast.error("La mise à jour du statut a échoué");
+            }
+        } catch (error) {
+            console.error("Erreur lors de la mise à jour:", error);
+    
+        }
+    }
+
     return (
         <RequestContext.Provider value={{
             getnbRstUrgC,
@@ -83,7 +129,11 @@ export const RequestProvider = ({ children }) => {
             deleteRequest,
             getAllRequest,
             createRequest,
-            patientRequest
+            patientRequest,
+            editRequest,
+            getCentreRequests,
+            centreRequests,
+            updateRequestStatus
 
         }}>
             {children}

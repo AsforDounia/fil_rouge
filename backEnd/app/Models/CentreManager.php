@@ -24,6 +24,8 @@ class CentreManager extends User
         return $this->hasMany(Appointment::class, 'centre_id');
     }
 
+
+
     public function localisation()
     {
         return $this->hasOne(Localisation::class);
@@ -31,5 +33,13 @@ class CentreManager extends User
 
     public function donations(){
         return $this->hasMany(Don::class, 'centre_id');
+    }
+
+    public function stocks(){
+        return $this->hasMany(Stock::class, 'centre_id');
+    }
+
+    public function events(){
+        return $this->hasMany(Event::class, 'centre_id');
     }
 }

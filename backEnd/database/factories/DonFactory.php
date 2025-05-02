@@ -22,8 +22,8 @@ class DonFactory extends Factory
         return [
             'donor_id' => User::factory(),
             'centre_id' => User::factory(),
-            'collecte_id' => Collecte::factory(),
             'donation_date' => $this->faker->date(),
+            'quantity' => $this->faker->numberBetween(1, 5),
             'blood_group' => $this->faker->randomElement(['A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-']),
         ];
     }

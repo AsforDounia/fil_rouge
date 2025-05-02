@@ -210,6 +210,31 @@ export default function CreateAppointment() {
           </div>
         </section>
 
+{/* Quantity Selection */}
+<section className="bg-white rounded-lg shadow-lg overflow-hidden mb-6">
+  <div className="h-1 bg-gradient-to-r from-teal to-wine"></div>
+  <div className="p-6 border-b border-gray-200">
+    <h3 className="text-xl font-semibold text-burgundy">Quantité</h3>
+  </div>
+  <div className="p-6">
+    <label className="block mb-2 text-gray-700 font-medium">
+      Choisissez la quantité
+    </label>
+    <select
+      className="w-full border px-3 py-2 rounded"
+      value={formData.quantity}
+      onChange={(e) => setFormData({ ...formData, quantity: parseInt(e.target.value) })}
+      required
+    >
+      {[1, 2, 3, 4, 5].map((q) => (
+        <option key={q} value={q}>
+          {q}
+        </option>
+      ))}
+    </select>
+  </div>
+</section>
+
         {/* Date & Location */}
         <section className="bg-white rounded-lg shadow-lg overflow-hidden mb-6">
           <div className="h-1 bg-gradient-to-r from-teal to-wine"></div>
@@ -305,6 +330,9 @@ export default function CreateAppointment() {
           <div className="p-6">
             <p className="mb-2">
               <strong>Type de don :</strong> {formData.type_don}
+            </p>
+            <p className="mb-2">
+              <strong>Quantité :</strong> {formData.quantity}
             </p>
             <p className="mb-2">
               <strong>Date :</strong>{" "}

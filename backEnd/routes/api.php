@@ -4,6 +4,7 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AppointmentController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CenterController;
+use App\Http\Controllers\CentreManagerController;
 use App\Http\Controllers\ConversationController;
 use App\Http\Controllers\DonController;
 use App\Http\Controllers\DonorController;
@@ -12,6 +13,8 @@ use App\Http\Controllers\EventController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\TemoignageController;
 use App\Http\Controllers\UserController;
+use App\Models\Appointment;
+use App\Models\CentreManager;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -41,7 +44,6 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::get('requests', [DonRequestController::class, 'index']);
     Route::get('requests/{id}', [DonRequestController::class, 'show']);
     Route::post('requests', [DonRequestController::class, 'store']);
-    Route::put('requests/{id}', [DonRequestController::class, 'update']);
     Route::delete('requests/{id}', [DonRequestController::class, 'destroy']);
 
 
@@ -54,6 +56,7 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
 
 
 
+    Route::get('admin/events', [EventController::class, 'getAllEvents' ]);
 
     // Route::get('conversations',[ConversationController::class,'index']);
     Route::get('events/user/participer',[EventController::class,'userParticiper']);
@@ -91,7 +94,6 @@ Route::group(['middleware' => ['auth:sanctum', 'role:admin']], function () {
     Route::post('admin/deleteUser/{id}', [AdminController::class, 'deleteUser' ]);
     Route::post('admin/ChangeAccountStatus/{id}', [AdminController::class, 'ChangeAccountStatus' ]);
     Route::get('admin/requests', [DonRequestController::class, 'getAllRequest' ]);
-    Route::get('admin/events', [EventController::class, 'getAllEvents' ]);
 });
 
 Route::group(['middleware' => ['auth:sanctum', 'role:admin,patient']], function () {
@@ -101,7 +103,20 @@ Route::group(['middleware' => ['auth:sanctum', 'role:admin,centre_manager']], fu
     Route::delete('events/{id}', [EventController::class, 'destroy' ]);
     Route::post('events', [EventController::class, 'store' ]);
 });
+
+
 Route::group(['middleware' => ['auth:sanctum', 'role:patient']], function () {
     Route::get('patientRequest', [DonRequestController::class, 'getMyResquests']);
+    // Route::put('requests', [DonRequestController::class, 'update']);
+    Route::put('requests', [DonRequestController::class, 'update']);
+
+});
+Route::group(['middleware' => ['auth:sanctum', 'role:centre_manager']], function () {
+    Route::get('centreManager/stats', [CentreManagerController::class, 'getStats']);
+    Route::put('centreManager/appointments/{id}', [AppointmentController::class, 'update']);
+    Route::get('centreManager/appointments', [AppointmentController::class, 'index']);
+    Route::get('centre/requests', [DonRequestController::class, 'getCentreRequests']);
+    Route::put('requests/{id}', [DonRequestController::class, 'updatetatus']);
+    Route::get('centre/donations', [DonController::class, 'getCentreDonations']);
 
 });

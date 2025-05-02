@@ -20,6 +20,7 @@ const Sidebar = () => {
             try {
                 const isDonor = await hasRole(["donor"]);
                 const isAdmin = await hasRole(["admin"]);
+                const isPatient = await hasRole(["patient"]);
                 const isCentreManager = await hasRole(["centre_manager"]);
                 
                 if (isAdmin) {
@@ -28,6 +29,8 @@ const Sidebar = () => {
                     setUserRole("centre_manager");
                 } else if (isDonor) {
                     setUserRole("donor");
+                } else if (isPatient) {
+                    setUserRole("patient");
                 } else {
                     setUserRole("user");
                 }
@@ -71,7 +74,8 @@ const Sidebar = () => {
             const baseUrls = {
                 donor: '/donneur',
                 admin: '/admin',
-                centre_manager: '/centre-manager',
+                patient : '/patient',
+                centre_manager: '/centre',
                 user: '/user'
             };
             
@@ -105,13 +109,18 @@ const Sidebar = () => {
     
             const centreManagerItmes = [
                 { icon: <FaCalendarAlt />, text: 'Rendez-vous', href: `${baseUrl}/appointments`, badge: null },
-                { icon: <FaHospital />, text: 'Mon Centre', href: `${baseUrl}/my-center`, badge: null },
-                { icon: <FaHandHoldingMedical />, text: 'Demandes de Sang', href: `${baseUrl}/blood-requests`, badge: null },
-                { icon: <FaHistory />, text: 'Historique des Dons', href: `${baseUrl}/donation-records`, badge: null },
+                { icon: <FaHospital />, text: 'Mon Centre', href: `${baseUrl}/mycenter`, badge: null },
+                { icon: <FaHandHoldingMedical />, text: 'Demandes de Sang', href: `${baseUrl}/requests`, badge: null },
+                { icon: <FaHistory />, text: 'Historique des Dons', href: `${baseUrl}/donations`, badge: null },
                 { icon: <MdFestival />, text: 'Evenements Centre', href: `${baseUrl}/center-events`, badge: null },
             ];
     
             const userItmes = [
+                { icon: <FaHospital />, text: 'Centres de Don', href: `${baseUrl}/centers`, badge: null },
+                { icon: <MdFestival />, text: 'Evenements', href: `${baseUrl}/events`, badge: null },
+            ];
+            const patientItmes = [
+                { icon: <FaHandHoldingMedical />, text: 'Demandes de Sang', href: `${baseUrl}/requests`, badge: null },
                 { icon: <FaHospital />, text: 'Centres de Don', href: `${baseUrl}/centers`, badge: null },
                 { icon: <MdFestival />, text: 'Evenements', href: `${baseUrl}/events`, badge: null },
             ];
@@ -132,6 +141,9 @@ const Sidebar = () => {
                     break;
                 case 'centre_manager':
                     items = [...items, ...centreManagerItmes];
+                    break;
+                case 'patient':
+                    items = [...items, ...patientItmes];
                     break;
                 default:
                     items = [...items, ...userItmes];

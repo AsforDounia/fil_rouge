@@ -60,7 +60,6 @@ export default function ManageUsers() {
 
   return (
     <div className="p-6">
-      {/* Header */}
       <div className="flex justify-end items-center mb-6">
         <Link to="/admin/addUser" className="flex items-center gap-2 bg-teal text-white px-4 py-2 rounded-lg hover:bg-darkteal transition">
           <FaUserPlus />

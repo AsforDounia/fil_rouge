@@ -11,11 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('events', function (Blueprint $table) {
+        Schema::create('stocks', function (Blueprint $table) {
             $table->id();
-            $table->string('title');
-            $table->text('description')->nullable();
-            $table->dateTime('date');
+            $table->string('groupSanguin');
+            $table->enum('composantSanguin', ['Plasma', 'Globules', 'Plaquettes' , 'Sang Total']);
+            $table->integer('quantite');
             $table->foreignId('centre_id')->constrained('users')->onDelete('cascade');
             $table->timestamps();
         });
@@ -26,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('events');
+        Schema::dropIfExists('stocks');
     }
 };

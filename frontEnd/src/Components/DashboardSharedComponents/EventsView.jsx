@@ -1,12 +1,18 @@
 import React, { useEffect, useState } from 'react';
-import { useEvent } from '../../Context/EventContext';
 import { FaSearch, FaTrash } from 'react-icons/fa';
 
 import { toast } from "react-toastify";
 
-import AddEventModal from '../../Components/DashboardSharedComponents/AddEventModal';
 
-const AdminEvents = () => {
+import { useAuth } from '../../Context/AuthContext';
+import { useEvent } from '../../Context/EventContext';
+import AddEventModal from './AddEventModal';
+
+const EventsView = () => {
+
+    const {hasRole} = useAuth();
+    const [isAdmin , setIsAdmin] = useState(null);
+    const [isCenter , setIsCenter] = useState(null);
     const [loading, setLoading] = useState(true);
     const { events, getAllEvent, deleteEvent } = useEvent();
     const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
@@ -20,7 +26,7 @@ const AdminEvents = () => {
 
 
     const uniqueLocations = events ? [...new Set(events.map(event =>
-        event.localisation ? event.localisation.address : "Unknown"
+        event.centre ? event.centre.name : "Unknown"
     ))] : [];
 
     useEffect(() => {
@@ -28,6 +34,11 @@ const AdminEvents = () => {
             setLoading(true);
             try {
                 await getAllEvent();
+                const admin = await hasRole(["admin"]);
+                const centre = await hasRole(["centre_manager"]);
+                setIsAdmin(admin);
+                console.log(admin)
+                setIsCenter(centre);
             } catch (error) {
                 console.error("Error fetching events:", error);
                 toast.error("Error fetching events: " + (error.message || "Unknown error"));
@@ -48,14 +59,15 @@ const AdminEvents = () => {
             result = result.filter(event =>
                 event.title?.toLowerCase().includes(searchTerm.toLowerCase()) ||
                 event.description?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                (event.localisation?.address && event.localisation.address.toLowerCase().includes(searchTerm.toLowerCase()))
+                (event.centre?.address && event.centre.address.toLowerCase().includes(searchTerm.toLowerCase())) ||
+                (event.centre?.name && event.centre.name.toLowerCase().includes(searchTerm.toLowerCase()))
             );
         }
 
 
         if (locationFilter) {
             result = result.filter(event =>
-                event.localisation?.address === locationFilter
+                event.centre?.name === locationFilter
             );
         }
 
@@ -90,6 +102,7 @@ const AdminEvents = () => {
             </div>
         );
     }
+
 
     const displayEvents = filteredEvents.length > 0 || searchTerm || locationFilter ? filteredEvents : events;
 
@@ -152,6 +165,7 @@ const AdminEvents = () => {
                     {displayEvents && displayEvents.length > 0 ? (
                         displayEvents.map((event, index) => (
                             <div key={index} className="flex flex-col bg-white rounded-lg overflow-hidden shadow-lg transition-all duration-300 hover:-translate-y-1">
+                                {isAdmin && (
                                 <span className='flex justify-end'>
                                     <button
                                         onClick={() => openDeleteModal(event)}
@@ -160,6 +174,8 @@ const AdminEvents = () => {
                                         <FaTrash />
                                     </button>
                                 </span>
+
+                                )}
                                 {event.localisation?.user?.profile_image ? (
                                     <img src={`http://127.0.0.1:8000/storage/${event.localisation.user.profile_image}`} alt={event.title} className="w-full h-48 object-cover" />
                                 ) : (
@@ -170,8 +186,12 @@ const AdminEvents = () => {
                                         {event.date || "No date"}
                                     </span>
                                     <span className="min-h-20 max-h-20 block items-center gap-2 text-teal font-medium transition-all duration-300 hover:text-darkTeal">
+                                        <span className='text-burgundy mb-4'>Centre : </span>
+                                        {event.centre ? event.centre.name : "No address"}
+                                    </span>
+                                    <span className="min-h-20 max-h-20 block items-center gap-2 text-teal font-medium transition-all duration-300 hover:text-darkTeal">
                                         <span className='text-burgundy mb-4'>Adresse : </span>
-                                        {event.localisation ? event.localisation.address : "No address"}
+                                        {event.centre ? event.centre.address : "No address"}
                                     </span>
                                     <h3 className="text-xl text-burgundy mb-4 leading-snug">
                                         {event.title || "Untitled Event"}
@@ -236,4 +256,4 @@ const AdminEvents = () => {
     );
 };
 
-export default AdminEvents;
+export default EventsView;
