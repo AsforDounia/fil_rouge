@@ -17,7 +17,7 @@ import { StatsProvider } from "../Context/StatsContext";
 import { TestimonialProvider } from "../Context/TestimonialContexte";
 import { EventProvider } from "../Context/EventContext";
 import { RequestProvider } from "../Context/RequestContext";
-import { DonProvider } from "../Context/DonContext";
+
 import { DonorProvider } from "../Context/DonorContext";
 import Appointment from "../pages/Donor/Appointment";
 import CreateAppointment from "../pages/Donor/CreateAppointment";
@@ -44,6 +44,8 @@ import EventsView from "../Components/DashboardSharedComponents/EventsView";
 import RequestsView from "../Components/DashboardSharedComponents/RequestsView";
 import { CentreManagerProvider } from "../Context/CentreManagerContext";
 import CentreAppointments from "../pages/Centre/CentreAppointements";
+import CentreRequests from "../pages/Centre/CentreRequests";
+import CentreDonations from "../pages/Centre/CentreDonations";
 
 
 export const Router = createBrowserRouter([
@@ -211,9 +213,8 @@ export const Router = createBrowserRouter([
         path: "appointments",
         element:
         <AppointmentProvider>
-        
           <CentreAppointments />
-          </AppointmentProvider>,
+        </AppointmentProvider>,
       },
       {
         path: "events",
@@ -226,7 +227,15 @@ export const Router = createBrowserRouter([
         path: "requests",
         element : (
             <RequestProvider>
-              <RequestsView />
+              <CentreRequests />
+            </RequestProvider>
+        )
+      },
+      {
+        path: "donations",
+        element : (
+            <RequestProvider>
+              {/* <CentreDonations /> */}
             </RequestProvider>
         )
       },

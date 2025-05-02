@@ -27,11 +27,21 @@ export const DonationProvider = ({ children }) => {
         }
     };
     
+
+    const getCentreDonations = async () => {
+        try {
+            const response = await api.get(`centre/donations`);
+            setDonations(response.data.donations);
+        } catch (error) {
+            toast.error("Error fetching Donations :" + error);
+        }
+    };
     return (
         <DonationContext.Provider value={{
             getDonations,
             donations,
-            getAllDonations
+            getAllDonations,
+            getCentreDonations
        
         }}>
             {children}

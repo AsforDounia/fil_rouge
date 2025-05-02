@@ -13,13 +13,14 @@ export const DonProvider = ({ children }) => {
         try{
             const response = await api.get('donations/user/count');
             setDonationsCountUser(response.data.count);
-            
         }
         catch(error){
             console.error(error);
         }
 
     }
+
+    
 
     return (
         <DonContext.Provider value={{

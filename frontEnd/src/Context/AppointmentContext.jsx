@@ -94,7 +94,8 @@ export const AppointmentProvider = ({ children }) => {
             unavailbleTimes,
             deleteAppointment,
             updateAppointemt,
-            getCentreAppointements
+            getCentreAppointements,
+            centreAppointments
         }}>
             {children}
         </AppointmentContext.Provider>

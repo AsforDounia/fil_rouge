@@ -21,12 +21,22 @@ class DonController extends Controller
         ]);
     }
 
+    public function getCentreDonations()
+    {
+        $id = auth()->id();
+        $donations = Don::where('centre_id',$id)->paginate(10);
+
+        return response()->json([
+            'donations' => $donations
+        ]);
+    }
+
     /**
      * Store a newly created resource in storage.
      */
     public function store(Request $request)
     {
-       
+
 
 
     }

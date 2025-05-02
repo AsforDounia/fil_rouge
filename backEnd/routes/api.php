@@ -44,7 +44,6 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::get('requests', [DonRequestController::class, 'index']);
     Route::get('requests/{id}', [DonRequestController::class, 'show']);
     Route::post('requests', [DonRequestController::class, 'store']);
-    Route::put('requests/{id}', [DonRequestController::class, 'update']);
     Route::delete('requests/{id}', [DonRequestController::class, 'destroy']);
 
 
@@ -108,10 +107,16 @@ Route::group(['middleware' => ['auth:sanctum', 'role:admin,centre_manager']], fu
 
 Route::group(['middleware' => ['auth:sanctum', 'role:patient']], function () {
     Route::get('patientRequest', [DonRequestController::class, 'getMyResquests']);
+    // Route::put('requests', [DonRequestController::class, 'update']);
     Route::put('requests', [DonRequestController::class, 'update']);
+
 });
 Route::group(['middleware' => ['auth:sanctum', 'role:centre_manager']], function () {
     Route::get('centreManager/stats', [CentreManagerController::class, 'getStats']);
     Route::put('centreManager/appointments/{id}', [AppointmentController::class, 'update']);
     Route::get('centreManager/appointments', [AppointmentController::class, 'index']);
+    Route::get('centre/requests', [DonRequestController::class, 'getCentreRequests']);
+    Route::put('requests/{id}', [DonRequestController::class, 'updatetatus']);
+    Route::get('centre/donations', [DonController::class, 'getCentreDonations']);
+
 });

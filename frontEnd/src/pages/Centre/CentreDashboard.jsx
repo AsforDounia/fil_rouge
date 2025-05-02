@@ -104,6 +104,7 @@ const ManagerDashboard = () => {
   <thead className="bg-burgundy text-white">
     <tr>
       <th className="p-4 text-left">Donneur Name</th>
+      <th className="p-4 text-left">Type de Don</th>
       <th className="p-4 text-left">Date</th>
       <th className="p-4 text-left">Heure</th>
       <th className="p-4 text-center w-[160px]" colSpan={2}>Actions</th>
@@ -113,6 +114,7 @@ const ManagerDashboard = () => {
     {stats.todayAppointments && stats.todayAppointments.map((appointment) => (
       <tr key={appointment.id} className="border-b hover:bg-gray-50">
         <td className="p-4">{appointment.donor.name}</td>
+        <td className="p-4">{appointment.type_don}</td>
         <td className="p-4">{new Date(appointment.appointment_date).toISOString().slice(0, 10)}</td>
         <td className="p-4">{appointment.appointment_time}</td>
 

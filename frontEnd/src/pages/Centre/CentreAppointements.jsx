@@ -6,7 +6,7 @@ import { useAppointment } from '../../Context/AppointmentContext';
 
 const CentreAppointments = () => {
 
-  const { updateAppointemt , getCentreAppointements , centreAppointments } = useAppointment();
+  const { updateAppointemt, getCentreAppointements, centreAppointments } = useAppointment();
   const [filter, setFilter] = useState('all'); // 'all', 'today', 'upcoming', 'past'
   
   useEffect(() => {
@@ -16,7 +16,6 @@ const CentreAppointments = () => {
     fetchData();
   }, []);
 
-  console.log(centreAppointments);
   if (!centreAppointments) {
     return <div>Chargement...</div>;
   }
@@ -32,25 +31,26 @@ const CentreAppointments = () => {
     }
   };
 
-  // Get today's date for filtering
-  const today = new Date().toISOString().slice(0, 10);
-
-  // Filter appointments based on selected filter
   const getFilteredAppointments = () => {
-    if (!centreAppointments || !centreAppointments.todayAppointments) return [];
-    
-    switch (filter) {
-      case 'today':
-        return centreAppointments.todayAppointments;
-      case 'upcoming':
-        // This would need to be expanded with actual upcoming appointments data
-        return centreAppointments.upcomingAppointments || [];
-      case 'past':
-        // This would need to be expanded with actual past appointments data
-        return centreAppointments.pastAppointments || [];
-      default:
-        return centreAppointments.todayAppointments;
-    }
+    if (!centreAppointments) return [];
+  
+    const todayDate = new Date();
+    const todayString = todayDate.toISOString().slice(0, 10);
+  
+    return centreAppointments.filter((appointment) => {
+      const appointmentDate = appointment.appointment_date.slice(0, 10);
+  
+      switch (filter) {
+        case 'today':
+          return appointmentDate === todayString;
+        case 'upcoming':
+          return appointmentDate > todayString;
+        case 'past':
+          return appointmentDate < todayString;
+        default:
+          return true;
+      }
+    });
   };
 
   const filteredAppointments = getFilteredAppointments();
@@ -133,6 +133,7 @@ const CentreAppointments = () => {
           <thead className="bg-burgundy text-white">
             <tr>
               <th className="p-4 text-left">Donneur</th>
+              <th className="p-4 text-left">Type de Don</th>
               <th className="p-4 text-left">Date</th>
               <th className="p-4 text-left">Heure</th>
               <th className="p-4 text-left">Type</th>
@@ -144,7 +145,8 @@ const CentreAppointments = () => {
             {filteredAppointments && filteredAppointments.map((appointment) => (
               <tr key={appointment.id} className="border-b hover:bg-gray-50">
                 <td className="p-4">{appointment.donor.name}</td>
-                <td className="p-4">{new Date(appointment.appointment_date).toISOString().slice(0, 10)}</td>
+                <td className="p-4">{appointment.type_don}</td>
+                <td className="p-4">{appointment.appointment_date.slice(0, 10)}</td>
                 <td className="p-4">{appointment.appointment_time}</td>
                 <td className="p-4">{appointment.appointment_type || "Don de sang"}</td>
                 <td className="p-4">
@@ -161,11 +163,27 @@ const CentreAppointments = () => {
                   const now = new Date();
                   const appointmentTime = new Date(now);
                   appointmentTime.setHours(hours, minutes, seconds, 0);
-                  const nowPlus20Min = new Date(now.getTime() + 20 * 60 * 1000);
+                  const nowPlus20Min = new Date(now.getTime());
+                  
+                  // Check appointment status and render appropriate action buttons
+                  if (appointment.status === 'effectuée') {
+                    return (
+            
+                        <td className='text-center' colSpan={2}>
 
-                  // Only show action buttons for upcoming or today's appointments that haven't been marked as completed or cancelled
-                  if (appointment.status !== 'effectuée' && appointment.status !== 'annulée') {
-                    return appointmentTime < nowPlus20Min ? (
+                          <p>Le rendez-vous est effectué.</p>
+                        </td>
+                   
+                    );
+                  } else if (appointment.status === 'annulée') {
+                    return (
+                   
+                      <p>Le rendez-vous est annulée.</p>
+                   
+                    );
+                  } else {
+
+                    return (
                       <>
                         <td className='text-center'>
                           <button
@@ -182,25 +200,6 @@ const CentreAppointments = () => {
                           </button>
                         </td>
                       </>
-                    ) : (
-                      <>
-                        <td></td>
-                        <td className='text-center'>
-                          <button
-                            onClick={() => handleAppointment(appointment.id, 'annulée')}
-                            className='text-red-600 bg-red-200 rounded-2xl px-2 py-1 cursor-pointer hover:bg-red-300'>
-                            Annulée
-                          </button>
-                        </td>
-                      </>
-                    );
-                  } else {
-                    return (
-                      <>
-                        <td colSpan={2} className="text-center text-gray-500">
-                          {appointment.status === 'effectuée' ? 'Rendez-vous effectué' : 'Rendez-vous annulé'}
-                        </td>
-                      </>
                     );
                   }
                 })()}
@@ -208,7 +207,7 @@ const CentreAppointments = () => {
             ))}
             {filteredAppointments.length === 0 && (
               <tr>
-                <td colSpan={6} className="p-4 text-center text-gray-500">
+                <td colSpan={7} className="p-4 text-center text-gray-500">
                   Aucun rendez-vous trouvé
                 </td>
               </tr>

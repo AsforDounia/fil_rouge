@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { FaSearch, FaMapMarkerAlt, FaUser, FaTint, FaCheckCircle, FaInfoCircle, FaExclamationCircle, FaChevronLeft, FaChevronRight, FaBell, FaSignOutAlt, FaEdit } from 'react-icons/fa';
+import { FaSearch, FaMapMarkerAlt, FaUser, FaTint, FaCheckCircle, FaInfoCircle, FaExclamationCircle, FaChevronLeft, FaChevronRight, FaBell, FaSignOutAlt, FaEdit, FaTrash } from 'react-icons/fa';
 import { useRequest } from '../../Context/RequestContext';
 import { useAuth } from '../../Context/AuthContext';
 import { toast } from 'react-toastify'; // Added missing import for toast
@@ -7,9 +7,12 @@ import EditRequestForm from './EditRequestForm';
 
 export default function RequestsView() {
   const [activeTab, setActiveTab] = useState('all');
-  const { getRequests, requests } = useRequest();
+  const { getRequests, requests , deleteRequest } = useRequest();
   const { user, getUser , hasRole } = useAuth();
   const [editingRequest , setEditingRequest] = useState(null);
+
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(null);
+  const [selectedRequest, setSelectedRequest] = useState(null);
 
   const [isPatient, setIsPatient] = useState(false);
   const [loading, setLoading] = useState(true);
@@ -104,6 +107,17 @@ export default function RequestsView() {
   };
 
   const visibleRequests = getVisibleRequests();
+
+  const handeleDeleteRequest = async(id) => {
+    try{
+        await deleteRequest(id);
+        setShowDeleteConfirm(false);
+    }
+    catch(error){
+        toast.error(error);
+        
+    }
+  }
   
   const getUrgencyDisplay = (urgency) => {
     if (urgency === 'Urgent') {
@@ -127,6 +141,43 @@ export default function RequestsView() {
           onCancel={() => setEditingRequest(null)}
         />
       )}
+
+{showDeleteConfirm && selectedRequest && (
+                    <div className="fixed inset-0 bg-black/50 flex justify-center items-center z-50 p-4">
+                      <div className="bg-white rounded-lg shadow-lg max-w-md w-full">
+                        <div className="p-6 border-b border-gray-200 flex justify-between items-center relative">
+                          <h3 className="text-xl font-semibold text-[#4A1E1F]">Confirmer la suppression</h3>
+                          <button
+                            onClick={() => setShowDeleteConfirm(false)}
+                            className="text-gray-500 hover:text-gray-700"
+                          >
+                            ✕
+                          </button>
+                          <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-[#40898A] to-[#8B2326]"></div>
+                        </div>
+                        <div className="p-6">
+                          <p className="mb-6 text-gray-700">
+                            Êtes-vous sûr de vouloir supprimer cette demande de sang ?
+                            Cette action est irréversible.
+                          </p>
+                          <div className="flex justify-end gap-2">
+                            <button
+                              onClick={() => setShowDeleteConfirm(false)}
+                              className="px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-100 transition-colors"
+                            >
+                              Annuler
+                            </button>
+                            <button
+                              onClick={() => handeleDeleteRequest(selectedRequest.id)}
+                              className="px-4 py-2 bg-[#8B2326] text-white rounded-lg hover:bg-[#4A1E1F] transition-colors"
+                            >
+                              Supprimer
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  )}
       {/* Tab Navigation */}
       <div className="flex border-b border-gray-200 mb-6">
         <div 
@@ -259,19 +310,17 @@ export default function RequestsView() {
                     minute: '2-digit'
                   })}
                 </div>
-                {request.patient_id === user.id && (
+                {(request.patient_id === user.id && request.status === "en_attente") && (
+                  <>
+
                 <button
                   onClick={() => setEditingRequest(request)}
                   className="bg-transparent border-none cursor-pointer p-1 text-darkteal hover:text-[#40898A]"
                 >
                   <FaEdit />
                 </button>
-
-                )
-
-                }
-
-                {/* <button
+                
+                <button
                   onClick={() => {
                     setSelectedRequest(request);
                     setShowDeleteConfirm(true);
@@ -279,7 +328,15 @@ export default function RequestsView() {
                   className="bg-transparent border-none cursor-pointer p-1 text-[#8B2326] hover:text-[#a42a2d]"
                 >
                   <FaTrash />
-                </button> */}
+                </button>
+
+       
+                </>
+
+                )
+
+                }
+
               </div>
             </div>
           );

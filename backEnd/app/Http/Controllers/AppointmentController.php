@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Appointment;
 use App\Models\CentreManager;
 use App\Models\Don;
+use App\Models\Stock;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -17,7 +18,7 @@ class AppointmentController extends Controller
     public function index()
     {
         $centre_id = auth()->id();
-        $appointments = Appointment::with('centre')->where('centre_id',$centre_id)->orderBy('appointment_date', 'asc')->get();
+        $appointments = Appointment::with('donor')->where('centre_id',$centre_id)->orderBy('appointment_date', 'asc')->get();
 
         return response()->json([
             'appointments' => $appointments,
@@ -35,16 +36,19 @@ class AppointmentController extends Controller
             'type_don' => 'required|in:Plasma,Globules,Plaquettes,Sang Total',
             'appointment_time' => 'required|date_format:H:i:s',
             'centre_id' => 'required|exists:users,id',
+            'quantity' => 'required|integer|min:1|max:5',
         ]);
 
+        $appointment = new Appointment([
+            'donor_id' => auth()->id(),
+            'centre_id' => $validated['centre_id'],
+            'type_don' => $validated['type_don'],
+            'appointment_date' => $validated['appointment_date'],
+            'appointment_time' => $validated['appointment_time'],
+            'quantity' => $validated['quantity'],
+            'status' => 'confirmée',
+        ]);
 
-        $appointment = new Appointment();
-        $appointment->donor_id = auth()->id();
-        $appointment->centre_id = $request->centre_id;
-        $appointment->type_don = $request->type_don;
-        $appointment->appointment_date = $request->appointment_date;
-        $appointment->appointment_time = $request->appointment_time;
-        $appointment->status = 'en_attente';
         $appointment->save();
 
         return response()->json([
@@ -52,6 +56,7 @@ class AppointmentController extends Controller
             'appointment' => $appointment,
         ], 201);
     }
+
 
     /**
      * Display the specified resource.
@@ -85,13 +90,30 @@ class AppointmentController extends Controller
         ]);
 
         if($request->status === "effectuée"){
-            Don::create([
+            $danation = Don::create([
                 'donor_id' => $appointment->donor_id,
                 'centre_id' => $appointment->centre_id,
                 'type_don' => $appointment->type_don,
                 'donation_date' => now(),
                 'blood_group' => $appointment->donor->blood_type,
+                'quantity' => $appointment->quantity
             ]);
+
+
+            $stock = Stock::where('groupSanguin', $danation->blood_group)->where('composantSanguin', $danation->type_don)->where('centre_id', $danation->centre_id)->first();
+
+            if ($stock) {
+                $stock->quantite += $danation->quantity;
+                $stock->save();
+            }
+            else {
+                Stock::create([
+                    'groupSanguin' => $danation->blood_group,
+                    'composantSanguin' => $danation->type_don,
+                    'quantite' => $danation->quantity,
+                    'centre_id' => $danation->centre_id,
+                ]);
+            }
         }
 
         $appointment->update($validated);

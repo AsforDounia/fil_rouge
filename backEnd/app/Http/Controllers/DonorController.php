@@ -132,7 +132,7 @@ class DonorController extends Controller
     public function getAppointmentsStats()
     {
 
-        $next_appointment = Appointment::where('donor_id', auth()->id())->where('appointment_date', '>', now())->where('status', '!=', 'annulée')->orderBy('appointment_date', 'asc')->first();
+        $next_appointment = Appointment::where('donor_id', auth()->id())->where('appointment_date', '>=', Carbon::now()->subDay())->where('status', '!=', 'annulée')->orderBy('appointment_date', 'asc')->first();
         $next_appointment_date = $next_appointment ? $next_appointment->appointment_date : null;
 
 
@@ -143,7 +143,7 @@ class DonorController extends Controller
         $total_donations = Don::where('donor_id', auth()->id())->count();
 
 
-        $upcoming_appointments = Appointment::with('centre')->where('donor_id', auth()->id())->where('appointment_date', '>', now())->where('status', '!=', 'annulée')->orderBy('appointment_date', 'asc')->get();
+        $upcoming_appointments = Appointment::with('centre')->where('donor_id', auth()->id())->where('appointment_date', '>=', Carbon::now()->subDay())->where('status', '!=', 'annulée')->orderBy('appointment_date', 'asc')->get();
 
         $upcoming_appointments = $upcoming_appointments->map(function($appointment) {
             $appointment_date = Carbon::parse($appointment->appointment_date);
@@ -170,6 +170,7 @@ class DonorController extends Controller
 
         return response()->json([
             'next_appointment_date' => $next_appointment_date,
+            'next_appointment_time' => $next_appointment->appointment_time,
             'last_donation_date' => $last_donation_date,
             'time_remaining' => $time_remaining,
             'total_donations' => $total_donations,

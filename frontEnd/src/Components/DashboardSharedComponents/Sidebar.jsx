@@ -110,8 +110,8 @@ const Sidebar = () => {
             const centreManagerItmes = [
                 { icon: <FaCalendarAlt />, text: 'Rendez-vous', href: `${baseUrl}/appointments`, badge: null },
                 { icon: <FaHospital />, text: 'Mon Centre', href: `${baseUrl}/mycenter`, badge: null },
-                { icon: <FaHandHoldingMedical />, text: 'Demandes de Sang', href: `${baseUrl}/blood-requests`, badge: null },
-                { icon: <FaHistory />, text: 'Historique des Dons', href: `${baseUrl}/donation-records`, badge: null },
+                { icon: <FaHandHoldingMedical />, text: 'Demandes de Sang', href: `${baseUrl}/requests`, badge: null },
+                { icon: <FaHistory />, text: 'Historique des Dons', href: `${baseUrl}/donations`, badge: null },
                 { icon: <MdFestival />, text: 'Evenements Centre', href: `${baseUrl}/center-events`, badge: null },
             ];
     
