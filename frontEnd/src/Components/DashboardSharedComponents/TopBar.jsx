@@ -152,11 +152,14 @@ const TopBar = () => {
 
 
     if (loading) {
-        return (
-            <div className="flex justify-center items-center min-h-[60vh]">
-                <div className="w-12 h-12 border-4 border-blue-500 border-dashed rounded-full animate-spin" />
-            </div>
-        );
+      return (
+        <div className="p-8 w-full flex justify-center items-center">
+        <div className="flex flex-col items-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-red-700 mb-4"></div>
+          <p className="text-lg">Chargement des informations...</p>
+        </div>
+      </div>
+      )
     }
 
     // const getPageInfo = () => {

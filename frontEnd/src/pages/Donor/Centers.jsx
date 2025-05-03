@@ -5,7 +5,7 @@ import { renderToString } from 'react-dom/server';
 
 
 const Centers = () => {
-  const { centers, getCenters, searchCenters } = useCenter(); // Add searchCenters function to your context
+  const { centers, getCenters, searchCenters } = useCenter();
   const [currentPage, setCurrentPage] = useState(1);
   const [searchTerm, setSearchTerm] = useState('');
   const [isLoading, setIsLoading] = useState(true);
@@ -179,13 +179,13 @@ const Centers = () => {
 
   if (isLoading || !centers) {
     return (
-      <div className="min-h-screen bg-lightGray flex justify-center items-center">
-        <div className="text-darkteal text-xl flex items-center gap-2">
-          <FaSpinner className="animate-spin" />
-          Chargement des centres...
-        </div>
+      <div className="p-8 w-full flex justify-center items-center">
+      <div className="flex flex-col items-center">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-red-700 mb-4"></div>
+        <p className="text-lg">Chargement des centres...</p>
       </div>
-    );
+    </div>
+    )
   }
 
 
@@ -490,17 +490,17 @@ const Centers = () => {
             </div>
           </div>
           
-          {/* Centers/Suggestions List */}
+
           <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 mb-8">
             {renderCentersList()}
           </div>
           
-          {/* Pagination - Only show when not searching */}
+
           {!searchTerm && (
             <div className="flex justify-center items-center gap-2 my-8">
               <div 
                 className={`w-10 h-10 flex justify-center items-center rounded-lg ${
-                  currentPage > 1 
+                  currentPage > 1
                     ? 'cursor-pointer bg-lightGray border border-gray-200 hover:bg-gray-200' 
                     : 'cursor-not-allowed bg-gray-100 text-gray-400'
                 }`}
@@ -523,8 +523,7 @@ const Centers = () => {
               </div>
             </div>
           )}
-          
-          {/* Why Donate Section */}
+
           <section className="bg-white rounded-lg p-8 mb-8 shadow-md text-center">
             <h2 className="flex flex-col items-center text-2xl text-burgundy font-bold mb-6 relative pb-2">
               Pourquoi Donner son Sang?

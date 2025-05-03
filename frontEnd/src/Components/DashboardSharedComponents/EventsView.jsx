@@ -196,9 +196,11 @@ const EventsView = () => {
                     <button onClick={() => openDeleteModal(event)} className="hover:text-red-600">
                       <FaTrash />
                     </button>
-                    <button onClick={() => openEditModal(event)} className="hover:text-green-600">
-                      <FaEdit />
-                    </button>
+                    {isCenter && (
+                      <button onClick={() => openEditModal(event)} className="hover:text-green-600">
+                        <FaEdit />
+                      </button>
+                    )}
                   </div>
                 )}
                 <img

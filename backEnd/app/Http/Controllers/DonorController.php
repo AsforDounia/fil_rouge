@@ -131,53 +131,77 @@ class DonorController extends Controller
 
     public function getAppointmentsStats()
     {
+        $donorId = auth()->id();
+        $now = Carbon::now();
 
-        $next_appointment = Appointment::where('donor_id', auth()->id())->where('appointment_date', '>=', Carbon::now()->subDay())->where('status', '!=', 'annulée')->orderBy('appointment_date', 'asc')->first();
-        $next_appointment_date = $next_appointment ? $next_appointment->appointment_date : null;
+        $nextAppointment = Appointment::where('donor_id', $donorId)
+            ->where('appointment_date', '>=', $now->subDay())
+            ->where('status', '!=', 'annulée')
+            ->orderBy('appointment_date', 'asc')
+            ->first();
 
+        if ($nextAppointment) {
+            $nextAppointmentDate = Carbon::parse($nextAppointment->appointment_date);
+            $formattedNextAppointment = $nextAppointment->toArray();
+            $formattedNextAppointment['date'] = $nextAppointmentDate->format('Y-m-d');
+            $nextAppointmentTime = $nextAppointment->appointment_time;
+        } else {
+            $formattedNextAppointment = null;
+            $nextAppointmentDate = null;
+            $nextAppointmentTime = null;
+        }
 
-        $last_donation = Don::where('donor_id', auth()->id())->where('donation_date', '<', now())->orderBy('donation_date', 'desc')->first();
-        $last_donation_date = $last_donation ? $last_donation->donation_date : null;
-        $time_remaining = $next_appointment_date ? round(now()->diffInDays($next_appointment_date, true)) : null;
+        $lastDonation = Don::where('donor_id', $donorId)
+            ->where('donation_date', '<', $now)
+            ->orderBy('donation_date', 'desc')
+            ->first();
 
-        $total_donations = Don::where('donor_id', auth()->id())->count();
+        $lastDonationDate = $lastDonation ? $lastDonation->donation_date : null;
+        $timeRemaining = $nextAppointmentDate ? round($now->diffInDays($nextAppointmentDate, false)) : null;
 
+        $totalDonations = Don::where('donor_id', $donorId)->count();
 
-        $upcoming_appointments = Appointment::with('centre')->where('donor_id', auth()->id())->where('appointment_date', '>=', Carbon::now()->subDay())->where('status', '!=', 'annulée')->orderBy('appointment_date', 'asc')->get();
+        $upcomingAppointments = Appointment::with('centre')
+            ->where('donor_id', $donorId)
+            ->where('appointment_date', '>=', Carbon::now()->subDay())
+            ->where('status', '!=', 'annulée')
+            ->orderBy('appointment_date', 'asc')
+            ->get()
+            ->map(function ($appointment) {
+                $appointmentDate = Carbon::parse($appointment->appointment_date);
+                $formattedAppointment = $appointment->toArray();
+                $formattedAppointment['date'] = $appointmentDate->format('Y-m-d');
 
-        $upcoming_appointments = $upcoming_appointments->map(function($appointment) {
-            $appointment_date = Carbon::parse($appointment->appointment_date);
-            $formatted_appointment = $appointment->toArray();
-            $formatted_appointment['date'] = $appointment_date->format('Y-m-d');
+                return $formattedAppointment;
+            });
 
-            return $formatted_appointment;
-        });
+        $appHistory = Appointment::with('centre')
+            ->where('donor_id', $donorId)
+            ->where(function ($query) {
+                $query->where('appointment_date', '<', now())
+                    ->orWhere('status', 'annulée');
+            })
+            ->orderBy('appointment_date', 'asc')
+            ->get()
+            ->map(function ($appointment) {
+                $appointmentDate = Carbon::parse($appointment->appointment_date);
+                $formattedAppointment = $appointment->toArray();
+                $formattedAppointment['date'] = $appointmentDate->format('Y-m-d');
 
-        $appHistory = Appointment::with('centre')->where('donor_id', auth()->id())->where(function ($query) {
-        $query->where('appointment_date', '<', now())
-              ->orWhere('status', 'annulée');
-    })
-    ->orderBy('appointment_date', 'asc')
-    ->get();
-
-        $appHistory = $appHistory->map(function($appointment) {
-            $appointment_date = Carbon::parse($appointment->appointment_date);
-            $formatted_appointment = $appointment->toArray();
-            $formatted_appointment['date'] = $appointment_date->format('Y-m-d');
-
-            return $formatted_appointment;
-        });
+                return $formattedAppointment;
+            });
 
         return response()->json([
-            'next_appointment_date' => $next_appointment_date,
-            'next_appointment_time' => $next_appointment->appointment_time,
-            'last_donation_date' => $last_donation_date,
-            'time_remaining' => $time_remaining,
-            'total_donations' => $total_donations,
-            'upcoming_appointments' =>  $upcoming_appointments,
-            'appHistory' => $appHistory
+            'next_appointment_date' => $nextAppointmentDate,
+            'next_appointment_time' => $nextAppointmentTime,
+            'last_donation_date' => $lastDonationDate,
+            'time_remaining' => $timeRemaining,
+            'total_donations' => $totalDonations,
+            'upcoming_appointments' => $upcomingAppointments,
+            'appHistory' => $appHistory,
         ]);
     }
+
 
 
 }
