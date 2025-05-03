@@ -46,6 +46,9 @@ import { CentreManagerProvider } from "../Context/CentreManagerContext";
 import CentreAppointments from "../pages/Centre/CentreAppointements";
 import CentreRequests from "../pages/Centre/CentreRequests";
 import CentreDonations from "../pages/Centre/CentreDonations";
+import { StockProvider } from "../Context/StockContext";
+
+import Stocks from "../pages/Centre/Stocks";
 
 
 export const Router = createBrowserRouter([
@@ -248,6 +251,17 @@ export const Router = createBrowserRouter([
             <EventsView />
           </CenterProvider>
           </EventProvider>
+        ,
+      },
+
+      {
+        path: "stocks",
+        element:
+          <StockProvider>
+
+            <Stocks />
+
+          </StockProvider>
         ,
       },
       

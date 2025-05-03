@@ -55,7 +55,16 @@ export default function ManageUsers() {
   );
 
   if (loading) {
-    return <div className="text-center mt-10 text-gray-500">Chargement des utilisateurs...</div>;
+
+    return (
+      <div className="p-8 w-full flex justify-center items-center">
+      <div className="flex flex-col items-center">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-red-700 mb-4"></div>
+        <p className="text-lg">Chargement des utilisateurs...</p>
+      </div>
+    </div>
+    )
+    
   }
 
   return (

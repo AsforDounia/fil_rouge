@@ -18,7 +18,7 @@ export default function AdminRequests() {
     const [loading, setLoading] = useState(true);
 
 
-    const [showAddModal, setShowAddModal] = useState(false);
+
 
 
     const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
@@ -32,14 +32,7 @@ export default function AdminRequests() {
         status:''
     });
 
-    // const [newRequest, setNewRequest] = useState({
-    //     blood_group: 'A+',
-    //     urgency: 'Normal',
-    //     component: 'Sang total',
-    //     centre_id: '',
-    //     quantity: 1,
-    //     description: ''
-    // });
+
 
     const [tabCounts, setTabCounts] = useState({
         all: 0,
@@ -130,40 +123,7 @@ export default function AdminRequests() {
     };
        
 
-    const handleInputChange = (e, isNewRequest = true) => {
-        const { name, value } = e.target;
-        if (isNewRequest) {
-            setNewRequest(prev => ({ ...prev, [name]: value }));
-        } 
-        else {
-            setSelectedRequest(prev => ({ ...prev, [name]: value }));
-        }
-    };
 
-    // const handleSubmit = async (e) => {
-    //     e.preventDefault();
-
-    //     if (!newRequest.centre_id) {
-    //         toast.error("Veuillez sélectionner un centre");
-    //         return;
-    //     }
-        
-    //     try {
-    //         await createRequest(newRequest);
-    //         setShowAddModal(false);
-    //         setNewRequest({
-    //             blood_group: 'A+',
-    //             urgency: 'Normal',
-    //             component: 'Sang total',
-    //             centre_id: '',
-    //             quantity: 1,
-    //             description: ''
-    //         });
-    //     } catch(error) {
-    //         console.error("Error creating request:", error);
-    //         toast.error("Erreur lors de la création de la demande");
-    //     }
-    // };
 
     const visibleRequests = getVisibleRequests();
 
@@ -183,19 +143,18 @@ export default function AdminRequests() {
     };
 
     if (loading || !allCenters) {
-        return <div className="p-8 w-full flex justify-center items-center">Chargement...</div>;
+        return (
+            <div className="p-8 w-full flex justify-center items-center">
+            <div className="flex flex-col items-center">
+              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-red-700 mb-4"></div>
+              <p className="text-lg">Chargement des demandes...</p>
+            </div>
+          </div>
+        );
     }
 
     return (
         <div className="p-8 w-full">
-            <div className="flex justify-end items-center mb-6">
-                <button
-                    onClick={() => setShowAddModal(true)}
-                    className="flex items-center gap-2 px-4 py-2 bg-[#1A4B4C] text-white rounded-lg hover:bg-[#40898A] transition-colors"
-                >
-                    <FaPlus /> Nouvelle demande
-                </button>
-            </div>
             <div className="flex border-b border-gray-200 mb-6">
                 <div
                     className={`px-6 py-4 cursor-pointer text-[#1A4B4C] border-b-2 ${activeTab === 'all' ? 'border-[#8B2326] text-[#4A1E1F] font-medium' : 'border-transparent'}`}
@@ -299,7 +258,7 @@ export default function AdminRequests() {
                 )}
             </div>
 
-            {/* Request Cards */}
+
             <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
                 {visibleRequests.map(request => {
                     const urgencyDisplay = getUrgencyDisplay(request.urgency);
@@ -382,129 +341,6 @@ export default function AdminRequests() {
                     <p className="text-lg text-gray-600">Aucune demande ne correspond à vos critères.</p>
                 </div>
             )}
-
-            {/* Add Request Modal */}
-            {showAddModal && (
-                 <AddRequestForm
-                 onCancel={() => setShowAddModal(false)}
-               />
-                // <form onSubmit={handleSubmit} className="fixed inset-0 bg-black/50 flex justify-center items-center z-50 p-4">
-                //     <div className="bg-white rounded-lg shadow-lg max-w-2xl w-full max-h-[90vh] overflow-y-auto">
-                //         <div className="p-6 border-b border-gray-200 flex justify-between items-center relative">
-                //             <h3 className="text-xl font-semibold text-[#4A1E1F]">Nouvelle demande de don</h3>
-                //             <button
-                //                 onClick={() => setShowAddModal(false)}
-                //                 className="text-gray-500 hover:text-gray-700"
-                //             >
-                //                 ✕
-                //             </button>
-                //             <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-[#40898A] to-[#8B2326]"></div>
-                //         </div>
-                //         <div className="p-6">
-                //             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-                //                 <div>
-                //                     <label className="block text-[#1A4B4C] font-medium mb-2">Groupe sanguin</label>
-                //                     <select
-                //                         name="blood_group"
-                //                         value={newRequest.blood_group}
-                //                         onChange={(e) => handleInputChange(e)}
-                //                         className="p-3 border border-gray-200 rounded-lg text-base w-full"
-                //                     >
-                //                         <option value="A+">A+</option>
-                //                         <option value="A-">A-</option>
-                //                         <option value="B+">B+</option>
-                //                         <option value="B-">B-</option>
-                //                         <option value="AB+">AB+</option>
-                //                         <option value="AB-">AB-</option>
-                //                         <option value="O+">O+</option>
-                //                         <option value="O-">O-</option>
-                //                     </select>
-                //                 </div>
-                //                 <div>
-                //                     <label className="block text-[#1A4B4C] font-medium mb-2">Urgence</label>
-                //                     <select
-                //                         name="urgency"
-                //                         value={newRequest.urgency}
-                //                         onChange={(e) => handleInputChange(e)}
-                //                         className="p-3 border border-gray-200 rounded-lg text-base w-full"
-                //                     >
-                //                         <option value="Normal">Normal</option>
-                //                         <option value="Urgent">Urgent</option>
-                //                     </select>
-                //                 </div>
-                //                 <div>
-                //                     <label className="block text-[#1A4B4C] font-medium mb-2">Composant</label>
-                //                     <select
-                //                         name="component"
-                //                         value={newRequest.component}
-                //                         onChange={(e) => handleInputChange(e)}
-                //                         className="p-3 border border-gray-200 rounded-lg text-base w-full"
-                //                     >
-                //                         <option value="Sang total">Sang total</option>
-                //                         <option value="Plaquettes">Plaquettes</option>
-                //                         <option value="Plasma">Plasma</option>
-                //                         <option value="Globules">Globules</option>
-                //                     </select>
-                //                 </div>
-
-                //                 <div>
-                //                     <label className="block text-[#1A4B4C] font-medium mb-2">Quantité</label>
-                //                     <select
-                //                         name="quantity"
-                //                         value={newRequest.quantity}
-                //                         onChange={(e) => handleInputChange(e)}
-                //                         className="p-3 border border-gray-200 rounded-lg text-base w-full"
-                //                     >
-                //                         <option value="">Sélectionner une quantité</option>
-                //                         {[1, 2, 3, 4, 5].map((num) => (
-                //                             <option key={num} value={num}>{num}</option>
-                //                         ))}
-                //                     </select>
-                //                 </div>
-                //             </div>
-                //             <div>
-                //                     <label className="block text-[#1A4B4C] font-medium mb-2">Centre</label>
-                //                     <select
-                //                         name="centre_id"
-                //                         value={newRequest.centre_id}
-                //                         onChange={(e) => handleInputChange(e)}
-                //                         className="p-3 border border-gray-200 rounded-lg text-base w-full"
-                //                     >
-                //                         <option value="">Sélectionner un centre</option>
-                //                         {allCenters.map(centre => (
-                //                             <option key={centre.id} value={centre.id}>{centre.name}</option>
-                //                         ))}
-                //                     </select>
-                //                 </div>
-                //             <div className="mb-4">
-                //                 <label className="block text-[#1A4B4C] font-medium mb-2">Description</label>
-                //                 <textarea
-                //                     name="description"
-                //                     value={newRequest.description}
-                //                     onChange={(e) => handleInputChange(e)}
-                //                     className="p-3 border border-gray-200 rounded-lg text-base w-full min-h-[100px]"
-                //                     placeholder="Description de la demande..."
-                //                 ></textarea>
-                //             </div>
-                //             <div className="flex justify-end gap-2">
-                //                 <button
-                //                     onClick={() => setShowAddModal(false)}
-                //                     className="px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-100 transition-colors"
-                //                 >
-                //                     Annuler
-                //                 </button>
-                //                 <button
-                //                     type='submit'
-                //                     className="px-4 py-2 bg-[#1A4B4C] text-white rounded-lg hover:bg-[#40898A] transition-colors"
-                //                 >
-                //                     Ajouter
-                //                 </button>
-                //             </div>
-                //         </div>
-                //     </div>
-                // </form>
-            )}
-
 
 
             {/* Delete Confirmation Modal */}

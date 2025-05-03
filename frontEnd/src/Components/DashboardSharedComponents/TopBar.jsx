@@ -91,6 +91,36 @@ const TopBar = () => {
               subtitle: "",
             });
           } 
+           else if (path === '/centre/stocks') {
+            setPageInfo({
+              title: "Gestion des Stocks Sanguins",
+              subtitle: "",
+            });
+          } 
+           else if (path === '/centre/events') {
+            setPageInfo({
+              title: "Événements de Don",
+              subtitle: "Découvrez les prochaines collectes et opportunités de don",
+            });
+          } 
+           else if (path === '/centre/donations') {
+            setPageInfo({
+              title: "Gérez les historiques de dons",
+              subtitle: "",
+            });
+          }
+          else if (path === '/centre/requests') {
+            setPageInfo({
+              title: "Gestion des demandes de don",
+              subtitle: "",
+            });
+          } 
+          else if (path === '/centre/appointments') {
+            setPageInfo({
+              title: "Centre Rendez-vous",
+              subtitle: "Gérez les rendez-vous de don",
+            });
+          } 
           else {
             setPageInfo({
               title: "Paramètres",

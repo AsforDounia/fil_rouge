@@ -68,7 +68,16 @@ export default function CentreDonationsTable() {
   }, [donations]);
   
   if (loading && !donations) {
-    return <div className="p-8 w-full flex justify-center items-center">Chargement...</div>;
+    
+
+    return (
+      <div className="p-8 w-full flex justify-center items-center">
+      <div className="flex flex-col items-center">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-red-700 mb-4"></div>
+        <p className="text-lg">Chargement des dons...</p>
+      </div>
+    </div>
+    )
   }
 
   const handleFilterChange = (e) => {

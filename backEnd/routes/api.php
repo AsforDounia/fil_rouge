@@ -120,6 +120,10 @@ Route::group(['middleware' => ['auth:sanctum', 'role:centre_manager']], function
     Route::put('requests/{id}', [DonRequestController::class, 'updatetatus']);
     Route::get('centre/donations', [DonController::class, 'getCentreDonations']);
     Route::put('events', [EventController::class, 'update']);
-    Route::put('stocks', [StockController::class, 'index']);
+    Route::get('stocks', [StockController::class, 'index']);
+    Route::get('stocks', [StockController::class, 'index']);
+    Route::post('stocks', [StockController::class, 'store']);
+    Route::put('stocks/{id}', [StockController::class, 'update']);
+    Route::delete('stocks/{id}', [StockController::class, 'destroy']);
 
 });

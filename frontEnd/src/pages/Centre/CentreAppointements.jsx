@@ -7,7 +7,7 @@ import { useAppointment } from '../../Context/AppointmentContext';
 const CentreAppointments = () => {
 
   const { updateAppointemt, getCentreAppointements, centreAppointments } = useAppointment();
-  const [filter, setFilter] = useState('all'); // 'all', 'today', 'upcoming', 'past'
+  const [filter, setFilter] = useState('all');
   
   useEffect(() => {
     const fetchData = async () => {
@@ -17,7 +17,14 @@ const CentreAppointments = () => {
   }, []);
 
   if (!centreAppointments) {
-    return <div>Chargement...</div>;
+    return (
+      <div className="p-8 w-full flex justify-center items-center">
+      <div className="flex flex-col items-center">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-red-700 mb-4"></div>
+        <p className="text-lg">Chargement des rendez-vous...</p>
+      </div>
+    </div>
+    )
   }
 
   const handleAppointment = async (id, status) => {
@@ -57,7 +64,7 @@ const CentreAppointments = () => {
 
   return (
     <>
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+      {/* <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
         <div className="bg-white rounded-lg shadow-lg p-6 transform scale-100 transition-all duration-300 hover:scale-105 cursor-pointer border border-turquoise hover:border-wine">
           <div className="flex items-center justify-between mb-4">
             <div className="p-3 rounded-full bg-teal/10">
@@ -96,7 +103,7 @@ const CentreAppointments = () => {
           <h3 className="text-lg font-semibold text-burgundy">Rendez-vous passés</h3>
           <p className="mt-2 text-darkteal">{centreAppointments.pastAppointments ? centreAppointments.pastAppointments.length : 0}</p>
         </div>
-      </div>
+      </div> */}
 
       <div className="flex justify-between items-center p-6 pl-0 border-b border-gray-200 relative mt-8">
         <h3 className="text-xl font-semibold text-burgundy">Gestion des rendez-vous</h3>
