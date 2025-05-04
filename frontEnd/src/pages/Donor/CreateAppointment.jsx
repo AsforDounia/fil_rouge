@@ -26,7 +26,8 @@ export default function CreateAppointment() {
     appointment_date: "",
     donationCentre: "",
     centre_id: "",
-    appointment_time: "",  // Added for appointment time
+    appointment_time: "",
+    quantity: 1
   });
 
 

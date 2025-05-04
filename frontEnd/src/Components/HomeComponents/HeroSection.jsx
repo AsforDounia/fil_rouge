@@ -1,5 +1,5 @@
 import React from 'react'
-
+import { Link } from 'react-router-dom';
 function HeroSection() {
   return (
     <section className="bg-burgundy text-white py-16 px-8 mt-16 mx-48 rounded-2xl">
@@ -11,9 +11,9 @@ function HeroSection() {
         BloodLink facilite les dons de sang en mettant directement en relation les patients et les donneurs compatibles
       </p>
       <div className="flex justify-center md:justify-start space-x-4">
-        <button className="bg-teal text-white px-6 py-3 rounded-lg hover:bg-darkTeal transition-colors">
+        <Link to="/register" className="bg-teal text-white px-6 py-3 rounded-lg hover:bg-darkTeal transition-colors">
           Je veux rejoindre
-        </button>
+        </Link>
       </div>
     </div>
   </section>

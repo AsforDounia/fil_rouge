@@ -14,7 +14,7 @@ class DonController extends Controller
     public function index()
     {
         $id = auth()->id();
-        $donations = Don::with('centre')->where('donor_id',$id)->paginate(10);
+        $donations = Don::with('centre')->where('donor_id',$id)->orderBy('donation_date','desc')->paginate(10);
 
         return response()->json([
             'donations' => $donations
@@ -24,7 +24,7 @@ class DonController extends Controller
     public function getCentreDonations()
     {
         $id = auth()->id();
-        $donations = Don::where('centre_id',$id)->paginate(10);
+        $donations = Don::with('donor')->where('centre_id',$id)->get();
 
         return response()->json([
             'donations' => $donations

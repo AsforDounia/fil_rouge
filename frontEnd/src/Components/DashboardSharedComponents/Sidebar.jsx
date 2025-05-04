@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { NavLink } from 'react-router-dom';
-import { FaHome, FaCalendarAlt, FaHistory, FaHandHoldingMedical, FaCalendarPlus, FaProcedures, FaUser } from "react-icons/fa";
+import { FaHome, FaCalendarAlt, FaHistory, FaHandHoldingMedical, FaCalendarPlus, FaProcedures, FaUser, FaBalanceScaleRight } from "react-icons/fa";
 import { RiFileChartLine, RiUserLine } from "react-icons/ri";
 import { TbLogout2 } from "react-icons/tb";
 import { FaHospital, FaUsersGear } from "react-icons/fa6";
@@ -100,19 +100,18 @@ const Sidebar = () => {
             const adminItmes = [
                 { icon: <FaUsersGear />, text: 'Gestion d\'Utilisateurs ', href: `${baseUrl}/users`, badge: null },
                 { icon: <HiUserAdd />, text: 'Ajouter new Utilisateur', href: `${baseUrl}/addUser`, badge: null },
-                // { icon: <FaProcedures />, text: 'Gestion des Patients', href: `${baseUrl}/patients`, badge: null },
-                // { icon: <FaHospital />, text: 'Gestion des Centres', href: `${baseUrl}/centers`, badge: null },
+
                 { icon: <FaHandHoldingMedical />, text: 'Demandes de Sang', href: `${baseUrl}/requests`, badge: null },
-                // { icon: <RiFileChartLine />, text: 'Rapports', href: `${baseUrl}/reports`, badge: null },
+
                 { icon: <MdFestival />, text: 'Gestion Evenements', href: `${baseUrl}/events`, badge: null },
             ];
     
             const centreManagerItmes = [
                 { icon: <FaCalendarAlt />, text: 'Rendez-vous', href: `${baseUrl}/appointments`, badge: null },
-                { icon: <FaHospital />, text: 'Mon Centre', href: `${baseUrl}/mycenter`, badge: null },
                 { icon: <FaHandHoldingMedical />, text: 'Demandes de Sang', href: `${baseUrl}/requests`, badge: null },
                 { icon: <FaHistory />, text: 'Historique des Dons', href: `${baseUrl}/donations`, badge: null },
-                { icon: <MdFestival />, text: 'Evenements Centre', href: `${baseUrl}/center-events`, badge: null },
+                { icon: <MdFestival />, text: 'Evenements', href: `${baseUrl}/events`, badge: null },
+                { icon: <FaBalanceScaleRight />, text: 'Stocks', href: `${baseUrl}/stocks`, badge: null },
             ];
     
             const userItmes = [
@@ -155,13 +154,17 @@ const Sidebar = () => {
             
             setMenuItems(items);
         }, [userRole]);
-    if (loading) {
-        return <div>Chargement...</div>;
-    }
+  
 
-    // Render nothing if menuItems is still empty
-    if (!menuItems || menuItems.length === 0) {
-        return <div>Chargement du menu...</div>;
+    if (loading || !menuItems || menuItems.length === 0) {
+        return (
+            <div className="p-8 w-full flex justify-center items-center">
+            <div className="flex flex-col items-center">
+              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-red-700 mb-4"></div>
+              <p className="text-lg">Chargement du menu...</p>
+            </div>
+          </div>
+        );
     }
 
     return (

@@ -11,6 +11,7 @@ use App\Http\Controllers\DonorController;
 use App\Http\Controllers\DonRequestController;
 use App\Http\Controllers\EventController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\StockController;
 use App\Http\Controllers\TemoignageController;
 use App\Http\Controllers\UserController;
 use App\Models\Appointment;
@@ -118,5 +119,11 @@ Route::group(['middleware' => ['auth:sanctum', 'role:centre_manager']], function
     Route::get('centre/requests', [DonRequestController::class, 'getCentreRequests']);
     Route::put('requests/{id}', [DonRequestController::class, 'updatetatus']);
     Route::get('centre/donations', [DonController::class, 'getCentreDonations']);
+    Route::put('events', [EventController::class, 'update']);
+    Route::get('stocks', [StockController::class, 'index']);
+    Route::get('stocks', [StockController::class, 'index']);
+    Route::post('stocks', [StockController::class, 'store']);
+    Route::put('stocks/{id}', [StockController::class, 'update']);
+    Route::delete('stocks/{id}', [StockController::class, 'destroy']);
 
 });

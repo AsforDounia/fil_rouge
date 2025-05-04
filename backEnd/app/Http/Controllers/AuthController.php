@@ -124,7 +124,7 @@ class AuthController extends Controller
             'country' => 'sometimes|string|max:255',
             'weight' => 'sometimes|numeric|min:0|max:500',
             'height' => 'sometimes|integer|min:0|max:300',
-            'profile_image' => 'sometimes|image|max:5120',
+            'profile_image' => 'sometimes',
             'newPassword' => 'sometimes|string|min:8',
             'currentPassword' => 'sometimes|string',
         ]);

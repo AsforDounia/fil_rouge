@@ -9,16 +9,15 @@ import { useAuth } from '../../Context/AuthContext';
 
 const EventsSection = () => {
     const [loading, setLoading] = useState(true);
-    const { events, getEvents, participer, annulerParticipation, userParticiper, userEvents } = useEvent();
+    const { events, getEvents } = useEvent();
     const [currentPage, setCurrentPage] = useState(1);
-    const { user, getUser } = useAuth();
+
+
 
     const fetchData = async () => {
         setLoading(true);
         try {
             await getEvents(currentPage);
-            await getUser();
-            await userParticiper();
         } catch (error) {
             toast.error("Error fetching events: " + error.message);
         } finally {
@@ -30,33 +29,21 @@ const EventsSection = () => {
         fetchData();
     }, [currentPage]);
 
-    const participerEvent = async (eventId) => {
-        try {
-            await participer(eventId);
-            toast.success("Vous participez maintenant à cet événement.");
-            await userParticiper();
-        } catch (error) {
-            toast.error("Erreur lors de la participation: " + error.message);
-        }
-    };
 
-    const annuler = async (eventId) => {
-        try {
-            await annulerParticipation(eventId);
-            toast.success("Votre participation a été annulée.");
-            await userParticiper();
-        } catch (error) {
-            toast.error("Erreur lors de l'annulation: " + error.message);
-        }
-    };
+
+
 
     if (loading) {
         return (
-            <div className="flex justify-center items-center min-h-[60vh]">
-                <div className="w-12 h-12 border-4 border-blue-500 border-dashed rounded-full animate-spin" />
+            <div className="p-8 w-full flex justify-center items-center">
+            <div className="flex flex-col items-center">
+              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-red-700 mb-4"></div>
+              <p className="text-lg">Chargement des evenements...</p>
             </div>
-        );
+          </div>
+          )
     }
+
 
     const lastPage = events.last_page || 1;
     const currentPageFromData = events.current_page || 1;
@@ -78,8 +65,8 @@ const EventsSection = () => {
                 <div className="grid grid-cols-1 gap-8 md:grid-cols-3">
                     {events.data.map((event, index) => (
                         <div key={index} className="flex flex-col bg-white rounded-lg overflow-hidden shadow-lg transition-all duration-300 hover:-translate-y-1">
-                             {event.localisation.user.profile_image ?(
-                                <img src={`http://127.0.0.1:8000/storage/${event.localisation.user.profile_image}`} alt={event.title} className="w-full h-48 object-cover" />
+                             {event.centre.profile_image ?(
+                                <img src={`http://127.0.0.1:8000/storage/${event.centre.profile_image}`} alt={event.title} className="w-full h-48 object-cover" />
                             ):(
                                 <img src='../../../public/images/event.png' alt={event.title} className="w-full h-48 object-cover" />
                             )}
@@ -88,7 +75,7 @@ const EventsSection = () => {
                                     {event.date}
                                 </span>
                                 <span className="min-h-20 max-h-20 block items-center gap-2 text-teal font-medium transition-all duration-300 hover:text-darkTeal">
-                                    <span className='text-burgundy mb-4 '>Adresse : </span>{event.localisation.address}
+                                    <span className='text-burgundy mb-4 '>Adresse : </span>{event.centre.address}
                                 </span>
                                 <h3 className="text-xl text-burgundy mb-4 leading-snug">
                                     {event.title}
@@ -100,32 +87,14 @@ const EventsSection = () => {
                                 </p>
                             </div>
                             <div className="p-6 pt-0 text-gray-500">
-                                {user ? (
-                                    userEvents.length > 0 && userEvents.some(participation =>
-                                        participation.user_id === user.id && participation.event_id === event.id
-                                    ) ? (
-                                        <button
-                                            onClick={() => annuler(event.id)}
-                                            className="cursor-pointer inline-flex items-center gap-2 text-teal font-medium transition-all duration-300 hover:text-darkTeal"
-                                        >
-                                            Annuler Participation <FaArrowRight />
-                                        </button>
-                                    ) : (
-                                        <button
-                                            onClick={() => participerEvent(event.id)}
-                                            className="cursor-pointer inline-flex items-center gap-2 text-teal font-medium transition-all duration-300 hover:text-darkTeal"
-                                        >
-                                            Participer <FaArrowRight />
-                                        </button>
-                                    )
-                                ) : (
+                                 
                                     <Link
                                         to="/login"
                                         className="inline-flex items-center gap-2 text-teal font-medium transition-all duration-300 hover:text-darkTeal"
                                     >
                                         Participer <FaArrowRight />
                                     </Link>
-                                )}
+                               
                             </div>
                         </div>
                     ))}

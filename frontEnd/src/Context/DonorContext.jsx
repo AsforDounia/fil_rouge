@@ -23,7 +23,6 @@ export const DonorProvider = ({ children }) => {
         try {
             const response = await api.get('appointments/statistics');
             setAppointmentsStats(response.data);
-            console.log(response.data);
         } catch (error) {
             console.error('Error fetching statistics:', error);
         }

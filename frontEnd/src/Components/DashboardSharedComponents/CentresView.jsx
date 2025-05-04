@@ -179,12 +179,12 @@ const CentresView = () => {
 
   if (isLoading || !centers) {
     return (
-      <div className="min-h-screen bg-lightGray flex justify-center items-center">
-        <div className="text-darkteal text-xl flex items-center gap-2">
-          <FaSpinner className="animate-spin" />
-          Chargement des centres...
-        </div>
+      <div className="p-8 w-full flex justify-center items-center">
+      <div className="flex flex-col items-center">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-red-700 mb-4"></div>
+        <p className="text-lg">Chargement des centres...</p>
       </div>
+    </div>
     );
   }
 

@@ -45,6 +45,9 @@ class CenterController extends Controller
         return response()->json(['data' => $centers], 200);
     }
 
+
+    
+
     public function store(Request $request)
     {
         //

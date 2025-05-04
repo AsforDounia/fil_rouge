@@ -34,7 +34,7 @@ import { AdminProvider } from "../Context/AdminContext";
 import ManageUsers from "../pages/Admin/ManageUsers";
 import AddUser from "../pages/Admin/AddUser";
 import AdminRequests from "../pages/Admin/AdminRequests";
-import Profile from "../Components/DashboardSharedComponents/UserProfile";
+import Profile from "../Components/DashboardSharedComponents/Profile";
 
 import AdminEvents from "../pages/Admin/AdminEvents";
 import CentreDashboard from "../pages/Centre/CentreDashboard";
@@ -46,6 +46,9 @@ import { CentreManagerProvider } from "../Context/CentreManagerContext";
 import CentreAppointments from "../pages/Centre/CentreAppointements";
 import CentreRequests from "../pages/Centre/CentreRequests";
 import CentreDonations from "../pages/Centre/CentreDonations";
+import { StockProvider } from "../Context/StockContext";
+
+import Stocks from "../pages/Centre/Stocks";
 
 
 export const Router = createBrowserRouter([
@@ -84,6 +87,43 @@ export const Router = createBrowserRouter([
       },
     ],
   },
+  {
+    path: "/centers",
+    element: <HomeLayout />,
+    children: [
+      {
+        index: true,
+        element: (
+          <CenterProvider>
+            <div className="p-20">
+            <CentresView/>
+            </div>
+          </CenterProvider>
+      ),
+        
+      },
+    ],
+  },
+  {
+    path: "/events",
+    element: <HomeLayout />,
+    children: [
+      {
+        index: true,
+        element: (
+          <CenterProvider>
+            <div className="p-20">
+            <EventProvider>
+            <EventsSection />
+          </EventProvider>
+            </div>
+          </CenterProvider>
+      ),
+        
+      },
+    ],
+  },
+
   {
     element: (
       <AuthProvider>
@@ -234,10 +274,32 @@ export const Router = createBrowserRouter([
       {
         path: "donations",
         element : (
-            <RequestProvider>
-              {/* <CentreDonations /> */}
-            </RequestProvider>
+            <DonationProvider>
+              <CentreDonations />
+            </DonationProvider>
         )
+      },
+
+      {
+        path: "events",
+        element:
+          <EventProvider>
+            <CenterProvider>
+            <EventsView />
+          </CenterProvider>
+          </EventProvider>
+        ,
+      },
+
+      {
+        path: "stocks",
+        element:
+          <StockProvider>
+
+            <Stocks />
+
+          </StockProvider>
+        ,
       },
       
       {
@@ -335,7 +397,8 @@ export const Router = createBrowserRouter([
         path : "donneur/donation-history",
         element : (
           <DonationProvider>
-          <DonnationsHistory /></DonationProvider>
+          <DonnationsHistory />
+          </DonationProvider>
         )
       },
       {
