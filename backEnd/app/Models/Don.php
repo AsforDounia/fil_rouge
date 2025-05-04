@@ -15,10 +15,7 @@ class Don extends Model
         return $this->belongsTo(User::class, 'donor_id');
     }
 
-    public function collecte()
-    {
-        return $this->belongsTo(Collecte::class);
-    }
+
 
     public function requests()
     {

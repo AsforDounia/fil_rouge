@@ -19,7 +19,7 @@ const Profile = () => {
     height: ''
   });
 
-  // State for password change
+
   const [passwordForm, setPasswordForm] = useState({
     currentPassword: '',
     newPassword: '',
@@ -78,12 +78,11 @@ const Profile = () => {
     
     if (name === 'newPassword' || name === 'newPassword_confirmed') {
       setPasswordError('');
-      console.log("tesssssssssssssssssst");
+
       
     }
   };
 
-  // Handle avatar file change
   const handleAvatarChange = (e) => {
     const file = e.target.files[0];
 
@@ -135,9 +134,7 @@ const Profile = () => {
     e.preventDefault();
     try {
       await updateProfile(profileForm);
-
       setSuccessMessage('Profil mis à jour avec succès');
-      setTimeout(() => setSuccessMessage(''), 3000);
     } catch (err) {
       setError('Erreur lors de la mise à jour du profil');
       console.error(err);
@@ -204,19 +201,44 @@ const Profile = () => {
     <div>
       {/* Success message */}
       {successMessage && (
-        <div className="bg-green-50 p-4 mb-6 rounded-lg text-green-600 flex justify-between">
-          {successMessage}
-          <button onClick={() => setSuccessMessage('')}>×</button>
+        <div className="fixed inset-0 bg-black/50 flex justify-center items-center z-50 p-4">
+          <div className="relative bg-green-100 text-green-800 shadow-2xl max-w-md w-full rounded-xl p-6">
+            
+            <button
+              className="absolute top-3 right-3 text-green-700 hover:text-green-900 text-xl font-bold cursor-pointer"
+              onClick={() => setSuccessMessage('')}
+              aria-label="Fermer"
+            >
+              ×
+            </button>
+
+            <div className="text-center text-lg font-medium">
+              {successMessage}
+            </div>
+          </div>
         </div>
       )}
-      
-      {/* Error message */}
       {error && (
-        <div className="bg-red-50 p-4 mb-6 rounded-lg text-red-600 flex justify-between">
-          {error}
-          <button onClick={() => setError(null)}>×</button>
+        <div className="fixed inset-0 bg-black/50 flex justify-center items-center z-50 p-4">
+          <div className="relative bg-red-100 text-red-800 shadow-2xl max-w-md w-full rounded-xl p-6">
+            
+            <button
+              className="absolute top-3 right-3 text-red-700 hover:text-red-900 text-xl font-bold cursor-pointer"
+              onClick={() => setError(null)}
+              aria-label="Fermer"
+            >
+              ×
+            </button>
+
+            <div className="text-center text-lg font-medium">
+              {error}
+            </div>
+          </div>
         </div>
       )}
+
+      
+
 
       {/* Profile Settings */}
       <div className="bg-white rounded-lg shadow-lg mb-8 overflow-hidden">

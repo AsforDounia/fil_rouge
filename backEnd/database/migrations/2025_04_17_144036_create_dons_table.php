@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('dons', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('donor_id')->constrained('users')->onDelete('cascade');
+            $table->foreignId('donor_id')->nullable()->constrained('users')->onDelete('set null');
             $table->foreignId('centre_id')->constrained('users')->onDelete('cascade');
             $table->enum('type_don', ['Plasma', 'Globules', 'Plaquettes' , 'Sang Total']);
 

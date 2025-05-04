@@ -19,17 +19,10 @@ const Header = () => {
       label: "Centres de Don"
     },
     {
-      href: "/Evenements",
+      href: "/events",
       label: "Evenements"
     },
-    {
-      href: "/faq",
-      label: "FAQ"
-    },
-    {
-      href: "/contact",
-      label: "Contact"
-    }
+
   ];
 
   const handleNavigation = (href) => {
@@ -67,10 +60,10 @@ const Header = () => {
 
       <div className="flex space-x-4">
         <button className="border border-cream text-cream px-4 py-2 rounded-lg hover:bg-cream hover:text-burgundy cursor-pointer">
-          <Link to="login">Connexion</Link>
+          <Link to="/login">Connexion</Link>
         </button>
         <button className="bg-teal text-white px-4 py-2 rounded-lg hover:bg-darkteal cursor-pointer">
-          <Link to="register">Inscription</Link>
+          <Link to="/register">Inscription</Link>
         </button>
       </div>
     </header>

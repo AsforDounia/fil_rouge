@@ -204,7 +204,7 @@ const EventsView = () => {
                   </div>
                 )}
                 <img
-                  src={event.localisation?.user?.profile_image ? `http://127.0.0.1:8000/storage/${event.localisation.user.profile_image}` : '/images/event.png'}
+                  src={event.centre.profile_image ? `http://127.0.0.1:8000/storage/${event.localisation.user.profile_image}` : '/images/event.png'}
                   alt={event.title}
                   className="w-full h-48 object-cover"
                 />

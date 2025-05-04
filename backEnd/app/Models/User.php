@@ -75,16 +75,6 @@ class User extends Authenticatable
             return $this->hasOne(Localisation::class);
         }
 
-        // Messaging
-        public function conversations()
-        {
-            return $this->hasMany(Conversation::class, 'sender_id');
-        }
-
-        public function messages()
-        {
-            return $this->hasMany(Message::class, 'sender_id');
-        }
 
         // Events
         public function events()
@@ -97,28 +87,20 @@ class User extends Authenticatable
             return $this->hasMany(Event::class);
         }
 
-        // Donations
+
         public function dons()
         {
             return $this->hasMany(Don::class, 'donor_id');
         }
 
-        public function collectes()
-        {
-            return $this->hasMany(Collecte::class, 'centre_id');
-        }
 
-        // Requests
+
         public function demandes()
         {
             return $this->hasMany(DonRequest::class, 'patient_id');
         }
 
-        // Admin reports
-        public function rapports()
-        {
-            return $this->hasMany(Rapport::class, 'admin_id');
-        }
+
 
         public function temoignages()
         {
